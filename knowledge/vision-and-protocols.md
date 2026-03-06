@@ -152,15 +152,13 @@ Full references in the Research Log section.
   Confirms the required WorldDSL semantics are expressible in a Datalog variant.
   [Paper:GDL2005] — citation pending full verification.
 
-- `[Verified]` The core mechanism of this project is not to make the LLM reason,
-  but to delegate inference to a symbolic layer (the WorldDSL rules engine),
-  constrain LLM output to be consistent with that inference, and produce
-  inference-level behavior as an emergent property of the combined system.
-  The LLM contributes fluency and creativity. The symbolic layer contributes
-  correctness and consistency. Neither alone achieves the target behavior.
-  [Supported by Paper:Madabushi2025 — LLMs perform context-directed extrapolation,
-  not advanced reasoning; augmenting techniques that do not rely on inherent LLM
-  reasoning are explicitly recommended.]
+- `[Verified]` The core mechanism of this project is not to make the LLM reason.
+  The symbolic layer (WorldDSL rules engine) performs inference.
+  LLM output is constrained to be consistent with that inference.
+  Inference-level behavior emerges from the combined system, not from the LLM alone.
+  The LLM contributes fluency and creativity; the symbolic layer contributes correctness and consistency.
+  The WorldDSL also functions as the authoritative context that directs LLM extrapolation toward correct outputs — the LLM extrapolates fluently from the DSL rather than reasoning from it.
+  [Paper:Madabushi2025]
 
 ---
 
