@@ -152,6 +152,16 @@ Full references in the Research Log section.
   Confirms the required WorldDSL semantics are expressible in a Datalog variant.
   [Paper:GDL2005] — citation pending full verification.
 
+- `[Verified]` The core mechanism of this project is not to make the LLM reason,
+  but to delegate inference to a symbolic layer (the WorldDSL rules engine),
+  constrain LLM output to be consistent with that inference, and produce
+  inference-level behavior as an emergent property of the combined system.
+  The LLM contributes fluency and creativity. The symbolic layer contributes
+  correctness and consistency. Neither alone achieves the target behavior.
+  [Supported by Paper:Madabushi2025 — LLMs perform context-directed extrapolation,
+  not advanced reasoning; augmenting techniques that do not rely on inherent LLM
+  reasoning are explicitly recommended.]
+
 ---
 
 ## WHAT IS SYNTHESIZED — NOT YET VERIFIED
@@ -412,6 +422,16 @@ Status: Partially verified — needs URL and page confirmation
 Notes: Defines Game Description Language as a Datalog variant with static and dynamic facts and state transition functions.
 Closest documented precedent to WorldDSL semantics.
 Validates that the required formalism is expressible in Datalog.
+
+[Paper:Madabushi2025] Harish Tayyar Madabushi et al., "Neither Stochastic
+Parroting nor AGI: LLMs Solve Tasks through Context-Directed Extrapolation
+from Training Data Priors," arXiv:2505.23323v1, University of Bath, 2025.
+URL: https://arxiv.org/html/2505.23323v1
+Status: Verified
+Notes: Characterizes LLM behavior as context-directed extrapolation from
+training priors, not advanced reasoning. Explicitly recommends augmenting
+techniques that do not rely on inherent LLM reasoning. Directly supports
+the hybrid NeSy approach and the project's core mechanism clarification.
 
 ---
 
