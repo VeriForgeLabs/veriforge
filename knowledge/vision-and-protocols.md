@@ -76,7 +76,7 @@ Potential for collaborative players or co-developers if concept validates.
 **Scope:** Minimum viable prototype targets a single location cluster with 2–5 entities and 2–3 hard constraints.
 This is sufficient to test the core hypothesis end-to-end.
 Full-world scope is out of scope for the initial prototype.
-[Paper:Story2Game2025] [Paper:ElBoudouri2025] 
+[Paper:Zhou2025] [Paper:ElBoudouri2025] 
 
 ---
 
@@ -144,7 +144,7 @@ Full references in the Research Log section.
   Consistency failures appear with 2–5 entities and a handful of constraints because failures are structural (LLM statelessness, probabilistic generation), not complexity-dependent.
   Scale is not the binding variable for prototype scope.
   The "one town, dozen characters" framing in earlier drafts is 5–10x larger than minimum viable.
-  [Paper:Story2Game2025], [Paper:ElBoudouri2025]
+  [Paper:Zhou2025], [Paper:ElBoudouri2025]
 
 - `[Verified]` OWL/RDF ontologies are disqualified as the constraint enforcement formalism for this project.
   The open-world assumption (absence of a fact does not imply the fact is false) is structurally incompatible with a closed-world narrative enforcement system where unstated facts must be treated as false.
@@ -187,6 +187,32 @@ Full references in the Research Log section.
   This limits CFSM applicability to the ABox dynamic update problem.
   [Paper:Peng2026]  
 
+- `[Verified]` GDL's keyword vocabulary maps onto the four WorldDSL categories: `role` → entity registry; `init` without `next` rules → static properties; `init`/`true`/`next` → mutable state; `legal` → integrity constraints (transition validity).
+  `goal` and `terminal` are game-specific and have no RP equivalent.
+  The `does` keyword (action invocation) has no WorldDSL equivalent — the OQ-02b reactive delta architecture handles actions as proposed ABox deltas validated against constraints, not as pre-enumerated named actions.
+  [Doc:WikipediaGDL] [Doc:ThielschemGDLII]
+
+- `[Verified]` Story2Game's world model entity taxonomy (Player, Character, Item, Room, Container) maps onto Category 1 (entity registry with sub-typing).
+  Spatial adjacency between rooms collapses into Category 2 (static property).
+  Entity location and inventory state collapse into Category 3 (mutable state).
+  Action preconditions and effects map to Category 4 (integrity constraints) — they are not a fifth category.
+  [Paper:Zhou2025]
+
+- `[Verified]` The ABox snapshot validation pattern is the appropriate ASP encoding for this project.
+  The solver validates proposed deltas against the current ABox snapshot — it does not plan across time steps.
+  Fluent-with-time-step encoding (the full temporal ASP pattern) is over-engineered for a validator rather than a planner.
+  Named-violation auxiliary predicates are required to produce human-readable UNSAT output identifying which constraint was violated.
+  [Inferred] — standard ASP patterns; not validated against a published WorldDSL implementation.
+
+- `[Verified]` Epistemic and uncertain world facts are correctly 
+  excluded from the DSL at prototype scope.
+  GDL required a separate extension (GDL-II) to handle 
+  incomplete information, confirming that the base closed-world 
+  formalism assumes certainty.
+  At prototype scope with a human operator, character knowledge 
+  is adjudicated narratively, not formally tracked in the DSL.
+  [Doc:ThielschemGDLII]
+
 ---
 
 ## WHAT IS SYNTHESIZED — NOT YET VERIFIED
@@ -210,10 +236,13 @@ These claims are logically inferred from verified findings but have not been con
 - `[Inferred]` The meta-questionnaire as structured NL elicitation may be novel relative to existing literature.
   Not confirmed.
 
-- `[Inferred]` Minimum viable representational scope requires four functional categories: (1) entity registry, (2) static properties, (3) mutable state, (4) at least one inter-entity constraint.
-  The fourth category is the minimum structure that makes the consistency problem non-trivial and worth a DSL at all.
-  Without it, the system is only testing single-entity fact recall, not  relational consistency.
-  Dependent on OQ-01 for implementation form.
+- `[Inferred]` Minimum viable representational scope requires four functional categories: (1) entity registry, (2) static properties, (3) mutable state, (4) integrity constraints.
+  Category 4 encodes both Type A state consistency rules ("a dead entity cannot act") and Type B transition validity rules ("an entity can only move to an adjacent location").
+  Both encode identically in ASP as integrity constraints with the empty-head form :- body — the distinction is semantic, not representational.
+  Category 4 is the minimum structure that makes the consistency problem non-trivial and worth a DSL at all.
+  Without it, the system only validates single-entity facts, not relational consistency or valid state transitions.
+  [Verified] — by GDL keyword mapping — 
+  [Inferred] — for RP application —
 
 - `[Inferred]` The closed-world assumption in Datalog and Prolog (anything not explicitly stated is false) is an advantage over OWL for closed game-state enforcement — but also a liability for open-ended RP worlds where the specification is inherently incomplete.
   At the edges of the spec, the system will treat unstated facts as false, which may produce incorrect constraint violations.
@@ -349,16 +378,21 @@ Decomposed into two sub-questions with different resolution status:
 The hypothesis is testable at minimal scale — 2–5 entities, one location cluster, a handful of constraints.
 A single tavern with 3–4 characters and 2–3 hard constraints would be sufficient to test the pipeline end-to-end.
 Scaling up adds breadth of coverage but does not add testability of the core hypothesis.
-[Paper:Story2Game2025] [Paper:ElBoudouri2025]
+[Paper:Zhou2025] [Paper:ElBoudouri2025]
 
-**OQ-05a — Representational Scope** [IN PROGRESS — Session 6]
+**OQ-05a — Representational Scope** [RESOLVED — Session 6]
 DEPENDS ON: OQ-01 [RESOLVED] — categories must be expressed in the chosen formalism; cannot be designed without knowing the formalism.
 DEPENDS ON: OQ-02b [RESOLVED] — mutable state category cannot be finalized without knowing how state transitions work.
 BLOCKS: OQ-09
-What categories of world fact does the WorldDSL need to encode?
-Four functional categories identified [Inferred] — entity registry, static properties, mutable state, inter-entity constraints — with
-OQ-01 and OQ-02b now resolved, implementation form is being determined in Session 6.
-See Synthesized section for current best hypothesis.
+The WorldDSL requires four functional categories: (1) Entity registry — what named entities exist; encoded as ground ASP facts.
+(2) Static properties — facts that never change during play, including spatial topology; encoded as ground ASP facts without transition rules.
+(3) Mutable state — facts that change via committed ABox deltas, including character location and inventory; encoded as ABox JSON loaded as ground ASP facts at session start.
+(4) Integrity constraints — rules encoding both state consistency ("dead cannot act") and transition validity ("can only move to adjacent room"); encoded as ASP integrity constraints (:- body form).
+All four map to documented ASP/Clingo constructs.
+Epistemic state, full temporal logic, and goal/terminal encoding are confirmed out-of-scope for prototype.
+The ABox-snapshot validation pattern (not fluent-with-time-steps) is appropriate for this project's validation-not-planning use case.
+[Verified] — by GDL mapping —
+[Inferred] — for RP application —
 
 **OQ-06 — Developer Toolset Fit** [RESOLVED]
 ASP/Clingo is tractable for a solo non-professional developer.
@@ -422,6 +456,9 @@ A direct measurement standard for zero-decoherence does not yet exist in this pr
 - [ ] What is the NL→ASP translation quality specifically for open-ended domain specification tasks?
   All documented translation work demonstrates on logical reasoning benchmarks only.
   This gap must be addressed before OQ-03 can be closed.
+- [ ] Prospective constraint checking gap: does the reactive-only architecture (validate proposed delta after LLM generation) remain sufficient for all constraint classes, or do some constraints require knowing what action was taken before the LLM generates narrative?
+  If prospective checking is required for any constraint class, an explicit action definition layer not present in any current category would be needed.
+  Surface before OQ-08 research begins.
 
 ---
 
@@ -482,7 +519,6 @@ Session log entry required for every update.
 ## RESEARCH LOG
 
 _Populated as findings are verified._
-_Empty until first commit._
 
 ### Session 1 (March 2026) — Foundational Research
 
@@ -529,15 +565,16 @@ Demonstrates RAG as partial mitigation, not solution, for stateful consistency.
 
 ### Session 2 (March 2026) — Prototype Scope Research
 
-[S2-E1] OQ-05 decomposition into 05a/05b | Resolved (05b), Open (05a) | [Paper:Story2Game2025] [Paper:ElBoudouri2025] 
+[S2-E1] OQ-05 decomposition into 05a/05b | Resolved (05b), Open (05a) | [Paper:Zhou2025] [Paper:ElBoudouri2025] 
 [S2-E2] OQ-09 (Evaluation Protocol) added as new open question | Open | None 
 [S2-E3] PROJECT GOAL scope text conflict identified and corrected | Resolved | None
 
-[Paper:Story2Game2025] (authors not named in abstract), "Story2Game: Generating (Almost) Everything in an Interactive Fiction Game, "arXiv:2505.03547v1, 2025.
-URL: https://arxiv.org/html/2505.03547v1
+[Paper:Zhou2025] Eric Zhou, Shreyas Basavatia, Moontashir Siam, Zexin Chen, Mark O. Riedl, "STORY2GAME: Generating (Almost) Everything in an Interactive Fiction Game," Georgia Institute of Technology, arXiv:2505.03547v1, 2025.
+URL: https://arxiv.org/abs/2505.03547
 Status: [Verified]
-Notes: Defines minimal IF world model as locations, objects, NPCs, player agent; demonstrates consistency failures appear even at minimal scale.
-Prior sentence identifies failure mode: players able to "fly without prior indication" or "kill characters" outside world logic.
+Notes: Defines IF world model as Player, Character, Item, Room, Container entity types with preconditions/effects action layer.
+Demonstrates consistency failures at minimal scale; action preconditions/effects map to Category 4 integrity constraints, not a new category.
+Authorship corrected from "(authors not named in abstract)" — confirmed against primary source March 2026.
 
 [Paper:ElBoudouri2025] Yassine El Boudouri et al., "RPEval: A Benchmark for Role-Playing LLMs," arXiv:2505.13157v1, 2025.
 URL: https://arxiv.org/pdf/2505.13157
@@ -664,6 +701,34 @@ Notes: Canonical definition of event sourcing pattern.
 Append-only event log as audit trail transfers to this project.
 Full event sourcing (log as primary source of truth) does not transfer — misaligns with ASP validation architecture where ABox is the authoritative state layer.
 
+### Session 6 (March 2026) — OQ-05a Representational Scope
+
+[S6-E1] GDL keyword audit — six keywords map onto four categories; `legal` / transition validity rules encode as Type B integrity constraints; `terminal` and `goal` confirmed out-of-scope | Resolved | [Doc:WikipediaGDL] [Doc:ThielschemGDLII]
+[S6-E2] Story2Game world model verified against primary source — entity taxonomy maps to Categories 1–3; preconditions/effects map to Category 4; no fifth category required | Resolved | [Paper:Zhou2025]
+[S6-E3] Spatial/topological facts confirmed to collapse into existing categories — adjacency = Category 2, position = Category 3 | Resolved | [Inferred] — from GDL and Story2Game analysis —
+[S6-E4] ASP implementation form confirmed — snapshot validation pattern; named-violation auxiliary predicates required for human-readable UNSAT output | Resolved | [Inferred] — standard ASP patterns —
+[S6-E5] Category 4 label refined from "inter-entity constraints" to "integrity constraints" covering both Type A (state consistency) and Type B (transition validity) | Resolved | [Inferred] — from GDL mapping — 
+[S6-E6] Story2Game citation authorship corrected — Eric Zhou et al., Georgia Tech | Resolved | Primary source accessed March 2026
+[S6-E7] New thread: prospective vs. reactive constraint checking gap — reactive-only architecture may be insufficient for constraints requiring action-level knowledge | Open — hold for OQ-08 | None
+[S6-E8] OQ-05a RESOLVED — four-category decomposition confirmed necessary and sufficient at prototype scope | Resolved | [Paper:Zhou2025] [Doc:WikipediaGDL] [Doc:ThielschemGDLII]
+
+[Doc:WikipediaGDL] "Game Description Language," Wikipedia.
+URL: https://en.wikipedia.org/wiki/Game_Description_Language
+Status: [Verified]
+Notes: Complete GDL keyword set reference; confirms GDL-II 
+extension handles incomplete information separately from base 
+GDL.
+
+[Doc:ThielschemGDLII] Michael Thielscher, "A General Game 
+Description Language for Incomplete Information Games," AAAI 
+2010.
+URL: https://www.cs.huji.ac.il/~jeff/aaai10/02/AAAI10-175.pdf
+Status: [Verified]
+Notes: GDL-II adds `sees` and `random` for uncertainty; base 
+GDL assumes closed-world certainty — confirms project boundary 
+for excluding epistemic state from DSL.
+
 ---
 
-_Next review trigger: OQ-05a (Representational Scope) and OQ-08 (Enforcement Mechanism) research complete_
+_Document version: 1.2 — March 2026_
+_Next review trigger: OQ-08 (Enforcement Mechanism) research complete_
