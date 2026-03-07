@@ -206,23 +206,47 @@ These claims are logically inferred from verified findings but have not been con
 
 These are the most important parts of this document.
 
-**OQ-01 — DSL Formalism** [NARROWED — Options B and C eliminated]
-What is the correct knowledge representation formalism?
-Three candidates were evaluated: JSON/YAML (data only), Logic programs, Answer Set Programming (ASP/Clingo), Ontology (OWL/RDF), and hybrid.
-OWL/RDF: disqualified — open-world assumption incompatible with closed-world narrative enforcement. [Verified]
-Grammar formalisms (BNF/EBNF/PEG): disqualified — define syntax, not semantics; cannot express inter-entity constraints. [Verified]
-Option C — Executable Python rules: eliminated — cannot perform automatic inference from first principles; equivalent to pre-programming every implication; does not solve the stated problem. [Verified]
-Option B — Datalog (pyDatalog): disqualified — pyDatalog is explicitly abandoned by its maintainer as of 2022, with no releases since November 2022.
-The maintainer's own redirect is to IDP-Z3, which is a distinct first-order logic formalism (not Datalog, not ASP) backed by Z3 SMT, actively maintained by KU Leuven, and unresearched for this project's NL→DSL translation needs.
-No maintained Python-native Datalog alternative has been identified.
+**OQ-01 — DSL Formalism** [RESOLVED — Option A selected]
+Selected formalism: Hybrid JSON + ASP (Clingo).
+Decisive factors: (1) LLM→ASP translation precedent exists (LLMASP, DSPy-ASP, [Paper:Hite2025], [Paper:PJWang2024] future work); (2) ASP is documented in applied narrative constraint enforcement and LLM narrative plan verification ([Paper:PJWang2024], [Paper:YiWang2025]); (3) ASP is tractable for solo non-professional developers (see OQ-06).
+
+Candidates evaluated and disposition:
+
+OWL/RDF — disqualified.
+Open-world assumption (absence of a fact does not imply the fact is false) is structurally incompatible with closed-world narrative enforcement where unstated facts must be treated as false.
+Tooling complexity (Java reasoners, Protégé) is an additional disqualifier at solo prototype scale.
+[Verified]
+
+Grammar formalisms (BNF/EBNF/PEG) — disqualified.
+Define syntactic validity only; cannot express inter-entity constraints ("the dead cannot act") or detect semantic contradictions.
+May be useful as a surface syntax layer for WorldDSL, but provide no inference or constraint enforcement.
+[Verified]
+
+Option C — Executable Python rules — eliminated.
+Cannot perform automatic inference from first principles.
+Equivalent to pre-programming every implication; does not solve the stated problem.
+[Verified]
+
+Option B — Datalog (pyDatalog) — disqualified.
+pyDatalog explicitly abandoned by its maintainer as of 2022, with no releases since November 2022.
+No maintained Python-native Datalog alternative identified.
 [Verified — pyDatalog GitHub and PyPI, accessed March 2026]
-Option A — Hybrid JSON + ASP (Clingo): remains viable.
-Maximum inference capability, documented LLM→ASP translation precedent (LLMASP, DSPy-ASP), active maintenance (Potassco/TU Dresden), Python API available.
-Cost: ASP learning curve and JSON→ASP translation layer required.
-IDP-Z3 (FO-dot + Z3 SMT): identified as potential Option B replacement.
-Actively maintained, pip-installable, explicit TBox/ABox-equivalent structure, built-in explanation output, closed-world enumeration semantics.
-No LLM→FO-dot translation precedent found yet — this is the key unresolved question before it can be evaluated against Option A.
-_This choice determines everything downstream._
+
+IDP-Z3 (FO-dot + Z3 SMT, KU Leuven) — disqualified as Option B replacement.
+Actively maintained (pip install idp-engine, April 2025); explicit TBox/ABox block structure; closed-world enumeration semantics; built-in explanation output.
+Disqualifying gap: no LLM→FO-dot translation precedent found.
+No narrative or game domain adoption found.
+Lower solo developer tractability than ASP.
+[Verified]
+
+Option A — Hybrid JSON + ASP (Clingo) — selected.
+Maximum inference capability; active maintenance (Potassco/TU Dresden); Python API available (pip install clingo).
+LLM→ASP translation precedent: LLMASP, DSPy-ASP, [Paper:Hite2025], [Paper:PJWang2024].
+Applied narrative use: [Paper:PJWang2024], [Paper:YiWang2025].
+Solo developer tractability: [Doc:PotasscoStart], [Doc:CMUMartens2017], [Repo:botcasp].
+Remaining cost: ASP requires a mental model shift from imperative programming; JSON→ASP translation layer required.
+Both are tractable at prototype scope (2–5 entities, 2–3 hard constraints).
+[Verified]
 
 **OQ-02 — Stateful Session Layer** How is world state maintained, validated, and queried across sessions? Three documented approaches: context injection, RAG retrieval, symbolic state tracking.
 None fully solves the problem.
@@ -241,19 +265,23 @@ A constrained extrapolation mechanism that surfaces proposed rules for human app
 **OQ-05 — Prototype Scope**
 Decomposed into two sub-questions with different resolution status:
 
-OQ-05b (PROVISIONALLY RESOLVED): Scale threshold.
+**OQ-05b** 
+(PROVISIONALLY RESOLVED): Scale threshold.
 The hypothesis is testable at minimal scale — 2–5 entities, one location cluster, a handful of constraints.
 A single tavern with 3–4 characters and 2–3 hard constraints would be sufficient to test the pipeline end-to-end.
 Scaling up adds breadth of coverage but does not add testability of the core hypothesis.
 [Paper:Story2Game2025] [Paper:ElBoudouri2025]
 
-OQ-05a (OPEN PENDING OQ-01): Representational scope.
+**OQ-05a** 
+(OPEN PENDING OQ-01): Representational scope.
 What *categories* of world fact does the WorldDSL need to encode? 
 Four functional categories identified [Inferred] but implementation form is blocked on OQ-01 (DSL formalism).
 See Synthesized section for current best hypothesis.
 
-**OQ-06 — Developer Toolset Fit** What is the actual implementation barrier for each formalism candidate for a solo non-professional developer? 
-ASP, OWL, and JSON+rules have radically different learning curves and tooling ecosystems.
+**OQ-06 — Developer Toolset Fit** [RESOLVED]
+ASP/Clingo is tractable for a solo non-professional developer.
+Evidence: Potassco Getting Started guide (genuinely novice-oriented, pip install clingo, no JVM required) [Doc:PotasscoStart]; CMU CSC 791 course notes on ASP for game design (Martens, 2017), using dungeon generation as motivating example [Doc:CMUMartens2017]; solo hobbyist project modeling social deduction game rules as Clingo constraints with sat/unsat test suite [Repo:botcasp].
+IDP-Z3 has no equivalent hobbyist community, game design adoption, or solo project precedent.
 
 **OQ-07 — Meta-Questionnaire Design** What makes a questionnaire both comprehensive and self-consistent? 
 How are co-evolution and self-reference implemented structurally?
@@ -451,6 +479,53 @@ Status: Verified
 Notes: Characterizes LLM behavior as context-directed extrapolation from training priors, not advanced reasoning.
 Explicitly recommends augmenting techniques that do not rely on inherent LLM reasoning.
 Directly supports the hybrid NeSy approach and the project's core mechanism clarification.
+
+### Session 4 Citations (March 2026)
+
+[Paper:PJWang2024] Phoebe J. Wang and Max Kreminski, "Guiding and Diversifying LLM-Based Story Generation via Answer Set Programming," Wordplay @ ACL 2024, arXiv:2406.00554v2, 2024.
+URL: https://arxiv.org/abs/2406.00554
+Status: Verified
+Notes: ASP constraints govern high-level narrative function sequencing; LLM renders scenes from ASP-constrained outlines.
+Future work explicitly states two plans: (1) user-interactive constraint of ASP pipeline; (2) LLM-generated ASP constraints from open-ended NL statements of storytelling intent.
+The second plan is direct precedent for OQ-01 NL→ASP translation path and OQ-08.
+
+[Paper:YiWang2025] Yi Wang and Max Kreminski, "Can LLMs Generate Good Stories? Insights and Challenges from a Narrative Planning Perspective," Wordplay/CoG 2025, arXiv:2506.10161v1, 2025.
+URL: https://arxiv.org/abs/2506.10161
+Status: Verified
+Notes: Evaluates LLMs on narrative planning problems using ASP as formal verifier.
+Confirms symbolic planners superior to LLMs for runtime narrative planning — directly supports delegating inference to symbolic layer.
+
+[Paper:Hite2025] Connar Hite et al., "Bridging Natural Language and ASP: A Hybrid Approach Using LLMs and AMR Parsing," arXiv:2511.08715v1, 2025.
+URL: https://arxiv.org/abs/2511.08715
+Status: Verified
+Notes: Lightweight NL→ASP via LLM simplification plus AMR graph parsing; minimizes LLM role; errors are explainable.
+Critical qualification: demonstrated on combinatorial logic puzzles (zebra-type), not domain specification tasks.
+Confirms translation approach; does not validate it for narrative world specification use case specifically.
+
+[Paper:Putra2026] Rizky Ramadhana Putra et al., "NL2LOGIC: AST-Guided Translation of Natural Language into First-Order Logic with Large Language Models," Findings of EACL 2026, arXiv:2602.13237, 2026.
+URL: https://arxiv.org/abs/2602.13237
+Status: Verified
+Notes: NL→FOL→Z3 pipeline achieving near-perfect syntax correctness and +30% semantic accuracy over baselines.
+Targets Z3 Python API directly, not IDP-Z3 FO-dot syntax.
+Confirms adjacent translation technology exists; does not bridge the IDP-Z3 gap.
+
+[Repo:botcasp] pnkfelix, "botc-asp: Blood on the Clocktower game logic modeled in Answer Set Programming (Clingo)," GitHub, active 2024–present.
+URL: https://github.com/pnkfelix/botc-asp
+Status: Verified
+Notes: Solo hobby developer models multi-entity social deduction game rules as Clingo constraints with sat/unsat test suite.
+Direct OQ-06 evidence for solo ASP tractability; structurally analogous to this project's constraint enforcement problem.
+
+[Doc:CMUMartens2017] Chris Martens, "Notes on Answer Set Programming," CSC 791 Generative Methods for Game Design, Carnegie Mellon University, September 20, 2017.
+URL: https://www.cs.cmu.edu/~cmartens/asp-notes.pdf
+Status: Verified
+Notes: Genuinely novice-oriented ASP introduction using dungeon generation as motivating example.
+Confirms game design adoption of ASP pedagogy; course notes publicly accessible.
+
+[Doc:PotasscoStart] Potassco, "Getting Started," Potassco — the Potsdam Answer Set Solving Collection.
+URL: https://potassco.org/doc/start/
+Status: Verified
+Notes: Official novice-oriented guide; starts from first principles with simple examples.
+Confirms pip-installable, no JVM or build system required.
 
 ---
 
