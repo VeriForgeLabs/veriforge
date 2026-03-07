@@ -152,7 +152,7 @@ Full references in the Research Log section.
   GDL conceptualizes everything through propositions and facts, with both static facts (never changing within one game) and dynamic facts (which undergo transitions based on a state update function).
   This is structurally identical to the TBox/ABox split in this project's design.
   Confirms the required WorldDSL semantics are expressible in a Datalog variant.
-  [Paper:GDL2005] — citation pending full verification.
+  [Paper:GDL2005]
 
 - `[Verified]` The core mechanism of this project is not to make the LLM reason.
   The symbolic layer (WorldDSL rules engine) performs inference.
@@ -289,9 +289,9 @@ Before the architecture can be treated as ground truth, these specific claims ne
   RPEval covers the latter.
 A direct measurement standard for zero-decoherence does not yet exist in this project's research log. 
 (Relevant to OQ-09.)
-- [ ] Confirm full citation and URL for [Paper:Peng2025] Codified Profiles (NeurIPS 2025)
-- [ ] Confirm full citation and URL for [Paper:GDL2005] Game Description Language
-- [ ] Verify current maintenance status of pyDatalog library before it can be considered a viable Option B formalism
+- [x] Confirm full citation and URL for [Paper:Peng2025] Codified Profiles (NeurIPS 2025) RESOLVED 20260306  
+- [x] Confirm full citation and URL for [Paper:GDL2005] Game Description Language RESOLVED 20260306
+- [x] Verify current maintenance status of pyDatalog library before it can be considered a viable Option B formalism RESOLVED 20260306: disqualified, unmaintained since 2022
 
 ---
 
@@ -417,10 +417,12 @@ Does NOT directly measure consistency against formal constraint specifications �
 
 [S3-E1] Grammars disqualified as constraint mechanism | Resolved | [Verified from EBNF/grammar literature]
 [S3-E2] OWL disqualified on open-world assumption grounds | Resolved | [Verified from W3C OWL documentation]
-[S3-E3] GDL identified as closest WorldDSL precedent | Verified — citation pending | [Paper:GDL2005]
+[S3-E3] GDL identified as closest WorldDSL precedent | Verified | [Paper:GDL2005]
 [S3-E4] Codified Profiles evaluated — partial fit, not complete solution | Resolved | [Paper:Peng2025]
 [S3-E5] Closed-world assumption tradeoff for Datalog identified | Open — design decision required | None
 [S3-E6] Three viable prototype formalism candidates identified: Hybrid JSON+ASP, Datalog (pyDatalog), Executable Python rules | Open — pending tractability judgment | See OQ-01
+[S3-E7] pyDatalog disqualified — unmaintained since Nov 2022, maintainer redirects to IDP-Z3 | Resolved | pyDatalog GitHub and PyPI, accessed March 2026
+[S3-E8] IDP-Z3 (FO-dot + Z3 SMT, KU Leuven) identified as potential Option B replacement | Open — LLM→FO-dot translation precedent unresearched | See OQ-01
 
 [Paper:Peng2025] Letian Peng and Jingbo Shang, "Codifying Character Logic in
 Role-Playing," NeurIPS 2025 (poster).
