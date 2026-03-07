@@ -29,12 +29,11 @@ Use them consistently to prevent semantic drift and ambiguity.
 
 **Zero-decoherence** The target property that no narrative output can contradict a previously established fact derivable from the WorldDSL specification or committed session state.
 Coined term — not standard in the literature. 
-[Unverified whether equivalent formal concept exists under another name.]
+[Unverified] — whether an equivalent formal concept exists under another name —
 
 **WorldDSL** The machine-readable artifact encoding a specific world as structured ground truth.
 Functions as the deterministic specification layer.
-Formalism is Hybrid JSON + ASP (Clingo).
-[RESOLVED] — see OQ-01. 
+Formalism is Hybrid JSON + ASP (Clingo) — see OQ-01 [RESOLVED].
 
 **Meta-questionnaire** A structured set of co-evolving, interconnected, self-referential Q&A pairs designed to elicit a coherent, self-consistent worldbuilding specification in natural language.
 Intended as the human-facing input layer of the NL→DSL pipeline.
@@ -92,7 +91,7 @@ A natural language (NL) to Domain Specific Language (DSL) pipeline can be constr
 5. Creative latitude is preserved because the symbolic layer enforces only what it explicitly governs; everything outside that scope remains probabilistic and generative.
 6. The result is significantly reduced narrative drift, decoherence, and hallucination across long and multi-session RP — not because the LLM has been made more consistent, but because inference has been delegated to a layer that is deterministic by design.
 
-**"Epistemic status of the hypothesis as a whole:** [Inferred]
+**Epistemic status of the hypothesis as a whole:** [Inferred]
 The motivation is [Verified], the problem is [Verified], prior related architectures exist [Verified], the mechanism is [Verified] — [Paper:Madabushi2025] supports context-directed extrapolation as the operative LLM behavior — but the specific pipeline connecting them has not been validated against literature or a working prototype.
 Critical unverified claim [Inferred]: Step 4 states that injecting ASP-derived facts as authoritative context enforces world rules deterministically.
 This conflates two distinct claims: (1) the symbolic layer performs inference deterministically [Verified], and (2) that inference, injected as context, is sufficient to keep LLM extrapolation within constraint boundaries [Unverified].
@@ -171,7 +170,8 @@ Full references in the Research Log section.
   [Paper:Madabushi2025]
 
 - `[Verified]` ASP is documented in applied narrative constraint enforcement and LLM narrative plan verification — not only in general logical reasoning benchmarks.
-  ASP constraints govern high-level narrative function sequencing  with LLM rendering scenes from ASP-constrained outlines.
+  ASP constraints govern high-level narrative function sequencing with LLM rendering scenes from ASP-constrained outlines.
+  
   [Paper:PJWang2024], [Paper:YiWang2025]
 
 - `[Verified]` LLMs struggle with consistent state tracking without symbolic verification.
@@ -217,8 +217,7 @@ These claims are logically inferred from verified findings but have not been con
 
 - `[Inferred]` The closed-world assumption in Datalog and Prolog (anything not explicitly stated is false) is an advantage over OWL for closed game-state enforcement — but also a liability for open-ended RP worlds where the specification is inherently incomplete.
   At the edges of the spec, the system will treat unstated facts as false, which may produce incorrect constraint violations.
-  This tradeoff requires explicit design handling and is not
-  resolved by choosing Datalog alone.
+  This tradeoff requires explicit design handling and is not resolved by choosing Datalog alone.
 
 - `[Inferred]` Codified Profiles (Python `parse_by_scene(scene)` functions with `if-then-else` logic and a `check_condition` LLM callable) solve the per-entity behavioral consistency problem — enforcing that a character acts according to their defined rules.
   They do NOT solve the inter-entity relational constraint problem (OQ-05a requirement 4).
@@ -291,6 +290,8 @@ Human-readable, diff-able, trivially editable for manual corrections.
 No research question at prototype scope.
 
 **OQ-02b — State Transitions** [RESOLVED]
+DEPENDS ON: OQ-01 [RESOLVED] — ASP is the validation mechanism; the commit design is formalism-specific.
+DEPENDS ON: OQ-02a [DECIDED] — storage format must be known before commit target can be specified.
 Selected design: ASP-Gated Automatic State Commit with Audit Log.
 Each narrative turn, the LLM emits two outputs: (1) narrative text, and (2) a proposed ABox delta as structured JSON, following the RPGBench structured state output pattern [Paper:Yu2025].
 The ASP solver validates the delta against the current ABox and DSL rules (OQ-02c mechanism).
@@ -329,8 +330,7 @@ This is a known out-of-scope problem for the prototype, not a solved one.
 DEPENDS ON: OQ-01 [RESOLVED] — error correction loop design depends on what solver error output looks like in ASP.
 BLOCKS: nothing hard, but findings inform OQ-09 (evaluation protocol must account for silent semantic error rate).
 ⚠ Key gap: NL→ASP translation quality for domain specification tasks is specifically unresearched.
-All documented translation work (Hite2025, LLMASP, DSPy-ASP) demonstrates on logical reasoning benchmarks, not on open-ended 
-worldbuilding description.
+All documented translation work (Hite2025, LLMASP, DSPy-ASP) demonstrates on logical reasoning benchmarks, not on open-ended worldbuilding description.
 This is a harder problem than the benchmark results suggest.
 How does the system catch and correct NL→DSL translation errors, especially the silent semantic kind?
 What role does the human play vs. automated tooling?
@@ -345,8 +345,7 @@ A constrained extrapolation mechanism that surfaces proposed rules for human app
 **OQ-05 — Prototype Scope**
 Decomposed into two sub-questions with different resolution status:
 
-**OQ-05b** 
-(PROVISIONALLY RESOLVED): Scale threshold.
+"**OQ-05b — Scale Threshold** [PROVISIONALLY RESOLVED] 
 The hypothesis is testable at minimal scale — 2–5 entities, one location cluster, a handful of constraints.
 A single tavern with 3–4 characters and 2–3 hard constraints would be sufficient to test the pipeline end-to-end.
 Scaling up adds breadth of coverage but does not add testability of the core hypothesis.
@@ -386,10 +385,8 @@ What does the literature say about effectiveness and sufficiency of each?
 
 **OQ-09 — Prototype Evaluation Protocol** [OPEN]
 DEPENDS ON: OQ-05a [IN PROGRESS] — test cases require knowing what constraints exist to be violated.
-DEPENDS ON: OQ-08 [OPEN] — evaluation design requires knowing what the enforcement mechanism is and whether it can be 
-characterized as sufficient or insufficient.
-DEPENDS ON: OQ-01 [RESOLVED] — ASP can generate violation reports (UNSAT with named constraints); this capability is 
-confirmed and available to the evaluation design.
+DEPENDS ON: OQ-08 [OPEN] — evaluation design requires knowing what the enforcement mechanism is and whether it can be characterized as sufficient or insufficient.
+DEPENDS ON: OQ-01 [RESOLVED] — ASP can generate violation reports (UNSAT with named constraints); this capability is confirmed and available to the evaluation design.
 How do we determine whether the prototype achieved zero-decoherence (or meaningfully improved on baseline) in a falsifiable way?
 Specifically: what constitutes a constraint violation in measurable terms? 
 Who or what detects it — human review, a judge LLM, automated symbolic checker?
@@ -514,15 +511,14 @@ URL: https://www.sciencedirect.com/science/article/pii/S0004370223002084
 Status: [Verified]
 Notes: Hybrid NeSy approach more promising than integrative for general logical reasoning.
 
-[Paper:Chen2025b] M.K.
-Chen et al., "A Comparative Study of Neurosymbolic Approaches," NeSy Conference, 2025.
+[Paper:Chen2025b] M.K. Chen et al., "A Comparative Study of Neurosymbolic Approaches," NeSy Conference, 2025.
 URL: https://www.arxiv.org/pdf/2508.03366
 Status: [Verified]
 Notes: Hybrid approach retains LLM capabilities while improving interpretability.
 
 [Paper:Wang2024] Wang et al., "DSPy-ASP Framework," 2024.
 URL: cited in neurosymbolic ASP survey
-Status: [Verified] — via secondary source only; primary source not directly confirmed.
+Status: [Verified] — via secondary source only; primary source not directly confirmed —
 Notes: LLM + ASP with iterative solver feedback; up to 50% accuracy improvement.
 
 [Paper:Score2025] SCORE Framework, arXiv, 2025.
@@ -584,7 +580,13 @@ Notes: Characterizes LLM behavior as context-directed extrapolation from trainin
 Explicitly recommends augmenting techniques that do not rely on inherent LLM reasoning.
 Directly supports the hybrid NeSy approach and the project's core mechanism clarification.
 
-### Session 4 Citations (March 2026)
+### Session 4 (March 2026) — OQ-01 and OQ-06 Resolution
+
+[S4-E1] OQ-01 resolved — Hybrid JSON + ASP (Clingo) selected | Resolved | [Paper:PJWang2024] [Paper:YiWang2025] [Paper:Hite2025] [Repo:botcasp] [Doc:PotasscoStart] [Doc:CMUMartens2017]
+[S4-E2] OQ-06 resolved — ASP tractable for solo non-professional developer | Resolved | [Doc:PotasscoStart] [Doc:CMUMartens2017] [Repo:botcasp]
+[S4-E3] OQ-05a unblocked by OQ-01 resolution | Open — in progress | None
+[S4-E4] Citation corrections: YiWang2025, PJWang2024, Hite2025 author names corrected; PJWang2024 future plans characterization verified against primary source | Resolved | Primary sources accessed directly
+[S4-E5] IDP-Z3 disqualified — no LLM→FO-dot translation precedent, no narrative domain adoption | Resolved | [Paper:Putra2026]
 
 [Paper:PJWang2024] Phoebe J. Wang and Max Kreminski, "Guiding and Diversifying LLM-Based Story Generation via Answer Set Programming," Wordplay @ ACL 2024, arXiv:2406.00554v2, 2024.
 URL: https://arxiv.org/abs/2406.00554
@@ -664,4 +666,4 @@ Full event sourcing (log as primary source of truth) does not transfer — misal
 
 ---
 
-_Document version: 1.0 — March 2026_ _Next review trigger: OQ-01 (DSL Formalism) research complete_
+_Next review trigger: OQ-05a (Representational Scope) and OQ-08 (Enforcement Mechanism) research complete_
