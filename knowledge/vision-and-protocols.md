@@ -33,7 +33,8 @@ Coined term — not standard in the literature.
 
 **WorldDSL** The machine-readable artifact encoding a specific world as structured ground truth.
 Functions as the deterministic specification layer.
-The exact formalism (ASP, OWL, JSON+rules, etc.) is an OPEN QUESTION.
+Formalism is Hybrid JSON + ASP (Clingo).
+[RESOLVED] — see OQ-01. 
 
 **Meta-questionnaire** A structured set of co-evolving, interconnected, self-referential Q&A pairs designed to elicit a coherent, self-consistent worldbuilding specification in natural language.
 Intended as the human-facing input layer of the NL→DSL pipeline.
@@ -52,15 +53,17 @@ Exact implementation is an OPEN QUESTION.
 
 **Session state / ABox** The mutable record of what has actually happened in narrative sessions: injuries, deaths, relationship changes, employment status, etc.
 Contrasted with the WorldDSL schema (TBox), which defines what kinds of things _can_ exist and what rules govern them.
-How session state is maintained, validated, and queried across sessions is an OPEN QUESTION and considered the hardest sub-problem.
+How session state is maintained, validated, and queried across sessions has been substantially resolved — see OQ-02.
+Storage (JSON file), state transitions (ASP-gated commit), validation (ASP solver), and prototype-scope retrieval (full load) are all decided.
+Retrieval at scale remains a known out-of-scope problem.
 
 **Narrative drift** Gradual divergence of LLM outputs from established world facts over the course of a long session or across sessions.
 Caused by statelessness of LLMs and probabilistic generation. 
-[Verified as documented problem in NLP/game literature.]
+[Verified] — This is a documented problem in NLP/game literature.
 
 **NeSy (Neurosymbolic)** An AI architecture that combines neural components (LLMs) with symbolic components (logic programs, constraint solvers, ontologies) to achieve capabilities neither can achieve alone.
 The hybrid NeSy approach — keeping LLM intact while delegating logical enforcement to a separate symbolic module — is the relevant sub-category for this project. 
-[Verified as active research field with published frameworks.]
+[Verified] — This is an active research field with published frameworks.
 
 ---
 
@@ -73,7 +76,8 @@ Potential for collaborative players or co-developers if concept validates.
 
 **Scope:** Minimum viable prototype targets a single location cluster with 2–5 entities and 2–3 hard constraints.
 This is sufficient to test the core hypothesis end-to-end.
-[Paper:Story2Game2025] [Paper:ElBoudouri2025] Full-world scope is out of scope for the initial prototype."
+Full-world scope is out of scope for the initial prototype.
+[Paper:Story2Game2025] [Paper:ElBoudouri2025] 
 
 ---
 
@@ -88,8 +92,12 @@ A natural language (NL) to Domain Specific Language (DSL) pipeline can be constr
 5. Creative latitude is preserved because the symbolic layer enforces only what it explicitly governs; everything outside that scope remains probabilistic and generative.
 6. The result is significantly reduced narrative drift, decoherence, and hallucination across long and multi-session RP — not because the LLM has been made more consistent, but because inference has been delegated to a layer that is deterministic by design.
 
-**Epistemic status of the hypothesis as a whole:** [Inferred]
-The motivation is [Verified], the problem is [Verified], prior related architectures exist [Verified], the mechanism is [Verified — Paper:Madabushi2025 supports context-directed extrapolation as the operative LLM behavior], but the specific pipeline connecting them has not been validated against literature or a working prototype.
+**"Epistemic status of the hypothesis as a whole:** [Inferred]
+The motivation is [Verified], the problem is [Verified], prior related architectures exist [Verified], the mechanism is [Verified] — [Paper:Madabushi2025] supports context-directed extrapolation as the operative LLM behavior — but the specific pipeline connecting them has not been validated against literature or a working prototype.
+Critical unverified claim [Inferred]: Step 4 states that injecting ASP-derived facts as authoritative context enforces world rules deterministically.
+This conflates two distinct claims: (1) the symbolic layer performs inference deterministically [Verified], and (2) that inference, injected as context, is sufficient to keep LLM extrapolation within constraint boundaries [Unverified].
+The second claim is the central empirical question the prototype must answer.
+It depends on OQ-08 (enforcement mechanism) and is the load-bearing hypothesis the evaluation protocol (OQ-09) must test.
 
 ---
 
@@ -135,9 +143,9 @@ Full references in the Research Log section.
 
 - `[Verified]` Hypothesis is testable at minimal scale.
   Consistency failures appear with 2–5 entities and a handful of constraints because failures are structural (LLM statelessness, probabilistic generation), not complexity-dependent.
-  [Paper:Story2Game2025] [Paper:ElBoudouri2025]
   Scale is not the binding variable for prototype scope.
   The "one town, dozen characters" framing in earlier drafts is 5–10x larger than minimum viable.
+  [Paper:Story2Game2025], [Paper:ElBoudouri2025]
 
 - `[Verified]` OWL/RDF ontologies are disqualified as the constraint enforcement formalism for this project.
   The open-world assumption (absence of a fact does not imply the fact is false) is structurally incompatible with a closed-world narrative enforcement system where unstated facts must be treated as false.
@@ -161,6 +169,23 @@ Full references in the Research Log section.
   The LLM contributes fluency and creativity; the symbolic layer contributes correctness and consistency.
   The WorldDSL also functions as the authoritative context that directs LLM extrapolation toward correct outputs — the LLM extrapolates fluently from the DSL rather than reasoning from it.
   [Paper:Madabushi2025]
+
+- `[Verified]` ASP is documented in applied narrative constraint enforcement and LLM narrative plan verification — not only in general logical reasoning benchmarks.
+  ASP constraints govern high-level narrative function sequencing  with LLM rendering scenes from ASP-constrained outlines.
+  [Paper:PJWang2024], [Paper:YiWang2025]
+
+- `[Verified]` LLMs struggle with consistent state tracking without symbolic verification.
+  State-of-the-art LLMs produce engaging stories but often fail to implement consistent, verifiable game mechanics, particularly in long or complex scenarios.
+  [Paper:Yu2025]
+
+- `[Verified]` Deterministic state tracking via symbolic layer is feasible and superior to prompt-only approaches.
+  Codified FSMs outperform prompt-only baselines in both synthetic and real-world RP evaluations; 82.65% / 84.60% on real-world role-playing tasks.
+  [Paper:Peng2026]
+
+- `[Verified]` Automatic construction of per-entity FSMs from narrative events is unsolved.
+  CFSMs are constructed from pre-written character profiles only — automatic construction from narrative plots is flagged as future work by the authors.
+  This limits CFSM applicability to the ABox dynamic update problem.
+  [Paper:Peng2026]  
 
 ---
 
@@ -203,6 +228,12 @@ These claims are logically inferred from verified findings but have not been con
 - `[Inferred]` ASP-Gated Automatic State Commit is an improvement over flag-then-commit for interactive RP because human review gated by solver UNSAT is faster and sufficient — the human only reviews when a real constraint conflict exists.
   However, this does not protect against silent semantic errors in LLM-generated state deltas (errors that are ASP-SAT but factually wrong).
   This is the same risk class as OQ-03 (NL→DSL silent semantic error).
+
+- `[Inferred]` The enforcement sufficiency gap is the central unverified empirical claim of the hypothesis.
+  The symbolic layer correctly derives and enforces constraints; whether injecting those derived facts as authoritative context is sufficient to keep LLM extrapolation within constraint boundaries at interactive RP pace is not established by any cited source.
+  This is what the prototype must empirically test.
+  Depends on OQ-08 resolution before it can be designed.
+
 ---
 
 ## OPEN QUESTIONS (UNRESOLVED — REQUIRE RESEARCH)
@@ -294,12 +325,20 @@ Full load at session start.
 The retrieval problem becomes the binding constraint as world scope grows beyond a single location cluster.
 This is a known out-of-scope problem for the prototype, not a solved one.
 
-**OQ-03 — Verification and Error Correction Loop** How does the system catch and correct NL→DSL translation errors, especially the silent semantic kind? 
+**OQ-03 — Verification and Error Correction Loop** [OPEN]
+DEPENDS ON: OQ-01 [RESOLVED] — error correction loop design depends on what solver error output looks like in ASP.
+BLOCKS: nothing hard, but findings inform OQ-09 (evaluation protocol must account for silent semantic error rate).
+⚠ Key gap: NL→ASP translation quality for domain specification tasks is specifically unresearched.
+All documented translation work (Hite2025, LLMASP, DSPy-ASP) demonstrates on logical reasoning benchmarks, not on open-ended 
+worldbuilding description.
+This is a harder problem than the benchmark results suggest.
+How does the system catch and correct NL→DSL translation errors, especially the silent semantic kind?
 What role does the human play vs. automated tooling?
-Is a consistency checker (ASP solver, OWL reasoner) feasible for a solo developer? 
 DSL-Xpert 2.0 reportedly has automatic error-fixing — needs verification.
 
-**OQ-04 — Undefined Case Handling / Extrapolation** What does the system do when a user prompt addresses a situation not specified in the WorldDSL? 
+**OQ-04 — Undefined Case Handling / Extrapolation** [OPEN]
+No hard dependencies identified.
+What does the system do when a user prompt addresses a situation not specified in the WorldDSL?
 Refusal, hallucination, and unconstrained extrapolation are all unacceptable.
 A constrained extrapolation mechanism that surfaces proposed rules for human approval is [Inferred] as the right approach — not yet validated.
 
@@ -313,10 +352,13 @@ A single tavern with 3–4 characters and 2–3 hard constraints would be suffic
 Scaling up adds breadth of coverage but does not add testability of the core hypothesis.
 [Paper:Story2Game2025] [Paper:ElBoudouri2025]
 
-**OQ-05a** 
-(OPEN PENDING OQ-01): Representational scope.
-What *categories* of world fact does the WorldDSL need to encode? 
-Four functional categories identified [Inferred] but implementation form is blocked on OQ-01 (DSL formalism).
+**OQ-05a — Representational Scope** [IN PROGRESS — Session 6]
+DEPENDS ON: OQ-01 [RESOLVED] — categories must be expressed in the chosen formalism; cannot be designed without knowing the formalism.
+DEPENDS ON: OQ-02b [RESOLVED] — mutable state category cannot be finalized without knowing how state transitions work.
+BLOCKS: OQ-09
+What categories of world fact does the WorldDSL need to encode?
+Four functional categories identified [Inferred] — entity registry, static properties, mutable state, inter-entity constraints — with
+OQ-01 and OQ-02b now resolved, implementation form is being determined in Session 6.
 See Synthesized section for current best hypothesis.
 
 **OQ-06 — Developer Toolset Fit** [RESOLVED]
@@ -324,23 +366,38 @@ ASP/Clingo is tractable for a solo non-professional developer.
 Evidence: Potassco Getting Started guide (genuinely novice-oriented, pip install clingo, no JVM required) [Doc:PotasscoStart]; CMU CSC 791 course notes on ASP for game design (Martens, 2017), using dungeon generation as motivating example [Doc:CMUMartens2017]; solo hobbyist project modeling social deduction game rules as Clingo constraints with sat/unsat test suite [Repo:botcasp].
 IDP-Z3 has no equivalent hobbyist community, game design adoption, or solo project precedent.
 
-**OQ-07 — Meta-Questionnaire Design** What makes a questionnaire both comprehensive and self-consistent? 
+**OQ-07 — Meta-Questionnaire Design** [OPEN]
+No hard dependencies identified.
+What makes a questionnaire both comprehensive and self-consistent?
 How are co-evolution and self-reference implemented structurally?
 Is there prior work on structured worldbuilding elicitation in literature?
 
-**OQ-08 — LLM Output Enforcement Mechanism** Given a WorldDSL, what is the most effective mechanism for enforcing it at inference time?
-Options: system prompt injection, Colang guardrails, RAG grounding, structured output constraints, or combination.
-What does the literature say about effectiveness of each?
+**OQ-08 — LLM Output Enforcement Mechanism** [OPEN — HIGH PRIORITY]
+DEPENDS ON: OQ-01 [RESOLVED] — enforcement options differ by formalism.
+DEPENDS ON: OQ-05a [IN PROGRESS] — enforcement must be designed around what the DSL actually contains.
+BLOCKS: OQ-09
+⚠ This question is the bridge between the symbolic layer and LLM output generation.
+The entire hypothesis depends on enforcement at inference time.
+Without resolving it, the hypothesis cannot be validated regardless of how well the symbolic layer is designed.
+The central question is not only which mechanism is most effective, but whether any mechanism is sufficient to keep LLM extrapolation within constraint boundaries at interactive RP pace — this is the load-bearing empirical claim of Step 4 of the hypothesis.
+Options to evaluate: system prompt injection, Colang guardrails, RAG grounding, structured output constraints, or combination.
+Context dilution at moderate session lengths is a specific risk for system prompt injection that requires investigation.
+What does the literature say about effectiveness and sufficiency of each?
 
-**OQ-09 — Prototype Evaluation Protocol**
+**OQ-09 — Prototype Evaluation Protocol** [OPEN]
+DEPENDS ON: OQ-05a [IN PROGRESS] — test cases require knowing what constraints exist to be violated.
+DEPENDS ON: OQ-08 [OPEN] — evaluation design requires knowing what the enforcement mechanism is and whether it can be 
+characterized as sufficient or insufficient.
+DEPENDS ON: OQ-01 [RESOLVED] — ASP can generate violation reports (UNSAT with named constraints); this capability is 
+confirmed and available to the evaluation design.
 How do we determine whether the prototype achieved zero-decoherence (or meaningfully improved on baseline) in a falsifiable way?
-Specifically: What constitutes a constraint violation in measurable terms? Who or what detects it — human review, a judge LLM, automated symbolic checker? 
+Specifically: what constitutes a constraint violation in measurable terms? 
+Who or what detects it — human review, a judge LLM, automated symbolic checker?
 What is the baseline being compared against (raw LLM with system prompt vs. LLM with no grounding)?
 Without an answer to this question, the prototype produces an output but not a result.
 A working RP session is not a test of the hypothesis.
 Minimum viable path: a predefined set of constraint-violation test cases administered manually against prototype output, compared against a no-DSL baseline.
 Establishes falsifiability without requiring automated evaluation infrastructure.
-Dependencies: OQ-05a (what constraints exist to be violated), OQ-01 (whether the symbolic layer can itself generate violation reports).
 
 ---
 
@@ -361,6 +418,13 @@ A direct measurement standard for zero-decoherence does not yet exist in this pr
 - [x] Confirm full citation and URL for [Paper:Peng2025] Codified Profiles (NeurIPS 2025) RESOLVED 20260306  
 - [x] Confirm full citation and URL for [Paper:GDL2005] Game Description Language RESOLVED 20260306
 - [x] Verify current maintenance status of pyDatalog library before it can be considered a viable Option B formalism RESOLVED 20260306: disqualified, unmaintained since 2022
+- [ ] Is the enforcement mechanism (ASP-derived context injection) sufficient to constrain LLM extrapolation within constraint boundaries at prototype scope?
+  This is the central unverified empirical claim of Step 4 of the hypothesis.
+  Depends on OQ-08 research.
+- [ ] Is the silent semantic error rate for LLM-generated state deltas low enough that auto-commit with periodic spot-checking is an acceptable mitigation, or does the design require a stronger human oversight mechanism?
+- [ ] What is the NL→ASP translation quality specifically for open-ended domain specification tasks?
+  All documented translation work demonstrates on logical reasoning benchmarks only.
+  This gap must be addressed before OQ-03 can be closed.
 
 ---
 
@@ -372,13 +436,18 @@ Every factual claim uses inline citation: `[Tag:ShortID]`
 Tags (exactly these, no others): `Paper` | `Repo` | `Doc` | `Blog` | `Forum` | `Social` | `Video`
 ShortID format: `AuthorYYYY` (e.g., `[Paper:Zhang2024]`)
 Full citations are logged in the Research Log with URL and access date.
+Epistemic markers are always clean tokens: [Verified], [Inferred], [Unverified].
+Supporting citations or explanatory notes follow outside the bracket, set off with em-dashes: [Verified] — Paper:X — Never embed explanatory text inside the bracket itself.
 
 ### Research Log Entry Format
 
 ```
 [Tag:ShortID] Author(s), "Title," Source/Venue, Year.
 URL: [url]
-Status: Verified | Partially verified | Needs re-check
+Status: [Verified] | [Unverified]
+Adjoining em-dash note specifies qualifying conditions where relevant:
+e.g. [Verified] — via secondary source only —
+e.g. [Unverified] — needs re-check; may be outdated —
 Notes: [one sentence on relevance]
 ```
 
@@ -415,50 +484,50 @@ Session log entry required for every update.
 
 ## RESEARCH LOG
 
-_Populated as findings are verified.
-Empty until first commit._
+_Populated as findings are verified._
+_Empty until first commit._
 
 ### Session 1 (March 2026) — Foundational Research
 
 [Paper:Gupta2025] Aakash Gupta, "I Studied 1,500 Academic Papers on Prompt Engineering," Medium/personal, 2025.
 URL: https://aakashgupta.medium.com/i-studied-1-500-academic-papers-on-prompt-engineering 
-Status: Verified
+Status: [Verified]
 Notes: Structure > length; role prompting ineffective for correctness; context massively underrated.
 
 [Paper:Chen2025] Chen et al., "When helpfulness backfires," npj Digital Medicine, 2025.
 URL: https://www.nature.com/articles/s41746-025-02008-z 
-Status: Verified
+Status: [Verified]
 Notes: Up to 100% compliance with illogical requests in sycophancy study.
 
 [Paper:Sharma2023] Anthropic, "Towards Understanding Sycophancy in Language Models," 2023.
 URL: https://www.anthropic.com/research/towards-understanding-sycophancy-in-language-models
-Status: Verified
+Status: [Verified]
 Notes: RLHF mechanism for sycophancy; preference models favor agreement.
 
 [Doc:AnthropicPrompting] Anthropic, "Prompt Engineering Best Practices," 2025.
 URL: https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering
-Status: Verified
+Status: [Verified]
 Notes: XML tags recommended for mixed-content prompts; rationale-with- instructions improves adherence.
 
 [Paper:Marra2024] Marra et al., "From Statistical Relational to Neurosymbolic AI: A Survey," Artificial Intelligence, 2024.
 URL: https://www.sciencedirect.com/science/article/pii/S0004370223002084
-Status: Verified
+Status: [Verified]
 Notes: Hybrid NeSy approach more promising than integrative for general logical reasoning.
 
 [Paper:Chen2025b] M.K.
 Chen et al., "A Comparative Study of Neurosymbolic Approaches," NeSy Conference, 2025.
 URL: https://www.arxiv.org/pdf/2508.03366
-Status: Verified
+Status: [Verified]
 Notes: Hybrid approach retains LLM capabilities while improving interpretability.
 
 [Paper:Wang2024] Wang et al., "DSPy-ASP Framework," 2024.
 URL: cited in neurosymbolic ASP survey
-Status: Verified (via secondary source)
+Status: [Verified] — via secondary source only; primary source not directly confirmed.
 Notes: LLM + ASP with iterative solver feedback; up to 50% accuracy improvement.
 
 [Paper:Score2025] SCORE Framework, arXiv, 2025.
 URL: https://arxiv.org/html/2503.23512v1
-Status: Verified
+Status: [Verified]
 Notes: RAG-based narrative coherence; 41.8% fewer hallucinations vs. baseline.
 Demonstrates RAG as partial mitigation, not solution, for stateful consistency.
 
@@ -470,13 +539,13 @@ Demonstrates RAG as partial mitigation, not solution, for stateful consistency.
 
 [Paper:Story2Game2025] (authors not named in abstract), "Story2Game: Generating (Almost) Everything in an Interactive Fiction Game, "arXiv:2505.03547v1, 2025.
 URL: https://arxiv.org/html/2505.03547v1
-Status: Verified
+Status: [Verified]
 Notes: Defines minimal IF world model as locations, objects, NPCs, player agent; demonstrates consistency failures appear even at minimal scale.
 Prior sentence identifies failure mode: players able to "fly without prior indication" or "kill characters" outside world logic.
 
 [Paper:ElBoudouri2025] Yassine El Boudouri et al., "RPEval: A Benchmark for Role-Playing LLMs," arXiv:2505.13157v1, 2025.
 URL: https://arxiv.org/pdf/2505.13157
-Status: Verified
+Status: [Verified]
 Notes: Frontier models score 5.81–62.24% on in-character consistency against character profiles.
 Directionally supports claim that drift is structural, not scale-dependent.
 Does NOT directly measure consistency against formal constraint specifications — that gap is noted.
@@ -484,8 +553,8 @@ Does NOT directly measure consistency against formal constraint specifications �
 
 ### Session 3 (March 2026) — OQ-01 Formalism Research
 
-[S3-E1] Grammars disqualified as constraint mechanism | Resolved | [Verified from EBNF/grammar literature]
-[S3-E2] OWL disqualified on open-world assumption grounds | Resolved | [Verified from W3C OWL documentation]
+[S3-E1] Grammars disqualified as constraint mechanism | Resolved | [Verified] — from EBNF/grammar literature
+[S3-E2] OWL disqualified on open-world assumption grounds | Resolved | [Verified] — from W3C OWL documentation
 [S3-E3] GDL identified as closest WorldDSL precedent | Verified | [Paper:GDL2005]
 [S3-E4] Codified Profiles evaluated — partial fit, not complete solution | Resolved | [Paper:Peng2025]
 [S3-E5] Closed-world assumption tradeoff for Datalog identified | Open — design decision required | None
@@ -493,30 +562,24 @@ Does NOT directly measure consistency against formal constraint specifications �
 [S3-E7] pyDatalog disqualified — unmaintained since Nov 2022, maintainer redirects to IDP-Z3 | Resolved | pyDatalog GitHub and PyPI, accessed March 2026
 [S3-E8] IDP-Z3 (FO-dot + Z3 SMT, KU Leuven) identified as potential Option B replacement | Open — LLM→FO-dot translation precedent unresearched | See OQ-01
 
-[Paper:Peng2025] Letian Peng and Jingbo Shang, "Codifying Character Logic in
-Role-Playing," NeurIPS 2025 (poster).
+[Paper:Peng2025] Letian Peng and Jingbo Shang, "Codifying Character Logic in Role-Playing," NeurIPS 2025 (poster).
 URL: https://arxiv.org/abs/2505.07705
-Status: Verified
-Notes: Per-entity behavioral consistency via executable Python scene-parsing
-functions.
+Status: [Verified]
+Notes: Per-entity behavioral consistency via executable Python scene-parsing functions.
 Improves consistency, adaptability, and diversity especially for smaller LLMs.
-Does not address inter-entity relational constraints or session state — the
-check_condition callable is probabilistic (LLM query), not deterministic verifier.
+Does not address inter-entity relational constraints or session state — the check_condition callable is probabilistic (LLM query), not deterministic verifier.
 
-[Paper:GDL2005] Michael R. Genesereth, Nathaniel Love, and Barney Pell, "General
-Game Playing: Overview of the AAAI Competition," AI Magazine, vol. 26, no. 2, pp.
-62–72, 2005.
+[Paper:GDL2005] Michael R. Genesereth, Nathaniel Love, and Barney Pell, "General Game Playing: Overview of the AAAI Competition," AI Magazine, vol. 26, no. 2, pp. 62–72, 2005.
 URL: https://www.semanticscholar.org/paper/General-Game-Playing:-Overview-of-the-A
 AAI-Genesereth-Love/c89c71dbe5617bea44383585b58cd0cbc37bf79a
-Status: Verified
-Notes: Defines Game Description Language as a Datalog variant with static and
-dynamic facts and state transition functions.
+Status: [Verified]
+Notes: Defines Game Description Language as a Datalog variant with static and dynamic facts and state transition functions.
 Closest documented precedent to WorldDSL semantics.
 Validates that the required formalism is expressible in Datalog.
 
 [Paper:Madabushi2025] Harish Tayyar Madabushi et al., "Neither Stochastic Parroting nor AGI: LLMs Solve Tasks through Context-Directed Extrapolation from Training Data Priors," arXiv:2505.23323v1, University of Bath, 2025.
 URL: https://arxiv.org/html/2505.23323v1
-Status: Verified
+Status: [Verified]
 Notes: Characterizes LLM behavior as context-directed extrapolation from training priors, not advanced reasoning.
 Explicitly recommends augmenting techniques that do not rely on inherent LLM reasoning.
 Directly supports the hybrid NeSy approach and the project's core mechanism clarification.
@@ -525,46 +588,46 @@ Directly supports the hybrid NeSy approach and the project's core mechanism clar
 
 [Paper:PJWang2024] Phoebe J. Wang and Max Kreminski, "Guiding and Diversifying LLM-Based Story Generation via Answer Set Programming," Wordplay @ ACL 2024, arXiv:2406.00554v2, 2024.
 URL: https://arxiv.org/abs/2406.00554
-Status: Verified
+Status: [Verified]
 Notes: ASP constraints govern high-level narrative function sequencing; LLM renders scenes from ASP-constrained outlines.
 Future work explicitly states two plans: (1) user-interactive constraint of ASP pipeline; (2) LLM-generated ASP constraints from open-ended NL statements of storytelling intent.
 The second plan is direct precedent for OQ-01 NL→ASP translation path and OQ-08.
 
 [Paper:YiWang2025] Yi Wang and Max Kreminski, "Can LLMs Generate Good Stories? Insights and Challenges from a Narrative Planning Perspective," Wordplay/CoG 2025, arXiv:2506.10161v1, 2025.
 URL: https://arxiv.org/abs/2506.10161
-Status: Verified
+Status: [Verified]
 Notes: Evaluates LLMs on narrative planning problems using ASP as formal verifier.
 Confirms symbolic planners superior to LLMs for runtime narrative planning — directly supports delegating inference to symbolic layer.
 
 [Paper:Hite2025] Connar Hite et al., "Bridging Natural Language and ASP: A Hybrid Approach Using LLMs and AMR Parsing," arXiv:2511.08715v1, 2025.
 URL: https://arxiv.org/abs/2511.08715
-Status: Verified
+Status: [Verified]
 Notes: Lightweight NL→ASP via LLM simplification plus AMR graph parsing; minimizes LLM role; errors are explainable.
 Critical qualification: demonstrated on combinatorial logic puzzles (zebra-type), not domain specification tasks.
 Confirms translation approach; does not validate it for narrative world specification use case specifically.
 
 [Paper:Putra2026] Rizky Ramadhana Putra et al., "NL2LOGIC: AST-Guided Translation of Natural Language into First-Order Logic with Large Language Models," Findings of EACL 2026, arXiv:2602.13237, 2026.
 URL: https://arxiv.org/abs/2602.13237
-Status: Verified
+Status: [Verified]
 Notes: NL→FOL→Z3 pipeline achieving near-perfect syntax correctness and +30% semantic accuracy over baselines.
 Targets Z3 Python API directly, not IDP-Z3 FO-dot syntax.
 Confirms adjacent translation technology exists; does not bridge the IDP-Z3 gap.
 
 [Repo:botcasp] pnkfelix, "botc-asp: Blood on the Clocktower game logic modeled in Answer Set Programming (Clingo)," GitHub, active 2024–present.
 URL: https://github.com/pnkfelix/botc-asp
-Status: Verified
+Status: [Verified]
 Notes: Solo hobby developer models multi-entity social deduction game rules as Clingo constraints with sat/unsat test suite.
 Direct OQ-06 evidence for solo ASP tractability; structurally analogous to this project's constraint enforcement problem.
 
 [Doc:CMUMartens2017] Chris Martens, "Notes on Answer Set Programming," CSC 791 Generative Methods for Game Design, Carnegie Mellon University, September 20, 2017.
 URL: https://www.cs.cmu.edu/~cmartens/asp-notes.pdf
-Status: Verified
+Status: [Verified]
 Notes: Genuinely novice-oriented ASP introduction using dungeon generation as motivating example.
 Confirms game design adoption of ASP pedagogy; course notes publicly accessible.
 
 [Doc:PotasscoStart] Potassco, "Getting Started," Potassco — the Potsdam Answer Set Solving Collection.
 URL: https://potassco.org/doc/start/
-Status: Verified
+Status: [Verified]
 Notes: Official novice-oriented guide; starts from first principles with simple examples.
 Confirms pip-installable, no JVM or build system required.
 
@@ -578,14 +641,14 @@ Confirms pip-installable, no JVM or build system required.
 
 [Paper:Yu2025] Pengfei Yu et al., "RPGBENCH: Evaluating Large Language Models as Role-Playing Game Engines," NeurIPS 2025 Workshop (SEA Workshop), arXiv:2502.00595v1, 2025.
 URL: https://arxiv.org/abs/2502.00595
-Status: Verified
+Status: [Verified]
 Notes: Three-stage simulation loop (Event Planning, Narration, Game State Updates) with structured JSON state output each turn.
 Empirically confirms LLMs struggle with consistent state tracking without symbolic verification — LLMs produce engaging stories but often fail to implement consistent, verifiable game mechanics, particularly in long or complex scenarios.
 Direct published precedent for automated state extraction pattern used in OQ-02b design.
 
 [Paper:Peng2026] Letian Peng, Yupeng Hou, Kun Zhou, Jingbo Shang, "Codified Finite-State Machines for Role-Playing," University of California San Diego, arXiv:2602.05905v1, 2026.
 URL: https://arxiv.org/abs/2602.05905
-Status: Verified
+Status: [Verified]
 Notes: Extends Codified Profiles to full FSM state transitions, automatically extracted from character profiles via LLM coding.
 Outperforms prompt-only baselines in both synthetic and real-world evaluations; 82.65% / 84.60% on real-world role-playing tasks across main and minor characters.
 Confirms deterministic state tracking via symbolic layer is feasible and superior to prompting.
@@ -594,7 +657,7 @@ Relevant to OQ-05a (per-entity mutable state category); does not address inter-e
 
 [Doc:Fowler2005] Martin Fowler, "Event Sourcing," martinfowler.com, 2005.
 URL: https://martinfowler.com/eaaDev/EventSourcing.html
-Status: Verified
+Status: [Verified]
 Notes: Canonical definition of event sourcing pattern.
 Append-only event log as audit trail transfers to this project.
 Full event sourcing (log as primary source of truth) does not transfer — misaligns with ASP validation architecture where ABox is the authoritative state layer.
