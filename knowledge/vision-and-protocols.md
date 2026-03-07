@@ -206,9 +206,22 @@ These claims are logically inferred from verified findings but have not been con
 
 These are the most important parts of this document.
 
-**OQ-01 — DSL Formalism** What is the correct knowledge representation formalism? 
-Candidates: JSON/YAML (data only), Logic programs (Prolog/Datalog), Answer Set Programming (ASP/Clingo), Ontology (OWL/RDF), or hybrid.
-Each has different trade-offs for inference, contradiction detection, temporal state, LLM compatibility, and solo developer tractability. 
+**OQ-01 — DSL Formalism** [NARROWED — Options B and C eliminated]
+What is the correct knowledge representation formalism?
+Three candidates were evaluated: JSON/YAML (data only), Logic programs, Answer Set Programming (ASP/Clingo), Ontology (OWL/RDF), and hybrid.
+OWL/RDF: disqualified — open-world assumption incompatible with closed-world narrative enforcement. [Verified]
+Grammar formalisms (BNF/EBNF/PEG): disqualified — define syntax, not semantics; cannot express inter-entity constraints. [Verified]
+Option C — Executable Python rules: eliminated — cannot perform automatic inference from first principles; equivalent to pre-programming every implication; does not solve the stated problem. [Verified]
+Option B — Datalog (pyDatalog): disqualified — pyDatalog is explicitly abandoned by its maintainer as of 2022, with no releases since November 2022.
+The maintainer's own redirect is to IDP-Z3, which is a distinct first-order logic formalism (not Datalog, not ASP) backed by Z3 SMT, actively maintained by KU Leuven, and unresearched for this project's NL→DSL translation needs.
+No maintained Python-native Datalog alternative has been identified.
+[Verified — pyDatalog GitHub and PyPI, accessed March 2026]
+Option A — Hybrid JSON + ASP (Clingo): remains viable.
+Maximum inference capability, documented LLM→ASP translation precedent (LLMASP, DSPy-ASP), active maintenance (Potassco/TU Dresden), Python API available.
+Cost: ASP learning curve and JSON→ASP translation layer required.
+IDP-Z3 (FO-dot + Z3 SMT): identified as potential Option B replacement.
+Actively maintained, pip-installable, explicit TBox/ABox-equivalent structure, built-in explanation output, closed-world enumeration semantics.
+No LLM→FO-dot translation precedent found yet — this is the key unresolved question before it can be evaluated against Option A.
 _This choice determines everything downstream._
 
 **OQ-02 — Stateful Session Layer** How is world state maintained, validated, and queried across sessions? Three documented approaches: context injection, RAG retrieval, symbolic state tracking.
@@ -409,29 +422,33 @@ Does NOT directly measure consistency against formal constraint specifications �
 [S3-E5] Closed-world assumption tradeoff for Datalog identified | Open — design decision required | None
 [S3-E6] Three viable prototype formalism candidates identified: Hybrid JSON+ASP, Datalog (pyDatalog), Executable Python rules | Open — pending tractability judgment | See OQ-01
 
-[Paper:Peng2025] Libiao Peng et al., "Codified Profiles for Character Role-Playing," NeurIPS 2025 (poster).
-URL: [pending — confirm from arXiv or NeurIPS proceedings]
-Status: Verified (peer-reviewed, NeurIPS 2025)
-Notes: Per-entity behavioral consistency via executable Python scene-parsing functions.
+[Paper:Peng2025] Letian Peng and Jingbo Shang, "Codifying Character Logic in
+Role-Playing," NeurIPS 2025 (poster).
+URL: https://arxiv.org/abs/2505.07705
+Status: Verified
+Notes: Per-entity behavioral consistency via executable Python scene-parsing
+functions.
 Improves consistency, adaptability, and diversity especially for smaller LLMs.
-Does not address inter-entity relational constraints or session state — the check_condition callable is probabilistic (LLM query), not deterministic.
+Does not address inter-entity relational constraints or session state — the
+check_condition callable is probabilistic (LLM query), not deterministic verifier.
 
-[Paper:GDL2005] Michael Genesereth et al., "General Game Playing: Overview of the AAAI Competition," AI Magazine, 2005.
-URL: [pending verification]
-Status: Partially verified — needs URL and page confirmation
-Notes: Defines Game Description Language as a Datalog variant with static and dynamic facts and state transition functions.
+[Paper:GDL2005] Michael R. Genesereth, Nathaniel Love, and Barney Pell, "General
+Game Playing: Overview of the AAAI Competition," AI Magazine, vol. 26, no. 2, pp.
+62–72, 2005.
+URL: https://www.semanticscholar.org/paper/General-Game-Playing:-Overview-of-the-A
+AAI-Genesereth-Love/c89c71dbe5617bea44383585b58cd0cbc37bf79a
+Status: Verified
+Notes: Defines Game Description Language as a Datalog variant with static and
+dynamic facts and state transition functions.
 Closest documented precedent to WorldDSL semantics.
 Validates that the required formalism is expressible in Datalog.
 
-[Paper:Madabushi2025] Harish Tayyar Madabushi et al., "Neither Stochastic
-Parroting nor AGI: LLMs Solve Tasks through Context-Directed Extrapolation
-from Training Data Priors," arXiv:2505.23323v1, University of Bath, 2025.
+[Paper:Madabushi2025] Harish Tayyar Madabushi et al., "Neither Stochastic Parroting nor AGI: LLMs Solve Tasks through Context-Directed Extrapolation from Training Data Priors," arXiv:2505.23323v1, University of Bath, 2025.
 URL: https://arxiv.org/html/2505.23323v1
 Status: Verified
-Notes: Characterizes LLM behavior as context-directed extrapolation from
-training priors, not advanced reasoning. Explicitly recommends augmenting
-techniques that do not rely on inherent LLM reasoning. Directly supports
-the hybrid NeSy approach and the project's core mechanism clarification.
+Notes: Characterizes LLM behavior as context-directed extrapolation from training priors, not advanced reasoning.
+Explicitly recommends augmenting techniques that do not rely on inherent LLM reasoning.
+Directly supports the hybrid NeSy approach and the project's core mechanism clarification.
 
 ---
 
