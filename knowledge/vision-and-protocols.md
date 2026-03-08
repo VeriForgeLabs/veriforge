@@ -96,7 +96,8 @@ The motivation is [Verified], the problem is [Verified], prior related architect
 Critical unverified claim [Inferred]: Step 4 states that injecting ASP-derived facts as authoritative context enforces world rules deterministically.
 This conflates two distinct claims: (1) the symbolic layer performs inference deterministically [Verified], and (2) that inference, injected as context, is sufficient to keep LLM extrapolation within constraint boundaries [Unverified].
 The second claim is the central empirical question the prototype must answer.
-It depends on OQ-08 (enforcement mechanism) and is the load-bearing hypothesis the evaluation protocol (OQ-09) must test.
+OQ-08 RESOLVED — the enforcement mechanism is per-turn symbolic state injection plus reactive ASP validation.
+The load-bearing hypothesis OQ-09 must test is whether this mechanism is sufficient to keep LLM extrapolation within constraint boundaries at interactive RP pace.
 
 ---
 
@@ -216,7 +217,8 @@ Full references in the Research Log section.
 - `[Verified]` Context utilization degradation is an empirically documented risk for system prompt injection as an enforcement mechanism.
   Frontier LLMs effectively utilize only 10–20% of their context window on reasoning tasks where relevant facts are distributed throughout long documents, with performance declining sharply as context length and reasoning complexity increase.
   GPT-4 effectively uses approximately 10% of its 128K window on such tasks.
-  Scope condition: this finding applies to distributed-fact reasoning tasks; ASP-derived acts injected at the start of context (system prompt) may be better utilized than facts distributed throughout — this distinction must be investigated in OQ-08 research.
+  Scope condition: this finding applies to distributed-fact reasoning tasks; ASP-derived facts injected at the start of context (system prompt) have partial positional advantage per Liu2024 (U-shaped curve, primacy effect), but this advantage does not counteract the Li2024 attention decay mechanism as session length grows.
+  OQ-08 RESOLVED — this distinction was investigated; per-turn symbolic state injection (not front-loaded session-start injection) was selected as the operative enforcement mechanism on this basis.
   [Paper:Kuratov2024] [Paper:Behrouz2025Titans]
 
 - `[Inferred]` Transformer attention is a dense probabilistic distribution across all prior positions, not a discrete directed acyclic graph of parent-child provenance.
@@ -224,7 +226,26 @@ Full references in the Research Log section.
   LLMs therefore cannot self-verify constraint adherence from first principles — they have no reliable internal record of what facts have been established.
   This is a mechanistic argument for the necessity of an external symbolic verification layer, not merely an empirical observation about LLM inconsistency.
   Strengthens Step 4 of the core hypothesis without changing its epistemic status.
-  [Inferred] — requires targeted verification in OQ-08 research; whether any published NeSy or interpretability work has formalized this claim directly is unconfirmed —
+  [Inferred] — OQ-08 research completed without finding a published NeSy or interpretability paper formalizing this claim directly; remains [Inferred] and unverified; targeted verification deferred to post-prototype —
+- `[Verified]` Session-start system prompt injection is empirically insufficient as a sole enforcement mechanism.
+  Significant instruction drift is measurable within eight rounds on LLaMA2-chat-70B and GPT-3.5.
+  The causal mechanism is attention decay — attention allocated to system prompt tokens declines progressively as conversation length grows.
+  RLHF training reduces but does not eliminate drift.
+  This is a structural property of the transformer attention mechanism, not a model scale issue.
+  [Paper:Li2024]
+
+- `[Verified]` Multi-turn performance degradation is universal across frontier models.
+  All 15 top open- and closed-weight LLMs tested show an average 39% performance drop in multi-turn versus single-turn settings, across six generation tasks and 200,000+ simulated conversations.
+  Degradation decomposes into a minor aptitude loss and a significant increase in unreliability — LLMs make wrong assumptions early and fail to recover.
+  Additional test-time compute does not mitigate the effect.
+  [Paper:Laban2025]
+
+- `[Verified]` Per-turn symbolic state injection is the operative enforcement pattern in the closest published narrative architecture.
+  Slice of Life (Treanor, Samuel, Nelson) maintains a symbolic social record updated each turn and constructs the LLM prompt from the current symbolic state at every generation step.
+  The explicit design decision: simulation state is kept entirely symbolic; the LLM generates surface dialogue text only and does not advance simulation state.
+  No quantitative constraint violation rate is reported — the system is described as working in practice but has not been formally benchmarked for constraint adherence.
+  [Paper:Treanor2024] [Paper:Treanor2025]
+  [Verified] — absence finding; no quantitative constraint adherence benchmark found for this architecture across FDG 2024 and FDG 2025 papers —
 
 ---
 
@@ -273,7 +294,7 @@ These claims are logically inferred from verified findings but have not been con
 - `[Inferred]` The enforcement sufficiency gap is the central unverified empirical claim of the hypothesis.
   The symbolic layer correctly derives and enforces constraints; whether injecting those derived facts as authoritative context is sufficient to keep LLM extrapolation within constraint boundaries at interactive RP pace is not established by any cited source.
   This is what the prototype must empirically test.
-  Depends on OQ-08 resolution before it can be designed.
+  OQ-08 RESOLVED — mechanism is specified as per-turn symbolic state injection plus reactive ASP validation (OQ-02b); the design is now specified; sufficiency is the remaining load-bearing empirical claim, delegated to OQ-09 for falsifiable testing.
 
 - `[Inferred]` LLM narrative coherence failures in RP systems decompose into three structurally distinct failure modes with different causes, remedies, and relationships to context window size.
   Failure Mode 1 (Truncation): early context falls out of the active window entirely; directly solved by larger windows; low VeriForge relevance at prototype scope — a single-session, single-tavern session will not approach truncation limits.
@@ -289,7 +310,13 @@ These claims are logically inferred from verified findings but have not been con
   This bet applies specifically to Failure Mode 2 (attention dilution) in single-session RP.
   Failure Mode 3 (cross-session statefulness) is not addressed by any current architectural memory solution — VeriForge's value proposition for Failure Mode 3 is independent of this bet.
   This is an explicit design assumption, not a proven claim.
-  It should be reviewed when OQ-08 research produces enforcement sufficiency findings.
+  OQ-08 produced mechanism selection findings (per-turn injection selected); enforcement sufficiency findings will come from OQ-09 empirical testing.
+  This bet should be reviewed after OQ-09 produces its results.
+
+- `[Inferred]` Per-turn symbolic state injection addresses Failure Mode 2 (Attention Dilution) by keeping constraint-relevant facts near the generation point, exploiting recency bias per [Paper:Liu2024].
+  Session-start injection is insufficient because even front-loaded facts decay from the generation point as session length grows, per [Paper:Li2024] attention decay mechanism.
+  Per-turn re-injection does not solve the problem — it resets the positional advantage each turn.
+  Whether per-turn injection is sufficient to maintain constraint adherence at interactive RP pace is [Unverified] — this is the load-bearing empirical claim of Step 4, now delegated to OQ-09.
 
 ---
 
@@ -365,7 +392,7 @@ Known risk [Inferred]: LLM-generated state deltas may be ASP-SAT but semanticall
 The ASP gate does not catch errors that are constraint-consistent but factually wrong.
 This is structurally the same risk as in NL→DSL translation (OQ-03) and must be addressed by the same mechanism: human review of UNSAT outcomes plus periodic spot-checking.
 
-Flag-then-commit precedent: NOT FOUND [Verified — absence].
+Flag-then-commit precedent: NOT FOUND [Verified] — absence finding; search conducted across RPGBench, CFSM, Story2Game literature; no published system implements human-gated state commit in interactive narrative —
 All published systems use fully automated state updates (RPGBench, CFSM, Story2Game).
 Human review gated by solver output is novel — not invalidated by absence of precedent, but untested.
 
@@ -434,21 +461,30 @@ What makes a questionnaire both comprehensive and self-consistent?
 How are co-evolution and self-reference implemented structurally?
 Is there prior work on structured worldbuilding elicitation in literature?
 
-**OQ-08 — LLM Output Enforcement Mechanism** [OPEN — HIGH PRIORITY]
-DEPENDS ON: OQ-01 [RESOLVED] — enforcement options differ by formalism.
-DEPENDS ON: OQ-05a [IN PROGRESS] — enforcement must be designed around what the DSL actually contains.
-BLOCKS: OQ-09
-⚠ This question is the bridge between the symbolic layer and LLM output generation.
-The entire hypothesis depends on enforcement at inference time.
-Without resolving it, the hypothesis cannot be validated regardless of how well the symbolic layer is designed.
-The central question is not only which mechanism is most effective, but whether any mechanism is sufficient to keep LLM extrapolation within constraint boundaries at interactive RP pace — this is the load-bearing empirical claim of Step 4 of the hypothesis.
-Options to evaluate: system prompt injection, Colang guardrails, RAG grounding, structured output constraints, or combination.
-Context dilution at moderate session lengths is a specific risk for system prompt injection that requires investigation.
-What does the literature say about effectiveness and sufficiency of each?
+**OQ-08 — LLM Output Enforcement Mechanism** [RESOLVED — Session 8]
+DEPENDS ON: OQ-01 [RESOLVED]; OQ-05a [RESOLVED]
+BLOCKS: OQ-09 [NOW UNBLOCKED]
+Selected enforcement mechanism for prototype scope: per-turn symbolic state injection plus reactive ASP validation (OQ-02b).
+At each narrative turn, the ASP solver derives the current world state and active integrity constraints.
+These are injected as authoritative context immediately before the LLM's generation call — not once at session start.
+After the LLM generates narrative and a proposed ABox delta, the ASP solver validates the delta reactively (SAT → commit; UNSAT → human review).
+Mechanisms evaluated and rejected:
+Session-start system prompt injection alone — empirically insufficient; drift within 8 turns. [Paper:Li2024]
+NeMo Guardrails — KNN-based topical enforcement only; unsuitable for world-state semantic constraints. [Paper:Rebedea2023]
+Constrained decoding — unsuitable for complex semantic constraints. [Paper:Lee2025SIC]
+RAG grounding alone — partial mitigation, not stateful constraint enforcement. [Paper:Score2025]
+Precedent: Slice of Life architecture — per-turn symbolic state injection for LLM dialogue generation, symbolic simulation state not modified by LLM. [Paper:Treanor2024] [Paper:Treanor2025]
+Open threads (not blocking prototype):
+OQ-08-T1: Split-softmax attention decay mitigation — requires inference-time attention access; API availability unconfirmed; hold for post-prototype.
+OQ-08-T2: Two-step action declaration (prospective enforcement) — LLM declares action as structured output, ASP validates, then LLM generates narrative; architecturally coherent but not required at prototype scope; reactive enforcement sufficient for core hypothesis test.
+OQ-08-T3: Frontier model drift characterization — Li2024 measured LLaMA2-chat-70B and GPT-3.5; drift at RP session lengths on Claude 3.5+/GPT-4o not directly measured; assumed better-than-baseline, not a blocking gap.
+What remains [Unverified]: whether per-turn injection is sufficient to keep LLM extrapolation within constraint boundaries at interactive RP pace.
+This is the load-bearing empirical claim of Step 4 of the core hypothesis.
+OQ-09 must design a test that can confirm or falsify it.
 
 **OQ-09 — Prototype Evaluation Protocol** [OPEN]
-DEPENDS ON: OQ-05a [IN PROGRESS] — test cases require knowing what constraints exist to be violated.
-DEPENDS ON: OQ-08 [OPEN] — evaluation design requires knowing what the enforcement mechanism is and whether it can be characterized as sufficient or insufficient.
+DEPENDS ON: OQ-05a [RESOLVED] — four constraint categories confirmed; test cases can now be specified.
+DEPENDS ON: OQ-08 [RESOLVED] — enforcement mechanism specified as per-turn symbolic state injection plus reactive ASP validation; evaluation must test whether this mechanism is sufficient.
 DEPENDS ON: OQ-01 [RESOLVED] — ASP can generate violation reports (UNSAT with named constraints); this capability is confirmed and available to the evaluation design.
 How do we determine whether the prototype achieved zero-decoherence (or meaningfully improved on baseline) in a falsifiable way?
 Specifically: what constitutes a constraint violation in measurable terms? 
@@ -801,7 +837,58 @@ Structurally convergent with OQ-02b ASP-Gated State Commit pattern — context-o
 
 ### S08 — OQ-08 — Enforcement Mechanism
 
+[S8-E1] Session-start system prompt injection empirically falsified — instruction drift within 8 turns on LLaMA2-chat-70B and GPT-3.5 | Resolved | [Paper:Li2024]
+[S8-E2] Multi-turn performance degradation universal across frontier models — 39% average drop across 15 LLMs, 200,000+ simulated conversations | Resolved | [Paper:Laban2025]
+[S8-E3] Positional bias (Lost in the Middle) characterized — U-shaped curve; front-loaded and recency-positioned facts better utilized | Resolved | [Paper:Liu2024]
+[S8-E4] Per-turn symbolic state injection identified as operative enforcement pattern in closest published narrative architecture (Slice of Life) | Resolved | [Paper:Treanor2024] [Paper:Treanor2025]
+[S8-E5] NeMo Guardrails evaluated — disqualified for semantic world-state constraints; KNN-based topical enforcement only | Resolved | [Paper:Rebedea2023]
+[S8-E6] Proactive vs. reactive enforcement distinction confirmed as architecturally significant — complex semantic constraints cannot be enforced via constrained decoding; reactive post-generation validation is tractable path | Resolved | [Paper:Lee2025SIC]
+[S8-E7] Two-step action declaration pattern identified as prerequisite for prospective enforcement — open thread OQ-08-T2; not required at prototype scope | Open — new thread |
+[S8-E8] OQ-08 RESOLVED — enforcement mechanism specified as per-turn symbolic state injection plus reactive ASP validation (OQ-02b); sufficiency remains load-bearing empirical claim, delegated to OQ-09 | Resolved |
+[S8-E9] OQ-09 unblocked by OQ-08 resolution | Open — next session target |
+[S8-E10] LongGenBench 4,000-token threshold claim corrected — paper tests at 16K/32K, not 4,000 tokens; synthesis error from prior compaction; claim dropped | Corrected | [Paper:Wu2024]
+
+[Paper:Li2024] Kenneth Li, Tianle Liu, Naomi Bashkansky, David Bau, Fernanda Viégas, Hanspeter Pfister, Martin Wattenberg, "Measuring and Controlling Instruction (In)Stability in Language Model Dialogs," Conference on Language Modeling (COLM 2024), arXiv:2402.10962v4, 2024.
+URL: https://arxiv.org/abs/2402.10962
+Status: [Verified]
+Notes: Quantitative benchmark for instruction drift via self-chats; significant drift within 8 rounds on LLaMA2-chat-70B and GPT-3.5; causal mechanism identified as attention decay; split-softmax mitigation proposed but requires inference-time attention access.
+
+[Paper:Laban2025] Philippe Laban, Hiroaki Hayashi, Yingbo Zhou, Jennifer Neville, "LLMs Get Lost In Multi-Turn Conversation," Microsoft Research / Salesforce Research, arXiv:2505.06120v1, 2025.
+URL: https://arxiv.org/abs/2505.06120
+Status: [Verified]
+Notes: 39% average performance drop in multi-turn vs. single-turn settings across 15 frontier LLMs and 6 generation tasks; degradation attributed primarily to increased unreliability and early wrong assumptions; universal across model sizes and architectures; distinct mechanism from Li2024 attention decay.
+
+[Paper:Liu2024] Nelson F. Liu, Kevin Lin, John Hewitt, Ashwin Paranjape, Michele Bevilacqua, Fabio Petroni, Percy Liang, "Lost in the Middle: How Language Models Use Long Contexts," Transactions of the Association for Computational Linguistics (TACL), arXiv:2307.03172, 2024.
+URL: https://arxiv.org/abs/2307.03172
+Status: [Verified]
+Notes: U-shaped performance curve over long contexts; beginning and end of context better utilized than middle; directly informs per-turn injection strategy by explaining partial positional advantage of front-loaded injection.
+
+[Paper:Treanor2024] Mike Treanor, Ben Samuel, Mark J. Nelson, "Prototyping Slice of Life: Social Physics with Symbolically Grounded LLM-based Generative Dialogue," FDG 2024: Proceedings of the 19th International Conference on the Foundations of Digital Games, ACM, 2024.
+URL: https://doi.org/10.1145/3649921.3656988
+Status: [Verified]
+Notes: Prototype social physics game using Ensemble engine with per-turn symbolic state injection for LLM dialogue; closest published predecessor to VeriForge's enforcement mechanism; no quantitative constraint adherence benchmark reported.
+
+[Paper:Treanor2025] Mike Treanor, Ben Samuel, Mark J. Nelson, "Slice of Life: A Social Physics Game with Interactive Conversations using Symbolically Grounded LLM-Based Generative Dialogue," FDG 2025: Proceedings of the 20th International Conference on the Foundations of Digital Games, ACM, 2025.
+URL: https://doi.org/10.1145/3723498.3723806
+Status: [Verified]
+Notes: Full paper; design decision confirmed — simulation state kept entirely symbolic; LLM used for surface text realization only, not simulation progress; directly validates VeriForge's architectural separation of symbolic layer and LLM.
+
+[Paper:Rebedea2023] Traian Rebedea, Razvan Dinu, Makesh Sreedhar, Christopher Parisien, Jonathan Cohen, "NeMo Guardrails: A Toolkit for Controllable and Safe LLM Applications with Programmable Rails," EMNLP 2023 System Demonstrations, arXiv:2310.10501, 2023.
+URL: https://arxiv.org/abs/2310.10501
+Status: [Verified]
+Notes: KNN-based canonical form matching for dialog rail enforcement; effective for topical/safety constraints; not designed for world-state semantic constraints; disqualified as primary VeriForge enforcement mechanism.
+
+[Paper:Lee2025SIC] Alexander W. Lee, Justin Chan, Michael Fu, Nicolas Kim, Akshay Mehta, Deepti Raghavan, Uğur Çetintemel, "Semantic Integrity Constraints: Declarative Guardrails for AI-Augmented Data Processing Systems," Proceedings of the VLDB Endowment, Vol. 18, No. 11, 2025. Also arXiv:2503.00600.
+URL: https://www.vldb.org/pvldb/vol18/p4073-lee.pdf
+Status: [Verified]
+Notes: Formalizes proactive vs. reactive enforcement distinction; recommends limiting constrained decoding to simple constraints; confirms reactive validation as tractable path for complex semantic constraints.
+
+[Paper:Wu2024] Yuhao Wu et al., "LongGenBench: Benchmarking Long-Form Generation in Long Context LLMs," ICLR 2025, arXiv:2409.02076, 2024.
+URL: https://arxiv.org/abs/2409.02076
+Status: [Verified]
+Notes: Benchmark for instruction adherence across long generated outputs at 16K and 32K token lengths; confirms degradation at extended generation lengths; prior synthesis error attributing a 4,000-token threshold to this paper is corrected — no such threshold exists in the primary source.
+
 ---
 
-_Document version: 1.5 — March 2026_
-_Next review trigger: OQ-08 (Enforcement Mechanism) research complete_
+_Document version: 1.6 — March 2026_
+_Next review trigger: OQ-09 (Evaluation Protocol) research complete_
