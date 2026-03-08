@@ -590,6 +590,37 @@ When a research session produces a COMMIT-READY finding, update this document ma
 Add the finding to the appropriate section with its epistemic status.
 Session log entry required for every update.
 
+### Audit Log Format
+
+Each audit produces one entry appended to the Audit Log in research-log.md.
+Use this exact format:
+
+[AUDIT-SNN-OQ-XX] OQ-XX resolved | [Date] | Steps completed: [1, 2, 3, 4]
+Issues found:
+  - [Issue description] → [Resolution applied] → Methodology patch recommended: [yes/no]
+Methodology patches flagged: [yes/no]
+If yes: identify the protocol step affected and the proposed fix in plain language.
+Audit closed: [yes/no]
+If no: state the blocking condition explicitly.
+
+If no issues were found, the "Issues found" field reads: none.
+The Audit Log is append-only.
+Entries are never edited after the audit closes.
+If a methodology patch is recommended, the patch is applied to protocols.md (or the Research Protocols section of vision-and-protocols.md prior to the file split) in the same commit as the audit.
+
+### Rival Hypothesis Discipline
+
+When evaluating any mechanism or design decision, explicitly state the strongest plausible alternative explanation and assess what evidence would favor it over the proposed approach.
+This applies at session level, not only at audit level.
+When a research session proposes a mechanism as the solution to an open question, the session log must record: (1) what the strongest competing mechanism was, and (2) why it was rejected or deferred.
+Absence of a stated rival is a quality flag, not a neutral finding.
+
+For OQ-09 specifically, the research session must specify before any prototype session counts as a test:
+(1) The measurable outcome that would constitute falsification of the per-turn injection sufficiency claim.
+(2) Baseline conditions — at minimum: (a) raw LLM with no DSL grounding, and (b) system-prompt-only injection without per-turn re-injection.
+Baseline (b) is required to isolate the specific contribution of per-turn injection from symbolic grounding generally.
+(3) The improvement threshold that would count as meaningful — "better than baseline" is not a sufficient criterion.
+
 ---
 
 ## RESEARCH LOG
