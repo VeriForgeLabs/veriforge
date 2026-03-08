@@ -532,9 +532,177 @@ A direct measurement standard for zero-decoherence does not yet exist in this pr
 ### Audit Trigger Protocol
 
 A document audit is triggered when any OQ resolution unblocks at least one downstream OQ.
-The audit scope is: (1) the resolved OQ's entry, and (2) all [Inferred] claims in the document that listed the resolved OQ as a dependency.
-Full document audits are performed at session start when one has been triggered.
+The audit must be completed before the next research session begins.
 Ad hoc audits may be requested at any time but are not required between trigger events.
+The AI research partner is the executor of the audit at session start.
+The audit is completed before any research question is addressed.
+
+Files are loaded in this order at session start: protocols.md → research-log.md → vision.md.
+Loading vision.md last ensures it carries the highest recency weight at the moment of active research.
+
+Audit scope — four steps, executed in order.
+No step may be skipped.
+No step may be executed out of order.
+
+---
+
+Step 1 — Accuracy pass on the resolved OQ entry.
+
+Read the resolved OQ entry as it currently exists in vision.md.
+Check each of the following and correct any that fail:
+All "DEPENDS ON" references show [RESOLVED] status.
+The "BLOCKS" list correctly names every OQ that is now unblocked.
+The mechanism or decision stated in the entry matches the committed session findings exactly.
+No language remains that refers to this OQ as open, pending, or requiring investigation.
+All citations referenced within the entry exist as full entries in research-log.md.
+If any citation is missing from research-log.md, add it before proceeding to Step 2.
+
+HALT CONDITION: If the entry cannot be made accurate without re-opening the OQ —
+for example, because the resolution was based on a finding later caught as a citation error,
+or because the stated decision contradicts a committed finding —
+halt the audit, flag the condition to the human operator, and do not proceed to Step 2.
+Migration of an incorrectly resolved OQ is worse than leaving it in place.
+The OQ-reopening protocol applies in this case (see below).
+
+Step 1 produces a clean, accurate source entry.
+Step 3 migrates it.
+Migration before accuracy verification is not permitted.
+
+---
+
+Step 2 — Dependency sweep across vision.md.
+
+Search the full text of vision.md for every occurrence of this OQ's identifier (e.g., "OQ-08").
+For each occurrence, apply the appropriate action:
+
+[Inferred] claim with this OQ as a named dependency:
+Update the claim to reflect what was found.
+Replace "depends on OQ-XX" or "requires OQ-XX resolution" language with a statement of the actual finding or its delegation.
+If the claim depends on multiple OQs and only one is now resolved, update only the resolved dependency pointer.
+Leave remaining dependency language intact and accurate for the still-open OQs.
+
+"BLOCKS" or "DEPENDS ON" reference in another OQ entry:
+Verify the status is now correctly stated as [RESOLVED].
+If the referenced OQ entry is itself still open, confirm the dependency accurately reflects current state.
+
+Scope condition or open pointer in WHAT IS VERIFIED:
+Close it with the finding.
+Remove any "must be investigated in OQ-XX" language.
+
+Cross-reference line (after Step 3 is complete):
+Leave it. It is correct by construction.
+
+After Step 2, no occurrence of this OQ's identifier in vision.md may point to it as open, pending,
+or unresolved — except the cross-reference line that Step 3 will create.
+
+---
+
+Step 3 — Migration of the resolved OQ entry to research-log.md.
+
+Execute in this exact order. Do not reorder sub-steps.
+
+3a. Confirm Step 1 is complete.
+The entry being migrated must be accurate before it is archived.
+Migration of an inaccurate entry is not permitted.
+
+3b. Append the full resolved OQ entry — as corrected by Step 1 — to research-log.md
+under a new subsection header in this format:
+
+### OQ-XX — [Name] [RESOLVED — SNN]
+
+The session number SNN is the session in which the OQ was resolved.
+Use the heading itself as the stable link anchor.
+The format ### OQ-XX produces anchor #oq-xx on GitHub — stable, short, and predictably case-folded.
+Do not use deprecated HTML <a name=""> anchors.
+
+3c. In vision.md, delete the full OQ entry body.
+Replace it with a single cross-reference line in this exact format:
+
+**OQ-XX — [Name]** [RESOLVED — SNN] — [one-sentence decision summary]. → [research-log.md](research-log.md#oq-xx)
+
+The one-sentence summary must be accurate and self-contained.
+A reader who only reads vision.md must understand what was decided without opening research-log.md.
+
+3d. Read the cross-reference line back against the archived entry in research-log.md.
+Confirm: OQ identifier matches, session number matches, decision summary accurately reflects the archived entry.
+Any discrepancy is a Step 3 error; correct it in both files before proceeding.
+
+3e. Confirm no body text from the migrated entry remains anywhere in vision.md
+other than the cross-reference line.
+
+---
+
+Step 4 — Integrity verification.
+
+After Steps 1–3, perform the following checks in order.
+Each must pass before the audit is closed.
+
+4a. Orphan scan.
+Search vision.md for any remaining occurrence of this OQ's identifier not accounted for
+by Steps 1–2 or the Step 3 cross-reference line.
+Each remaining occurrence is either a Step 2 error (fix it) or evidence that Step 2 was incomplete (fix it).
+After fixing, re-run 4a before proceeding to 4b.
+
+4b. Citation integrity.
+Confirm every citation ShortID referenced anywhere in the active content of vision.md
+has a full entry in research-log.md.
+Migration must not create citation orphans.
+A cross-reference line that mentions a citation is still an active reference.
+
+4c. [Inferred] claim completeness.
+List every [Inferred] claim in vision.md that mentioned this OQ as a dependency.
+Confirm each was found and updated in Step 2.
+If any were missed, fix them and re-run 4a before proceeding to 4d.
+
+4d. Cross-reference accuracy.
+Read the cross-reference line in vision.md against the archived full entry in research-log.md.
+Confirm they agree on: OQ identifier, session number, decision summary.
+Any discrepancy is a Step 3d error; correct it in both files.
+
+4e. Downstream OQ readiness.
+For each OQ that this resolution unblocks, open its entry in vision.md and confirm:
+"DEPENDS ON: OQ-XX [RESOLVED]" is correctly stated.
+No language remains that treats this dependency as open.
+The entry is now ready to be the target of a research session.
+
+4f. Epistemic promotion check.
+Review [Inferred] claims in vision.md that now have direct supporting evidence
+from this OQ's findings.
+If any [Inferred] claim is now fully supported by [Verified] findings, update its marker
+to [Verified] with citation.
+This step is mandatory, not optional.
+A stale [Inferred] marker on a now-verified claim is an epistemic error of the same class
+as a stale open-pointer — it misrepresents the evidentiary state of the document.
+
+---
+
+Audit closed when: all four steps complete with no outstanding failures.
+Append one Audit Log entry to research-log.md per the Audit Log Format.
+Commit all changes to vision.md and research-log.md in a single commit:
+
+git commit -m "audit: OQ-XX resolved — [one-phrase description of what migrated]"
+
+---
+
+OQ Re-Opening Protocol
+
+If a research session produces evidence that directly contradicts a resolved OQ decision:
+
+In vision.md: update the cross-reference line to read:
+**OQ-XX — [Name]** [REOPENED — SNN] — [one sentence on what was contradicted]. → [research-log.md](research-log.md#oq-xx)
+Then write a new full OQ entry in vision.md from current understanding.
+Do not copy back content from research-log.md.
+
+In research-log.md: update the archived entry header to read:
+### OQ-XX — [Name] [RESOLVED — SNN] [SUPERSEDED — SNN]
+Add one line below the header: Superseded by [Session SNN] — [one sentence on the contradiction].
+The archived entry body is not deleted or edited further.
+
+The archive is write-once.
+No content flows from research-log.md back to vision.md.
+The new vision.md entry is written fresh from current understanding.
+
+Add a session log entry in research-log.md documenting the contradiction and the re-opening.
 
 ### Citation Format
 
