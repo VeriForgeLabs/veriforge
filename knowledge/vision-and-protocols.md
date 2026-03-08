@@ -750,6 +750,11 @@ Open questions being addressed: [OQ-XX, OQ-YY or "none"]
 Pending verifications: [list or "none"]
 
 [Your question]
+
+Files are loaded at session start in this order: protocols.md → research-log.md → vision.md.
+Loading vision.md last ensures it carries the highest recency weight at the moment of active research.
+If a document audit is triggered, the AI research partner completes it before addressing any research question.
+
 ```
 
 ### Snapshot Trigger
