@@ -213,6 +213,19 @@ Full references in the Research Log section.
   is adjudicated narratively, not formally tracked in the DSL.
   [Doc:ThielschemGDLII]
 
+- `[Verified]` Context utilization degradation is an empirically documented risk for system prompt injection as an enforcement mechanism.
+  Frontier LLMs effectively utilize only 10–20% of their context window on reasoning tasks where relevant facts are distributed throughout long documents, with performance declining sharply as context length and reasoning complexity increase.
+  GPT-4 effectively uses approximately 10% of its 128K window on such tasks.
+  Scope condition: this finding applies to distributed-fact reasoning tasks; ASP-derived acts injected at the start of context (system prompt) may be better utilized than facts distributed throughout — this distinction must be investigated in OQ-08 research.
+  [Paper:Kuratov2024] [Paper:Behrouz2025Titans]
+
+- `[Inferred]` Transformer attention is a dense probabilistic distribution across all prior positions, not a discrete directed acyclic graph of parent-child provenance.
+  Post-hoc attribution via attention weights is an approximation heuristic, not an architectural fact.
+  LLMs therefore cannot self-verify constraint adherence from first principles — they have no reliable internal record of what facts have been established.
+  This is a mechanistic argument for the necessity of an external symbolic verification layer, not merely an empirical observation about LLM inconsistency.
+  Strengthens Step 4 of the core hypothesis without changing its epistemic status.
+  [Inferred] — requires targeted verification in OQ-08 research; whether any published NeSy or interpretability work has formalized this claim directly is unconfirmed —
+
 ---
 
 ## WHAT IS SYNTHESIZED — NOT YET VERIFIED
@@ -261,6 +274,22 @@ These claims are logically inferred from verified findings but have not been con
   The symbolic layer correctly derives and enforces constraints; whether injecting those derived facts as authoritative context is sufficient to keep LLM extrapolation within constraint boundaries at interactive RP pace is not established by any cited source.
   This is what the prototype must empirically test.
   Depends on OQ-08 resolution before it can be designed.
+
+- `[Inferred]` LLM narrative coherence failures in RP systems decompose into three structurally distinct failure modes with different causes, remedies, and relationships to context window size.
+  Failure Mode 1 (Truncation): early context falls out of the active window entirely; directly solved by larger windows; low VeriForge relevance at prototype scope — a single-session, single-tavern session will not approach truncation limits.
+  Failure Mode 2 (Attention Dilution): the model holds all content within the window but assigns diminishing and unreliable weight to older material as session length grows; a structural property of transformer attention, not a capacity problem; not solved by larger windows — larger windows may worsen the ratio of distant-to-recent content.
+  [Verified] — frontier LLMs effectively utilize only 10–20% of their context window on distributed-fact reasoning tasks, with performance declining as context length and reasoning complexity increase — [Paper:Kuratov2024].
+  High VeriForge relevance: injecting ASP-derived constraint facts as authoritative context near the generation point directly addresses attention dilution by delegating to a layer that does not degrade with session length.
+  Failure Mode 3 (Cross-Session Statefulness): facts and narrative state established in one session are unavailable in the next without explicit re-injection; no context window size resolves this by design.
+  [Verified] — documented as an unsolved problem; current mitigations are partial — see WHAT IS VERIFIED.
+  High VeriForge relevance: the ABox JSON + ASP-Gated Commit design (OQ-02b, RESOLVED) is specifically architected for this failure mode.
+  This decomposition sharpens the value proposition: VeriForge addresses Failure Modes 2 and 3, which window scaling does not resolve and is not on a trajectory to resolve.
+
+- `[Inferred]` The architectural bet underlying VeriForge: external symbolic enforcement (ASP-derived context injection) will remain sufficient and tractable before intrinsic architectural memory solutions (e.g., Titans-style test-time weight updates) mature to production accessibility for solo developers.
+  This bet applies specifically to Failure Mode 2 (attention dilution) in single-session RP.
+  Failure Mode 3 (cross-session statefulness) is not addressed by any current architectural memory solution — VeriForge's value proposition for Failure Mode 3 is independent of this bet.
+  This is an explicit design assumption, not a proven claim.
+  It should be reviewed when OQ-08 research produces enforcement sufficiency findings.
 
 ---
 
@@ -464,6 +493,13 @@ A direct measurement standard for zero-decoherence does not yet exist in this pr
 
 ## RESEARCH PROTOCOLS
 
+### Audit Trigger Protocol
+
+A document audit is triggered when any OQ resolution unblocks at least one downstream OQ.
+The audit scope is: (1) the resolved OQ's entry, and (2) all [Inferred] claims in the document that listed the resolved OQ as a dependency.
+Full document audits are performed at session start when one has been triggered.
+Ad hoc audits may be requested at any time but are not required between trigger events.
+
 ### Citation Format
 
 Every factual claim uses inline citation: `[Tag:ShortID]`
@@ -472,6 +508,10 @@ ShortID format: `AuthorYYYY` (e.g., `[Paper:Zhang2024]`)
 Full citations are logged in the Research Log with URL and access date.
 Epistemic markers are always clean tokens: [Verified], [Inferred], [Unverified].
 Supporting citations or explanatory notes follow outside the bracket, set off with em-dashes: [Verified] — Paper:X — Never embed explanatory text inside the bracket itself.
+
+Precision claims — accuracy figures, percentages, named mechanisms — require primary source confirmation before committing.
+Abstract-level verification is not sufficient for precision claims.
+When a precision claim is cited via a secondary source, the status note must identify the actual primary source and flag it for direct confirmation.
 
 ### Research Log Entry Format
 
@@ -520,7 +560,7 @@ Session log entry required for every update.
 
 _Populated as findings are verified._
 
-### Session 1 (March 2026) — Foundational Research
+### S01 — Foundational Research
 
 [Paper:Gupta2025] Aakash Gupta, "I Studied 1,500 Academic Papers on Prompt Engineering," Medium/personal, 2025.
 URL: https://aakashgupta.medium.com/i-studied-1-500-academic-papers-on-prompt-engineering 
@@ -563,7 +603,7 @@ Status: [Verified]
 Notes: RAG-based narrative coherence; 41.8% fewer hallucinations vs. baseline.
 Demonstrates RAG as partial mitigation, not solution, for stateful consistency.
 
-### Session 2 (March 2026) — Prototype Scope Research
+### S02 — OQ-05 — Prototype Scope
 
 [S2-E1] OQ-05 decomposition into 05a/05b | Resolved (05b), Open (05a) | [Paper:Zhou2025] [Paper:ElBoudouri2025] 
 [S2-E2] OQ-09 (Evaluation Protocol) added as new open question | Open | None 
@@ -584,7 +624,7 @@ Directionally supports claim that drift is structural, not scale-dependent.
 Does NOT directly measure consistency against formal constraint specifications — that gap is noted.
 [Inferred] extrapolation to this project's decoherence problem is reasonable but unverified.
 
-### Session 3 (March 2026) — OQ-01 Formalism Research
+### S03 — OQ-01 — Formalism Research
 
 [S3-E1] Grammars disqualified as constraint mechanism | Resolved | [Verified] — from EBNF/grammar literature
 [S3-E2] OWL disqualified on open-world assumption grounds | Resolved | [Verified] — from W3C OWL documentation
@@ -617,7 +657,7 @@ Notes: Characterizes LLM behavior as context-directed extrapolation from trainin
 Explicitly recommends augmenting techniques that do not rely on inherent LLM reasoning.
 Directly supports the hybrid NeSy approach and the project's core mechanism clarification.
 
-### Session 4 (March 2026) — OQ-01 and OQ-06 Resolution
+### S04 — OQ-01 OQ-06 — Formalism and Tractability
 
 [S4-E1] OQ-01 resolved — Hybrid JSON + ASP (Clingo) selected | Resolved | [Paper:PJWang2024] [Paper:YiWang2025] [Paper:Hite2025] [Repo:botcasp] [Doc:PotasscoStart] [Doc:CMUMartens2017]
 [S4-E2] OQ-06 resolved — ASP tractable for solo non-professional developer | Resolved | [Doc:PotasscoStart] [Doc:CMUMartens2017] [Repo:botcasp]
@@ -670,7 +710,7 @@ Status: [Verified]
 Notes: Official novice-oriented guide; starts from first principles with simple examples.
 Confirms pip-installable, no JVM or build system required.
 
-### Session 5 (March 2026) — OQ-02b State Transition Design
+### S05 — OQ-02b — State Transition Design
 
 [S5-E1] OQ-02b flag-then-commit precedent search | Not found | No published system implements human-gated state commit in interactive narrative
 [S5-E2] Event sourcing applicability to narrative state | Partially applicable | [Doc:Fowler2005] — append-only log transfers; full event sourcing does not
@@ -701,7 +741,7 @@ Notes: Canonical definition of event sourcing pattern.
 Append-only event log as audit trail transfers to this project.
 Full event sourcing (log as primary source of truth) does not transfer — misaligns with ASP validation architecture where ABox is the authoritative state layer.
 
-### Session 6 (March 2026) — OQ-05a Representational Scope
+### S06 — OQ-05a — Representational Scope
 
 [S6-E1] GDL keyword audit — six keywords map onto four categories; `legal` / transition validity rules encode as Type B integrity constraints; `terminal` and `goal` confirmed out-of-scope | Resolved | [Doc:WikipediaGDL] [Doc:ThielschemGDLII]
 [S6-E2] Story2Game world model verified against primary source — entity taxonomy maps to Categories 1–3; preconditions/effects map to Category 4; no fifth category required | Resolved | [Paper:Zhou2025]
@@ -728,7 +768,40 @@ Notes: GDL-II adds `sees` and `random` for uncertainty; base
 GDL assumes closed-world certainty — confirms project boundary 
 for excluding epistemic state from DSL.
 
+### S07 — OQ-08 — Ancillary Evaluation
+
+[S7-E1] CTAG architecture evaluated — disposed DISCARD | Resolved | Architecture requires LLM internals modification; not tractable at prototype scope; does not address any open question.
+[S7-E2] Context utilization degradation finding — OQ-08 risk sharpened; misattribution corrected — BABILong is the primary source, not Titans | COMMIT-CANDIDATE — feed into OQ-08 | [Paper:Kuratov2024] [Paper:Behrouz2025Titans]
+[S7-E3] Provenance-approximation argument — mechanistic case for external symbolic layer | COMMIT-CANDIDATE — feed into OQ-08 for targeted verification | [Inferred]
+[S7-E4] Intrinsic Memory Agents convergence with OQ-02b | Context-only — does not change open question status | [Paper:Yuen2025]
+[S7-E5] Cross-pollination methodology principle established — pursue adjacent directions far enough to understand why they fail, then derive what the failure mode implies for the primary architecture | Resolved — project conduct note, no citation required
+[S7-E6] Narrowed problem framing — three failure modes disaggregated: truncation / attention dilution / cross-session statefulness | Resolved | [Paper:Kuratov2024] — citation corrected from TitansReview2025/Behrouz2025Titans to primary BABILong source
+
+[Paper:Kuratov2024] Yuri Kuratov, Aydar Bulatov, Petr Anokhin, Ivan Rodkin, Dmitry Igorevich Sorokin, Artyom Sorokin, Mikhail Burtsev, "BABILong: Testing the Limits of LLMs with Long Context Reasoning-in-a-Haystack," NeurIPS 2024 atasets and Benchmarks Track (Spotlight), arXiv:2406.10149, 2024.
+URL: https://arxiv.org/abs/2406.10149
+Status: [Verified]
+Notes: Frontier LLMs effectively utilize only 10–20% of context on distributed-fact reasoning tasks; performance declines with context length and reasoning complexity.
+GPT-4 uses approximately 10% of its 128K window effectively.
+Primary source for the context utilization degradation finding — not Titans (Behrouz et al.), which cites this paper.
+
+[Paper:Behrouz2025Titans] Ali Behrouz, Peilin Zhong, Vahab Mirrokni, "Titans: Learning to Memorize at Test Time," Google Research, arXiv:2501.00663, 2025.
+URL: https://arxiv.org/abs/2501.00663
+Status: [Verified]
+Notes: Neural long-term memory module updating weights at test time via surprise-driven gradient signal.
+Outperforms GPT-4 on BABILong at 2M+ token scale.
+Relevant to OQ-08 as evidence the context dilution problem is recognized and actively researched at the frontier.
+Not applicable to VeriForge prototype — requires architectural modification of base model.
+No official code release as of March 2026.
+
+[Paper:Yuen2025] Sizhe Yuen et al., "Intrinsic Memory Agents: Heterogeneous Multi-Agent LLM Systems through Structured Contextual Memory," arXiv:2508.08997v2, 2026.
+URL: https://arxiv.org/abs/2508.08997
+Status: [Verified] — author list not fully confirmed; primary source not directly accessed —
+Notes: Agent-specific structured JSON memory templates evolving from agent outputs; 38.6% improvement on PDDL planning benchmark.
+Structurally convergent with OQ-02b ASP-Gated State Commit pattern — context-only corroboration, not a new finding.
+
+### S08 — OQ-08 — Enforcement Mechanism
+
 ---
 
-_Document version: 1.2 — March 2026_
+_Document version: 1.5 — March 2026_
 _Next review trigger: OQ-08 (Enforcement Mechanism) research complete_
