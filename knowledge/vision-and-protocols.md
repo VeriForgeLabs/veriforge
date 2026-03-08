@@ -1,4 +1,8 @@
+
 # vision-and-protocols.md
+
+_Document version: 1.6 — March 2026_
+_Next review trigger: OQ-09 (Evaluation Protocol) research complete_
 
 ## Semantics-Driven Worldbuilding DSL Project
 Project Knowledge File — Hypothesis Document
@@ -1093,6 +1097,3 @@ Status: [Verified]
 Notes: Benchmark for instruction adherence across long generated outputs at 16K and 32K token lengths; confirms degradation at extended generation lengths; prior synthesis error attributing a 4,000-token threshold to this paper is corrected — no such threshold exists in the primary source.
 
 ---
-
-_Document version: 1.6 — March 2026_
-_Next review trigger: OQ-09 (Evaluation Protocol) research complete_
