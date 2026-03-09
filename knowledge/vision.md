@@ -346,23 +346,11 @@ Refusal, hallucination, and unconstrained extrapolation are all unacceptable.
 A constrained extrapolation mechanism that surfaces proposed rules for human approval is [Inferred] as the right approach — not yet validated.
 
 **OQ-05 — Prototype Scope**
-Decomposed into two sub-questions with different resolution status:
+Decomposed into two sub-questions, both resolved:
 
 **OQ-05b — Scale Threshold** [RESOLVED — S02] — Hypothesis testable at minimal scale: 2–5 entities, one location cluster, 2–3 hard constraints. → [research-log.md](research-log.md#oq-05b)
 
-**OQ-05a — Representational Scope** [RESOLVED — Session 6]
-DEPENDS ON: OQ-01 [RESOLVED] — categories must be expressed in the chosen formalism; cannot be designed without knowing the formalism.
-DEPENDS ON: OQ-02b [RESOLVED] — mutable state category cannot be finalized without knowing how state transitions work.
-BLOCKS: OQ-09
-The WorldDSL requires four functional categories: (1) Entity registry — what named entities exist; encoded as ground ASP facts.
-(2) Static properties — facts that never change during play, including spatial topology; encoded as ground ASP facts without transition rules.
-(3) Mutable state — facts that change via committed ABox deltas, including character location and inventory; encoded as ABox JSON loaded as ground ASP facts at session start.
-(4) Integrity constraints — rules encoding both state consistency ("dead cannot act") and transition validity ("can only move to adjacent room"); encoded as ASP integrity constraints (:- body form).
-All four map to documented ASP/Clingo constructs.
-Epistemic state, full temporal logic, and goal/terminal encoding are confirmed out-of-scope for prototype.
-The ABox-snapshot validation pattern (not fluent-with-time-steps) is appropriate for this project's validation-not-planning use case.
-[Verified] — by GDL mapping —
-[Inferred] — for RP application —
+**OQ-05a — Representational Scope** [RESOLVED — S06] — Four functional categories confirmed: entity registry, static properties, mutable state, and integrity constraints (Type A state consistency + Type B transition validity), all expressible in ASP/Clingo. → [research-log.md](research-log.md#oq-05a)
 
 **OQ-06 — Developer Toolset Fit** [RESOLVED]
 ASP/Clingo is tractable for a solo non-professional developer.

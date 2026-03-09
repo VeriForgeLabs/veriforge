@@ -112,7 +112,24 @@ Note: Initially marked [PROVISIONALLY RESOLVED] at S02.
 Promoted to [RESOLVED] at S09 audit — no contradicting evidence found in Sessions 3–8;
 WHAT IS VERIFIED carries the same claim as [Verified] with the same sources.
 
+### OQ-05a — Representational Scope [RESOLVED — S06]
 
+DEPENDS ON: OQ-01 [RESOLVED] — categories must be expressed in the chosen formalism; cannot be designed without knowing the formalism.
+DEPENDS ON: OQ-02b [RESOLVED] — mutable state category cannot be finalized without knowing how state transitions work.
+BLOCKS: OQ-09
+
+The WorldDSL requires four functional categories:
+(1) Entity registry — what named entities exist; encoded as ground ASP facts.
+(2) Static properties — facts that never change during play, including spatial topology; encoded as ground ASP facts without transition rules.
+(3) Mutable state — facts that change via committed ABox deltas, including character location and inventory; encoded as ABox JSON loaded as ground ASP facts at session start.
+(4) Integrity constraints — rules encoding both state consistency ("dead cannot act") and transition validity ("can only move to adjacent room"); encoded as ASP integrity constraints (:- body form).
+[Doc:WikipediaGDL] [Doc:ThielschemGDLII] [Paper:Zhou2025]
+
+All four map to documented ASP/Clingo constructs.
+Epistemic state, full temporal logic, and goal/terminal encoding are confirmed out-of-scope for prototype.
+The ABox-snapshot validation pattern (not fluent-with-time-steps) is appropriate for this project's validation-not-planning use case.
+[Verified] — by GDL mapping —
+[Inferred] — for RP application —
 
 ---
 
@@ -134,6 +151,14 @@ Audit closed: yes
 [AUDIT-S09-OQ-05b] OQ-05b resolved | March 9, 2026 | Steps completed: 1, 2, 3, 4
 Issues found:
   - Status [PROVISIONALLY RESOLVED] promoted to [RESOLVED — S02] — WHAT IS VERIFIED carries same claim as [Verified]; no contradicting evidence in S03–S08 → corrected before migration → Methodology patch recommended: no
+Methodology patches flagged: no
+Audit closed: yes
+
+[AUDIT-S09-OQ-05a] OQ-05a resolved | March 9, 2026 | Steps completed: 1, 2, 3, 4
+Issues found:
+  - Status token [RESOLVED — Session 6] corrected to [RESOLVED — S06] → applied before migration → Methodology patch recommended: no
+  - Inline citations missing from OQ-05a body → [Doc:WikipediaGDL] [Doc:ThielschemGDLII] [Paper:Zhou2025] added before migration → Methodology patch recommended: no
+  - OQ-05 parent preamble stale ("different resolution status") → updated to "both resolved" in Step 3c → Methodology patch recommended: no
 Methodology patches flagged: no
 Audit closed: yes
 
