@@ -326,6 +326,8 @@ Issues found:
 Methodology patches flagged: no
 Audit closed: yes
 
+[NOTE-S10-OQ-09] OQ-09 resolved — no audit triggered; OQ-09 unblocks no downstream OQs; research phase complete as of S10.
+
 ---
 
 ## CLOSED VERIFICATION ITEMS

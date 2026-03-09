@@ -300,7 +300,7 @@ These claims are logically inferred from verified findings but have not been con
 - `[Inferred]` The enforcement sufficiency gap is the central unverified empirical claim of the hypothesis.
   The symbolic layer correctly derives and enforces constraints; whether injecting those derived facts as authoritative context is sufficient to keep LLM extrapolation within constraint boundaries at interactive RP pace is not established by any cited source.
   This is what the prototype must empirically test.
-  OQ-08 RESOLVED — mechanism is specified as per-turn symbolic state injection plus reactive ASP validation (OQ-02b); the design is now specified; sufficiency is the remaining load-bearing empirical claim, delegated to OQ-09 for falsifiable testing.
+  OQ-08 RESOLVED — mechanism is specified as per-turn symbolic state injection plus reactive ASP validation (OQ-02b); the design is now specified; sufficiency is the remaining load-bearing empirical claim, delegated to OQ-09 [RESOLVED — S10] — evaluation protocol designed; empirical test is prototype phase.
 
 - `[Inferred]` LLM narrative coherence failures in RP systems decompose into three structurally distinct failure modes with different causes, remedies, and relationships to context window size.
   Failure Mode 1 (Truncation): early context falls out of the active window entirely; directly solved by larger windows; low VeriForge relevance at prototype scope — a single-session, single-tavern session will not approach truncation limits.
@@ -322,7 +322,7 @@ These claims are logically inferred from verified findings but have not been con
 - `[Inferred]` Per-turn symbolic state injection addresses Failure Mode 2 (Attention Dilution) by keeping constraint-relevant facts near the generation point, exploiting recency bias per [Paper:Liu2024].
   Session-start injection is insufficient because even front-loaded facts decay from the generation point as session length grows, per [Paper:Li2024] attention decay mechanism.
   Per-turn re-injection does not solve the problem — it resets the positional advantage each turn.
-  Whether per-turn injection is sufficient to maintain constraint adherence at interactive RP pace is [Unverified] — this is the load-bearing empirical claim of Step 4, now delegated to OQ-09.
+  Whether per-turn injection is sufficient to maintain constraint adherence at interactive RP pace is [Unverified] — this is the load-bearing empirical claim of Step 4, now delegated to OQ-09 [RESOLVED — S10] — evaluation protocol designed; empirical test is prototype phase.
 
 ---
 
@@ -391,11 +391,15 @@ Closed items have been migrated to [research-log.md](research-log.md#closed-veri
 
 - [ ] Is the enforcement mechanism (ASP-derived context injection) sufficient to constrain LLM extrapolation within constraint boundaries at prototype scope?
   This is the central unverified empirical claim of Step 4 of the hypothesis.
-  Delegated to OQ-09. | Origin: S08 | Influences: OQ-09 | [Unverified]
+  Delegated to OQ-09 [RESOLVED — S10] — evaluation protocol designed; empirical test is prototype phase. | Origin: S08 | Influences: OQ-09 | [Unverified]
 
 - [ ] Does reactive ASP validation of ABox deltas catch constraint violations
   that appear in LLM surface narrative without triggering a delta at all?
   The VDR metric in OQ-09 is designed to measure this gap, but the
   architectural vulnerability is [Inferred] — not yet tested. | Origin: S10 | Influences: OQ-09 | [Inferred]
+
+- [ ] Confirm primary source and URL for [Paper:Wang2024] DSPy-ASP framework;
+  the accuracy figure (up to 50% improvement) is a precision claim on a secondary source only.
+  | Origin: S01 | Influences: OQ-01 (historical) | [Unverified]
 
 ```
