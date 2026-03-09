@@ -131,6 +131,15 @@ The ABox-snapshot validation pattern (not fluent-with-time-steps) is appropriate
 [Verified] — by GDL mapping —
 [Inferred] — for RP application —
 
+### OQ-06 — Developer Toolset Fit [RESOLVED — S04]
+
+ASP/Clingo is tractable for a solo non-professional developer.
+Evidence: Potassco Getting Started guide (genuinely novice-oriented, pip install clingo, no JVM required) [Doc:PotasscoStart];
+CMU CSC 791 course notes on ASP for game design (Martens, 2017), using dungeon generation as motivating example [Doc:CMUMartens2017];
+solo hobbyist project modeling social deduction game rules as Clingo constraints with sat/unsat test suite [Repo:botcasp].
+IDP-Z3 has no equivalent hobbyist community, game design adoption, or solo project precedent.
+[Verified]
+
 ---
 
 ## AUDIT LOG
@@ -159,6 +168,12 @@ Issues found:
   - Status token [RESOLVED — Session 6] corrected to [RESOLVED — S06] → applied before migration → Methodology patch recommended: no
   - Inline citations missing from OQ-05a body → [Doc:WikipediaGDL] [Doc:ThielschemGDLII] [Paper:Zhou2025] added before migration → Methodology patch recommended: no
   - OQ-05 parent preamble stale ("different resolution status") → updated to "both resolved" in Step 3c → Methodology patch recommended: no
+Methodology patches flagged: no
+Audit closed: yes
+
+[AUDIT-S09-OQ-06] OQ-06 resolved | March 9, 2026 | Steps completed: 1, 2, 3, 4
+Issues found:
+  - Status token [RESOLVED] missing session number → corrected to [RESOLVED — S04] before migration → Methodology patch recommended: no
 Methodology patches flagged: no
 Audit closed: yes
 

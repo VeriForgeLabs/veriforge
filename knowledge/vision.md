@@ -352,10 +352,7 @@ Decomposed into two sub-questions, both resolved:
 
 **OQ-05a — Representational Scope** [RESOLVED — S06] — Four functional categories confirmed: entity registry, static properties, mutable state, and integrity constraints (Type A state consistency + Type B transition validity), all expressible in ASP/Clingo. → [research-log.md](research-log.md#oq-05a)
 
-**OQ-06 — Developer Toolset Fit** [RESOLVED]
-ASP/Clingo is tractable for a solo non-professional developer.
-Evidence: Potassco Getting Started guide (genuinely novice-oriented, pip install clingo, no JVM required) [Doc:PotasscoStart]; CMU CSC 791 course notes on ASP for game design (Martens, 2017), using dungeon generation as motivating example [Doc:CMUMartens2017]; solo hobbyist project modeling social deduction game rules as Clingo constraints with sat/unsat test suite [Repo:botcasp].
-IDP-Z3 has no equivalent hobbyist community, game design adoption, or solo project precedent.
+**OQ-06 — Developer Toolset Fit** [RESOLVED — S04] — ASP/Clingo confirmed tractable for a solo non-professional developer via novice documentation, game design course materials, and a solo hobbyist project. → [research-log.md](research-log.md#oq-06)
 
 **OQ-07 — Meta-Questionnaire Design** [OPEN]
 No hard dependencies identified.
