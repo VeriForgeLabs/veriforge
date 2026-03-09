@@ -140,6 +140,34 @@ solo hobbyist project modeling social deduction game rules as Clingo constraints
 IDP-Z3 has no equivalent hobbyist community, game design adoption, or solo project precedent.
 [Verified]
 
+### OQ-08 — LLM Output Enforcement Mechanism [RESOLVED — S08]
+
+DEPENDS ON: OQ-01 [RESOLVED]
+DEPENDS ON: OQ-05a [RESOLVED]
+BLOCKS: OQ-09 [UNBLOCKED — S08]
+
+Selected enforcement mechanism for prototype scope: per-turn symbolic state injection plus reactive ASP validation (OQ-02b).
+At each narrative turn, the ASP solver derives the current world state and active integrity constraints.
+These are injected as authoritative context immediately before the LLM's generation call — not once at session start.
+After the LLM generates narrative and a proposed ABox delta, the ASP solver validates the delta reactively (SAT → commit; UNSAT → human review).
+
+Mechanisms evaluated and rejected:
+Session-start system prompt injection alone — empirically insufficient; drift within 8 turns. [Paper:Li2024]
+NeMo Guardrails — KNN-based topical enforcement only; unsuitable for world-state semantic constraints. [Paper:Rebedea2023]
+Constrained decoding — unsuitable for complex semantic constraints. [Paper:Lee2025SIC]
+RAG grounding alone — partial mitigation, not stateful constraint enforcement. [Paper:Score2025]
+
+Precedent: Slice of Life architecture — per-turn symbolic state injection for LLM dialogue generation, symbolic simulation state not modified by LLM. [Paper:Treanor2024] [Paper:Treanor2025]
+
+Open threads (not blocking prototype):
+OQ-08-T1: Split-softmax attention decay mitigation — requires inference-time attention access; API availability unconfirmed; hold for post-prototype.
+OQ-08-T2: Two-step action declaration (prospective enforcement) — LLM declares action as structured output, ASP validates, then LLM generates narrative; architecturally coherent but not required at prototype scope; reactive enforcement sufficient for core hypothesis test.
+OQ-08-T3: Frontier model drift characterization — Li2024 measured LLaMA2-chat-70B and GPT-3.5; drift at RP session lengths on Claude 3.5+/GPT-4o not directly measured; assumed better-than-baseline, not a blocking gap.
+
+What remains [Unverified]: whether per-turn injection is sufficient to keep LLM extrapolation within constraint boundaries at interactive RP pace.
+This is the load-bearing empirical claim of Step 4 of the core hypothesis.
+OQ-09 must design a test that can confirm or falsify it.
+
 ---
 
 ## AUDIT LOG
@@ -174,6 +202,14 @@ Audit closed: yes
 [AUDIT-S09-OQ-06] OQ-06 resolved | March 9, 2026 | Steps completed: 1, 2, 3, 4
 Issues found:
   - Status token [RESOLVED] missing session number → corrected to [RESOLVED — S04] before migration → Methodology patch recommended: no
+Methodology patches flagged: no
+Audit closed: yes
+
+[AUDIT-S09-OQ-08] OQ-08 resolved | March 9, 2026 | Steps completed: 1, 2, 3, 4
+Issues found:
+  - Status token [RESOLVED — Session 8] corrected to [RESOLVED — S08] → applied before migration → Methodology patch recommended: no
+  - DEPENDS ON two dependencies on one line → split to one per line → applied before migration → Methodology patch recommended: no
+  - BLOCKS language [NOW UNBLOCKED] → corrected to [UNBLOCKED — S08] → applied before migration → Methodology patch recommended: no
 Methodology patches flagged: no
 Audit closed: yes
 
