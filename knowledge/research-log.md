@@ -55,11 +55,68 @@ Remaining cost: ASP requires a mental model shift from imperative programming; J
 Both are tractable at prototype scope (2–5 entities, 2–3 hard constraints).
 [Verified]
 
----
+### OQ-02 — Stateful Session Layer [RESOLVED — S05]
 
+Decomposed into four sub-questions. All resolved or decided.
+
+**OQ-02a — Storage** [DECIDED — prototype scope]
+JSON file.
+Human-readable, diff-able, trivially editable for manual corrections.
+No research question at prototype scope.
+
+**OQ-02b — State Transitions** [RESOLVED — S05]
+DEPENDS ON: OQ-01 [RESOLVED] — ASP is the validation mechanism; the commit design is formalism-specific.
+DEPENDS ON: OQ-02a [DECIDED] — storage format must be known before commit target can be specified.
+Selected design: ASP-Gated Automatic State Commit with Audit Log.
+Each narrative turn, the LLM emits two outputs: (1) narrative text, and (2) a proposed ABox delta as structured JSON, following the RPGBench structured state output pattern [Paper:Yu2025].
+The ASP solver validates the delta against the current ABox and DSL rules (OQ-02c mechanism).
+If SAT: auto-commit the delta to the ABox JSON file and append the event to the session event log.
+If UNSAT: pause and surface the conflict to the human operator for review before any commit.
+The session event log is append-only and supplementary — it provides auditing and rollback capability.
+The ABox remains the authoritative state layer.
+The event log is not the primary source of truth (not full event sourcing), because the ASP solver validates against the ABox directly.
+
+Epistemic status: [Inferred] — structurally supported by RPGBench state update pattern [Paper:Yu2025], event sourcing principles [Doc:Fowler2005], and the OQ-02c ASP validation mechanism, but this specific design combination has not been published.
+
+Known risk [Inferred]: LLM-generated state deltas may be ASP-SAT but semantically incorrect (silent semantic error class).
+The ASP gate does not catch errors that are constraint-consistent but factually wrong.
+This is structurally the same risk as in NL→DSL translation (OQ-03) and must be addressed by the same mechanism: human review of UNSAT outcomes plus periodic spot-checking.
+
+Flag-then-commit precedent: NOT FOUND [Verified] — absence finding; search conducted across RPGBench, CFSM, Story2Game literature; no published system implements human-gated state commit in interactive narrative —
+All published systems use fully automated state updates (RPGBench, CFSM, Story2Game).
+Human review gated by solver output is novel — not invalidated by absence of precedent, but untested.
+
+Event sourcing applicability: PARTIALLY APPLICABLE [Inferred].
+The append-only event log component transfers as an audit trail.
+Full event sourcing (log as primary source of truth) does not transfer — it misaligns with ASP validation architecture and is over-engineered for prototype scope.
+
+**OQ-02c — Validation of committed state** [RESOLVED by OQ-01]
+ASP solver re-runs with the proposed ABox delta and checks for UNSAT.
+Constraint violation detection is handled by the symbolic layer.
+No additional mechanism required.
+
+**OQ-02d — Retrieval at session start** [DECIDED — prototype scope]
+Full load at session start.
+2–5 entities and a handful of committed facts are well within context window limits for frontier models.
+The retrieval problem becomes the binding constraint as world scope grows beyond a single location cluster.
+This is a known out-of-scope problem for the prototype, not a solved one.
+
+
+---
 ## AUDIT LOG
 
 _Audit records are appended here after each audit closes. Empty until first audit._
+
+[AUDIT-S09-OQ-01] OQ-01 resolved | March 9, 2026 | Steps completed: 1, 2, 3, 4
+Issues found:
+  - [Paper:Wang2024] secondary-source flag unresolved → noted as independent outstanding item → Methodology patch recommended: no
+Methodology patches flagged: no
+Audit closed: yes
+
+[AUDIT-S09-OQ-02] OQ-02 resolved | March 9, 2026 | Steps completed: 1, 2, 3, 4
+Issues found: none
+Methodology patches flagged: no
+Audit closed: yes
 
 ---
 ## RESEARCH LOG

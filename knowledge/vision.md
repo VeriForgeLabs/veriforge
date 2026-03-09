@@ -325,92 +325,9 @@ These claims are logically inferred from verified findings but have not been con
 
 These are the most important parts of this document.
 
-**OQ-01 — DSL Formalism** [RESOLVED — Option A selected]
-Selected formalism: Hybrid JSON + ASP (Clingo).
-Decisive factors: (1) LLM→ASP translation precedent exists (LLMASP, DSPy-ASP, [Paper:Hite2025], [Paper:PJWang2024] future work); (2) ASP is documented in applied narrative constraint enforcement and LLM narrative plan verification ([Paper:PJWang2024], [Paper:YiWang2025]); (3) ASP is tractable for solo non-professional developers (see OQ-06).
+**OQ-01 — DSL Formalism** [RESOLVED — S04] — Hybrid JSON + ASP (Clingo) selected. → [research-log.md](research-log.md#oq-01)
 
-Candidates evaluated and disposition:
-
-OWL/RDF — disqualified.
-Open-world assumption (absence of a fact does not imply the fact is false) is structurally incompatible with closed-world narrative enforcement where unstated facts must be treated as false.
-Tooling complexity (Java reasoners, Protégé) is an additional disqualifier at solo prototype scale.
-[Verified]
-
-Grammar formalisms (BNF/EBNF/PEG) — disqualified.
-Define syntactic validity only; cannot express inter-entity constraints ("the dead cannot act") or detect semantic contradictions.
-May be useful as a surface syntax layer for WorldDSL, but provide no inference or constraint enforcement.
-[Verified]
-
-Option C — Executable Python rules — eliminated.
-Cannot perform automatic inference from first principles.
-Equivalent to pre-programming every implication; does not solve the stated problem.
-[Verified]
-
-Option B — Datalog (pyDatalog) — disqualified.
-pyDatalog explicitly abandoned by its maintainer as of 2022, with no releases since November 2022.
-No maintained Python-native Datalog alternative identified.
-[Verified — pyDatalog GitHub and PyPI, accessed March 2026]
-
-IDP-Z3 (FO-dot + Z3 SMT, KU Leuven) — disqualified as Option B replacement.
-Actively maintained (pip install idp-engine, April 2025); explicit TBox/ABox block structure; closed-world enumeration semantics; built-in explanation output.
-Disqualifying gap: no LLM→FO-dot translation precedent found.
-No narrative or game domain adoption found.
-Lower solo developer tractability than ASP.
-[Verified]
-
-Option A — Hybrid JSON + ASP (Clingo) — selected.
-Maximum inference capability; active maintenance (Potassco/TU Dresden); Python API available (pip install clingo).
-LLM→ASP translation precedent: LLMASP, DSPy-ASP, [Paper:Hite2025], [Paper:PJWang2024].
-Applied narrative use: [Paper:PJWang2024], [Paper:YiWang2025].
-Solo developer tractability: [Doc:PotasscoStart], [Doc:CMUMartens2017], [Repo:botcasp].
-Remaining cost: ASP requires a mental model shift from imperative programming; JSON→ASP translation layer required.
-Both are tractable at prototype scope (2–5 entities, 2–3 hard constraints).
-[Verified]
-
-**OQ-02 — Stateful Session Layer**
-Decomposed into four sub-questions with different resolution status.
-
-**OQ-02a — Storage** [DECIDED — prototype scope]
-JSON file.
-Human-readable, diff-able, trivially editable for manual corrections.
-No research question at prototype scope.
-
-**OQ-02b — State Transitions** [RESOLVED]
-DEPENDS ON: OQ-01 [RESOLVED] — ASP is the validation mechanism; the commit design is formalism-specific.
-DEPENDS ON: OQ-02a [DECIDED] — storage format must be known before commit target can be specified.
-Selected design: ASP-Gated Automatic State Commit with Audit Log.
-Each narrative turn, the LLM emits two outputs: (1) narrative text, and (2) a proposed ABox delta as structured JSON, following the RPGBench structured state output pattern [Paper:Yu2025].
-The ASP solver validates the delta against the current ABox and DSL rules (OQ-02c mechanism).
-If SAT: auto-commit the delta to the ABox JSON file and append the event to the session event log.
-If UNSAT: pause and surface the conflict to the human operator for review before any commit.
-The session event log is append-only and supplementary — it provides auditing and rollback capability.
-The ABox remains the authoritative state layer.
-The event log is not the primary source of truth (not full event sourcing), because the ASP solver validates against the ABox directly.
-
-Epistemic status: [Inferred] — structurally supported by RPGBench state update pattern [Paper:Yu2025], event sourcing principles [Doc:Fowler2005], and the OQ-02c ASP validation mechanism, but this specific design combination has not been published.
-
-Known risk [Inferred]: LLM-generated state deltas may be ASP-SAT but semantically incorrect (silent semantic error class).
-The ASP gate does not catch errors that are constraint-consistent but factually wrong.
-This is structurally the same risk as in NL→DSL translation (OQ-03) and must be addressed by the same mechanism: human review of UNSAT outcomes plus periodic spot-checking.
-
-Flag-then-commit precedent: NOT FOUND [Verified] — absence finding; search conducted across RPGBench, CFSM, Story2Game literature; no published system implements human-gated state commit in interactive narrative —
-All published systems use fully automated state updates (RPGBench, CFSM, Story2Game).
-Human review gated by solver output is novel — not invalidated by absence of precedent, but untested.
-
-Event sourcing applicability: PARTIALLY APPLICABLE [Inferred].
-The append-only event log component transfers as an audit trail.
-Full event sourcing (log as primary source of truth) does not transfer — it misaligns with ASP validation architecture and is over-engineered for prototype scope.
-
-**OQ-02c — Validation of committed state** [RESOLVED by OQ-01]
-ASP solver re-runs with the proposed ABox delta and checks for UNSAT.
-Constraint violation detection is handled by the symbolic layer.
-No additional mechanism required.
-
-**OQ-02d — Retrieval at session start** [DECIDED — prototype scope]
-Full load at session start.
-2–5 entities and a handful of committed facts are well within context window limits for frontier models.
-The retrieval problem becomes the binding constraint as world scope grows beyond a single location cluster.
-This is a known out-of-scope problem for the prototype, not a solved one.
+**OQ-02 — Stateful Session Layer** [RESOLVED — S05] — ASP-Gated Automatic State Commit with Audit Log; JSON file storage; full load at session start. → [research-log.md](research-log.md#oq-02)
 
 **OQ-03 — Verification and Error Correction Loop** [OPEN]
 DEPENDS ON: OQ-01 [RESOLVED] — error correction loop design depends on what solver error output looks like in ASP.
