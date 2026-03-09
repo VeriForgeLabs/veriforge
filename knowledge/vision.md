@@ -348,11 +348,7 @@ A constrained extrapolation mechanism that surfaces proposed rules for human app
 **OQ-05 — Prototype Scope**
 Decomposed into two sub-questions with different resolution status:
 
-"**OQ-05b — Scale Threshold** [PROVISIONALLY RESOLVED] 
-The hypothesis is testable at minimal scale — 2–5 entities, one location cluster, a handful of constraints.
-A single tavern with 3–4 characters and 2–3 hard constraints would be sufficient to test the pipeline end-to-end.
-Scaling up adds breadth of coverage but does not add testability of the core hypothesis.
-[Paper:Zhou2025] [Paper:ElBoudouri2025]
+**OQ-05b — Scale Threshold** [RESOLVED — S02] — Hypothesis testable at minimal scale: 2–5 entities, one location cluster, 2–3 hard constraints. → [research-log.md](research-log.md#oq-05b)
 
 **OQ-05a — Representational Scope** [RESOLVED — Session 6]
 DEPENDS ON: OQ-01 [RESOLVED] — categories must be expressed in the chosen formalism; cannot be designed without knowing the formalism.

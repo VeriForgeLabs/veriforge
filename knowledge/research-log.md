@@ -101,8 +101,21 @@ Full load at session start.
 The retrieval problem becomes the binding constraint as world scope grows beyond a single location cluster.
 This is a known out-of-scope problem for the prototype, not a solved one.
 
+### OQ-05b — Scale Threshold [RESOLVED — S02]
+
+The hypothesis is testable at minimal scale — 2–5 entities, one location cluster, a handful of constraints.
+A single tavern with 3–4 characters and 2–3 hard constraints would be sufficient to test the pipeline end-to-end.
+Scaling up adds breadth of coverage but does not add testability of the core hypothesis.
+[Paper:Zhou2025] [Paper:ElBoudouri2025]
+
+Note: Initially marked [PROVISIONALLY RESOLVED] at S02.
+Promoted to [RESOLVED] at S09 audit — no contradicting evidence found in Sessions 3–8;
+WHAT IS VERIFIED carries the same claim as [Verified] with the same sources.
+
+
 
 ---
+
 ## AUDIT LOG
 
 _Audit records are appended here after each audit closes. Empty until first audit._
@@ -118,7 +131,14 @@ Issues found: none
 Methodology patches flagged: no
 Audit closed: yes
 
+[AUDIT-S09-OQ-05b] OQ-05b resolved | March 9, 2026 | Steps completed: 1, 2, 3, 4
+Issues found:
+  - Status [PROVISIONALLY RESOLVED] promoted to [RESOLVED — S02] — WHAT IS VERIFIED carries same claim as [Verified]; no contradicting evidence in S03–S08 → corrected before migration → Methodology patch recommended: no
+Methodology patches flagged: no
+Audit closed: yes
+
 ---
+
 ## RESEARCH LOG
 
 _Populated as findings are verified._
