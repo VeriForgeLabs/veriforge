@@ -215,6 +215,33 @@ Audit closed: yes
 
 ---
 
+## CLOSED VERIFICATION ITEMS
+
+Items migrated from CLAIMS REQUIRING TARGETED VERIFICATION in vision.md upon resolution.
+Format: origin session, resolution finding, OQs influenced.
+
+[CVI-01] Confirm full citation and URL for [Paper:Peng2025] Codified Profiles (NeurIPS 2025)
+Status: CLOSED — S03 | 20260306
+Resolution: Confirmed — Letian Peng and Jingbo Shang, NeurIPS 2025, https://arxiv.org/abs/2505.07705
+Influences: OQ-01, OQ-05a
+
+[CVI-02] Confirm full citation and URL for [Paper:GDL2005] Game Description Language
+Status: CLOSED — S03 | 20260306
+Resolution: Confirmed — Genesereth, Love et al., AAAI 2005, https://www.semanticscholar.org/paper/General-Game-Playing:-Overview-of-the-AAAI-Genesereth-Love/c89c71dbe5617bea44383585b58cd0cbc37bf79a
+Influences: OQ-01, OQ-05a
+
+[CVI-03] Verify current maintenance status of pyDatalog library
+Status: CLOSED — S03 | 20260306
+Resolution: Disqualified — unmaintained since November 2022; maintainer redirects to IDP-Z3
+Influences: OQ-01
+
+[CVI-04] Is the flag-then-commit state mechanism implemented in any published system?
+Status: CLOSED — S05 (absence finding)
+Resolution: NOT FOUND [Verified] — search across RPGBench, CFSM, Story2Game literature; no published system implements human-gated state commit in interactive narrative; all published systems use fully automated state updates
+Influences: OQ-02
+
+---
+
 ## RESEARCH LOG
 
 _Populated as findings are verified._
@@ -510,5 +537,17 @@ Notes: Formalizes proactive vs. reactive enforcement distinction; recommends lim
 URL: https://arxiv.org/abs/2409.02076
 Status: [Verified]
 Notes: Benchmark for instruction adherence across long generated outputs at 16K and 32K token lengths; confirms degradation at extended generation lengths; prior synthesis error attributing a 4,000-token threshold to this paper is corrected — no such threshold exists in the primary source.
+
+### S09 — OQ Migration Audit & Document Hygiene
+
+[S9-E1] OQ-01 migration audit — formatting corrections; [Paper:Wang2024] secondary-source flag noted as outstanding item | Resolved | None
+[S9-E2] OQ-02 migration audit — no issues found | Resolved | None
+[S9-E3] OQ-05b migration audit — status promoted from [PROVISIONALLY RESOLVED] to [RESOLVED — S02] | Resolved | None
+[S9-E4] OQ-05a migration audit — session token corrected; inline citations added; OQ-05 parent preamble updated | Resolved | None
+[S9-E5] OQ-06 migration audit — session token corrected from [RESOLVED] to [RESOLVED — S04] | Resolved | None
+[S9-E6] OQ-08 migration audit — session token corrected; DEPENDS ON split to one-per-line; BLOCKS language corrected | Resolved | None
+[S9-E7] Document hygiene pass — version bumped to v0.9; CLAIMS section restructured with provenance tags; four OQ cross-reference links added to WHAT IS VERIFIED/SYNTHESIZED; stale OQ-08 pointer corrected; flag-then-commit absence finding closed | Resolved | None
+[S9-E8] Context management methodology reviewed (compaction, context hygiene, claudelog.com); research partner named Ankyra | Note | None
+
 
 ---

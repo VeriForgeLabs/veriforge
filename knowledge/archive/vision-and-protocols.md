@@ -1,7 +1,7 @@
 
 # vision-and-protocols.md
 
-_Document version: 1.6 — March 2026_
+_Document version: 0.8 — March 2026_
 _Next review trigger: OQ-09 (Evaluation Protocol) research complete_
 
 ## Semantics-Driven Worldbuilding DSL Project

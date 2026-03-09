@@ -1,6 +1,6 @@
 # vision.md
 
-_Document version: 0.8 — March 2026_
+_Document version: 0.9 — March 2026_
 _Next review trigger: OQ-09 (Evaluation Protocol) research complete_
 
 ## Semantics-Driven Worldbuilding DSL Project
@@ -205,6 +205,8 @@ Full references in the Research Log section.
   Fluent-with-time-step encoding (the full temporal ASP pattern) is over-engineered for a validator rather than a planner.
   Named-violation auxiliary predicates are required to produce human-readable UNSAT output identifying which constraint was violated.
   [Inferred] — standard ASP patterns; not validated against a published WorldDSL implementation.
+  → [OQ-05a — RESOLVED — S06]
+  → [OQ-02 — RESOLVED — S05]
 
 - `[Verified]` Epistemic and uncertain world facts are correctly 
   excluded from the DSL at prototype scope.
@@ -234,6 +236,7 @@ Full references in the Research Log section.
   RLHF training reduces but does not eliminate drift.
   This is a structural property of the transformer attention mechanism, not a model scale issue.
   [Paper:Li2024]
+  → [OQ-08 — RESOLVED — S08]
 
 - `[Verified]` Multi-turn performance degradation is universal across frontier models.
   All 15 top open- and closed-weight LLMs tested show an average 39% performance drop in multi-turn versus single-turn settings, across six generation tasks and 200,000+ simulated conversations.
@@ -247,6 +250,7 @@ Full references in the Research Log section.
   No quantitative constraint violation rate is reported — the system is described as working in practice but has not been formally benchmarked for constraint adherence.
   [Paper:Treanor2024] [Paper:Treanor2025]
   [Verified] — absence finding; no quantitative constraint adherence benchmark found for this architecture across FDG 2024 and FDG 2025 papers —
+  → [OQ-08 — RESOLVED — S08]
 
 ---
 
@@ -278,6 +282,7 @@ These claims are logically inferred from verified findings but have not been con
   Without it, the system only validates single-entity facts, not relational consistency or valid state transitions.
   [Verified] — by GDL keyword mapping — 
   [Inferred] — for RP application —
+  → [OQ-05a — RESOLVED — S06]
 
 - `[Inferred]` The closed-world assumption in Datalog and Prolog (anything not explicitly stated is false) is an advantage over OWL for closed game-state enforcement — but also a liability for open-ended RP worlds where the specification is inherently incomplete.
   At the edges of the spec, the system will treat unstated facts as false, which may produce incorrect constraint violations.
@@ -379,30 +384,24 @@ Establishes falsifiability without requiring automated evaluation infrastructure
 
 ## CLAIMS REQUIRING TARGETED VERIFICATION
 
-Before the architecture can be treated as ground truth, these specific claims need literature search:
+Open items requiring literature search before the architecture can be treated as ground truth.
+Closed items have been migrated to [research-log.md](research-log.md#closed-verification-items).
 
-- [ ] Does a named formalism exist for "zero-decoherence" as defined here?
-- [ ] Is the meta-questionnaire approach novel, or does prior work cover it?
-- [ ] What does DSL-Xpert 2.0 actually do for automatic error correction?
-- [ ] What is the documented scope of hand-built worldbuilding DSLs in practice?
-- [ ] Is the flag-then-commit state mechanism implemented in any published system?
-- [ ] What is the actual failure rate of NL→ASP translation for domain specification tasks (vs. the logical reasoning tasks studied in literature)?
-- [ ] Is there a benchmark measuring formal constraint-specification violation rates specifically (as opposed to personality/style drift)? 
-  RPEval covers the latter.
-A direct measurement standard for zero-decoherence does not yet exist in this project's research log. 
-(Relevant to OQ-09.)
-- [x] Confirm full citation and URL for [Paper:Peng2025] Codified Profiles (NeurIPS 2025) RESOLVED 20260306  
-- [x] Confirm full citation and URL for [Paper:GDL2005] Game Description Language RESOLVED 20260306
-- [x] Verify current maintenance status of pyDatalog library before it can be considered a viable Option B formalism RESOLVED 20260306: disqualified, unmaintained since 2022
+- [ ] Does a named formalism exist for "zero-decoherence" as defined here? | Origin: S01 | Influences: OQ-09 | [Unverified]
+
+- [ ] Is the meta-questionnaire approach novel, or does prior work cover it? | Origin: S01 | Influences: OQ-07 | [Unverified]
+
+- [ ] What does DSL-Xpert 2.0 actually do for automatic error correction? | Origin: S03 | Influences: OQ-03 | [Unverified]
+
+- [ ] What is the documented scope of hand-built worldbuilding DSLs in practice? | Origin: S01 | Influences: OQ-07 | [Unverified]
+
+- [ ] What is the actual failure rate of NL→ASP translation for domain specification tasks (vs. logical reasoning tasks studied in literature)? | Origin: S03 | Influences: OQ-03 | [Unverified]
+
+- [ ] Is there a benchmark measuring formal constraint-specification violation rates specifically (as opposed to personality/style drift)?
+  RPEval covers personality/style drift; a direct measurement standard for zero-decoherence does not yet exist in this project's research log. | Origin: S02 | Influences: OQ-09 | [Unverified]
+
 - [ ] Is the enforcement mechanism (ASP-derived context injection) sufficient to constrain LLM extrapolation within constraint boundaries at prototype scope?
   This is the central unverified empirical claim of Step 4 of the hypothesis.
-  Depends on OQ-08 research.
-- [ ] Is the silent semantic error rate for LLM-generated state deltas low enough that auto-commit with periodic spot-checking is an acceptable mitigation, or does the design require a stronger human oversight mechanism?
-- [ ] What is the NL→ASP translation quality specifically for open-ended domain specification tasks?
-  All documented translation work demonstrates on logical reasoning benchmarks only.
-  This gap must be addressed before OQ-03 can be closed.
-- [ ] Prospective constraint checking gap: does the reactive-only architecture (validate proposed delta after LLM generation) remain sufficient for all constraint classes, or do some constraints require knowing what action was taken before the LLM generates narrative?
-  If prospective checking is required for any constraint class, an explicit action definition layer not present in any current category would be needed.
-  Surface before OQ-08 research begins.
+  Delegated to OQ-09. | Origin: S08 | Influences: OQ-09 | [Unverified]
 
----
+```
