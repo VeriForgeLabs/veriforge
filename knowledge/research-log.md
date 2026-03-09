@@ -168,6 +168,119 @@ What remains [Unverified]: whether per-turn injection is sufficient to keep LLM 
 This is the load-bearing empirical claim of Step 4 of the core hypothesis.
 OQ-09 must design a test that can confirm or falsify it.
 
+### OQ-09 — Prototype Evaluation Protocol [RESOLVED — S10]
+
+DEPENDS ON: OQ-05a [RESOLVED] — four constraint categories confirmed; test cases can now be specified.
+DEPENDS ON: OQ-08 [RESOLVED] — enforcement mechanism specified as per-turn symbolic state injection plus reactive ASP validation; evaluation must test whether this mechanism is sufficient.
+DEPENDS ON: OQ-01 [RESOLVED] — ASP generates named UNSAT violation reports; this capability is the primary evaluation oracle.
+
+The claim under test:
+Per-turn symbolic state injection plus reactive ASP validation is sufficient
+to keep LLM extrapolation within constraint boundaries at interactive RP pace.
+
+---
+
+Evaluation design: three-condition ablation study.
+
+Condition A — Raw LLM.
+No DSL, no system prompt, no world state injection.
+LLM generates narrative from a brief scenario description only.
+Purpose: establishes natural violation rate; characterizes the problem VeriForge addresses.
+
+Condition B — System-prompt-only injection.
+Full WorldDSL state injected once at session start in the system prompt.
+No per-turn re-injection.
+Reactive ASP validation still runs (ABox delta checking).
+Purpose: isolates the specific contribution of per-turn re-injection from symbolic grounding generally.
+This condition is required by protocols.md Rival Hypothesis Discipline to avoid conflating "symbolic grounding helps" with "per-turn re-injection specifically helps."
+
+Condition C — VeriForge.
+Per-turn symbolic state injection (ASP-derived constraints and current ABox prepended to each generation call) plus reactive ASP validation.
+The full OQ-08 mechanism.
+
+---
+
+Primary metric: Constraint Violation Rate (CVR).
+CVR = (human-detected constraint violations in surface text) / (total turns) × 100.
+Adapted from Consistency Error Density [Paper:Li2026] — CED normalizes errors by document length; CVR uses session turns as the denominator for interactive RP applicability.
+
+Secondary metric: Violation Detection Rate (VDR).
+VDR = (violations caught by ASP before committing) / (total violations detected in surface text) × 100.
+Measures the surface-text leak gap: whether the ASP gate catches violations that appear in narrative prose without triggering an ABox delta.
+[Unverified] — pre-registered design decision; no literature precedent for this metric in interactive NeSy RP evaluation.
+
+Tertiary metric: False Positive Rate.
+Frequency of ASP flagging SAT deltas incorrectly.
+A tractability concern, not a correctness concern — relevant to interactive pace.
+
+Evaluator: human review is primary for surface-text violations.
+ASP solver is primary for ABox delta violations.
+LLM-as-judge is acceptable as a secondary cross-check on human review only.
+Rationale: violations targeted by VeriForge are formal constraint violations derivable from the WorldDSL specification; the ASP solver is unambiguously more reliable for these than a judge LLM. [Inferred] — methodological analog from [Paper:Mu2023] programmatic evaluation functions.
+
+---
+
+Falsification criteria (all must hold for the claim to be supported):
+
+(1) Condition C CVR ≤ 25% of Condition A CVR
+    (≥75% reduction from ungrounded baseline)
+    [Unverified] — pre-registered design decision; no literature precedent for this threshold in interactive NeSy RP evaluation.
+
+(2) Condition C CVR is statistically lower than Condition B CVR
+    (per-turn re-injection specifically contributes beyond session-start injection)
+
+(3) VDR ≥ 80%
+    [Unverified] — pre-registered design decision; no literature precedent for this threshold in interactive NeSy RP evaluation.
+
+The claim is falsified if any one of the three fails.
+
+Additional interpretive condition:
+If (2) holds but (3) fails — Condition C significantly outperforms both baselines, but VDR is below 80% — the correct interpretation is: the per-turn injection mechanism is working, but the architecture has a structural surface-text leak.
+The symbolic layer correctly validates deltas but does not prevent constraint violations from appearing in narrative prose before a delta is proposed.
+This would constitute a partial validation with a known architectural gap, not a clean falsification.
+
+---
+
+Test battery:
+
+Minimum 12 test cases. [Inferred] — judgment call; no published precedent for this number in interactive NeSy RP evaluation.
+4 cases targeting Type A integrity constraints (state consistency: "a dead entity cannot act").
+4 cases targeting Type B integrity constraints (transition validity: "can only move to an adjacent room").
+4 cases targeting compound constraints spanning both types.
+Each test case is a scripted 5–10 turn prompt sequence designed to elicit the constraint violation if the mechanism fails.
+Test cases must be pre-registered and fixed before running any condition.
+Minimum 3 runs per condition per test case; CVR averaged across runs to reduce LLM non-determinism. [Inferred] — from standard evaluation practice.
+LLM fixed across all conditions; frontier model (Claude 3.5+ or GPT-4o-class) appropriate for target deployment scenario.
+
+---
+
+Rival hypothesis:
+Condition B (session-start injection) is sufficient; per-turn re-injection adds no measurable benefit over a 5–10 turn RP session at prototype scope.
+This is structurally what the evaluation design tests.
+If Conditions B and C produce indistinguishable CVRs, the correct interpretation is that session-start injection is sufficient at prototype scope — a valid finding, not a failure.
+The rival hypothesis was pre-rejected in OQ-08 based on Li2024 drift evidence within 8 turns, but that evidence was measured on older models. OQ-09 is partly a test of whether that concern is empirically significant at the scale and with the models actually used.
+
+---
+
+Remaining gaps (not blocking resolution; relevant to implementation):
+
+Gap 1 — Surface-text leak (see CLAIMS in vision.md):
+Reactive ASP validation of ABox deltas may not catch constraint violations
+that appear in LLM surface narrative without triggering a delta.
+VDR metric is designed to measure this; the vulnerability is [Inferred] pending empirical test.
+
+Gap 2 — OQ-08-T2 (two-step action declaration):
+Prospective enforcement requires the LLM to declare actions as structured output before narrating.
+Not required at prototype scope; reactive enforcement is the tested mechanism.
+Hold for post-prototype.
+
+Sources:
+[Paper:Mu2023] — programmatic evaluation function pattern; ASP-as-oracle validation.
+[Paper:Qi2025] — three-paradigm constraint evaluation; code-verification tier precedent.
+[Paper:Li2026] — CED metric; confirms measurement gap for formal symbolic constraint evaluation in interactive RP.
+[Paper:Li2024] — attention decay evidence motivating per-turn over session-start injection.
+[Paper:Laban2025] — multi-turn degradation baseline confirming Condition A expected behavior.
+
 ---
 
 ## AUDIT LOG
@@ -549,5 +662,53 @@ Notes: Benchmark for instruction adherence across long generated outputs at 16K 
 [S9-E7] Document hygiene pass — version bumped to v0.9; CLAIMS section restructured with provenance tags; four OQ cross-reference links added to WHAT IS VERIFIED/SYNTHESIZED; stale OQ-08 pointer corrected; flag-then-commit absence finding closed | Resolved | None
 [S9-E8] Context management methodology reviewed (compaction, context hygiene, claudelog.com); research partner named Ankyra | Note | None
 
+### S10 — OQ-09 — Evaluation Protocol
+
+[S10-E1] OQ-09 resolved — three-condition ablation protocol designed; CVR/VDR metrics
+specified; falsification criteria pre-registered | Resolved | [Paper:Mu2023] [Paper:Qi2025] [Paper:Li2026]
+[S10-E2] Surface-text leak gap identified as [Inferred] architectural vulnerability;
+added to CLAIMS for empirical testing | New CLAIMS entry | None
+[S10-E3] Three citation corrections applied per QA pass: VDR threshold epistemic flag,
+CED denominator distinction, surface-text leak reclassified as architectural finding | Resolved | None
+
+[Paper:Mu2023] Norman Mu, Sarah Chen, Zifan Wang, Sizhe Chen, David Karamardian,
+Lulwa Aljeraisy, Basel Alomair, Dan Hendrycks, David Wagner,
+"Can LLMs Follow Simple Rules?" arXiv:2311.04235v3,
+UC Berkeley / Center for AI Safety, 2023.
+URL: https://arxiv.org/abs/2311.04235
+Status: [Verified]
+Notes: Proposes RuLES — programmatic evaluation functions per scenario to determine
+rule violations without manual review or unreliable heuristics.
+Directly validates the use of the ASP solver as a deterministic evaluation oracle
+for OQ-09 CVR measurement.
+
+[Paper:Qi2025] Yunjia Qi, Hao Peng, Xiaozhi Wang, Amy Xin, Youfeng Liu, Bin Xu,
+Lei Hou, Juanzi Li, "AGENTIF: Benchmarking Instruction Following of Large Language
+Models in Agentic Scenarios," Tsinghua University / Zhipu AI,
+arXiv:2505.16944v1, 2025.
+URL: https://arxiv.org/abs/2505.16944
+Status: [Verified]
+Notes: Three-paradigm constraint evaluation: code verification (Python),
+LLM verification (judge model), hybrid.
+Code verification preferred for structural constraints; LLM verification reserved
+for constraints requiring semantic understanding.
+Provides methodological precedent for OQ-09 two-tier evaluation design
+(ASP as code-verification tier; human/LLM judge for surface-text violations).
+
+[Paper:Li2026] Junjie Li, Xinrui Guo, Yuhao Wu, Roy Ka-Wei Lee, Hongzhi Li,
+Yutao Xie, "Lost in Stories: Consistency Bugs in Long Story Generation by LLMs,"
+Microsoft / Singapore University of Technology and Design,
+arXiv:2603.05890v1, 2026.
+URL: https://arxiv.org/abs/2603.05890
+Status: [Verified]
+Notes: Introduces ConStory-Bench — 2,000 prompts, five-dimension error taxonomy,
+19 fine-grained subtypes, ConStory-Checker automated pipeline.
+Standardized metrics: Consistency Error Density (CED, errors per document length)
+and Group Relative Rank (GRR).
+Targets long-form autonomous generation, not interactive RP with formal constraints;
+CED normalizes by document length, not session turns — VeriForge CVR adapts the
+principle with session turns as the denominator.
+Confirms the measurement gap: no published framework measures constraint-specification
+violation rates against formal symbolic constraints in interactive RP.
 
 ---

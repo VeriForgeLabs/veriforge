@@ -367,18 +367,7 @@ Is there prior work on structured worldbuilding elicitation in literature?
 
 **OQ-08 — LLM Output Enforcement Mechanism** [RESOLVED — S08] — Per-turn symbolic state injection plus reactive ASP validation selected as the enforcement mechanism; whether this is sufficient to constrain LLM extrapolation at interactive RP pace is the load-bearing empirical claim delegated to OQ-09. → [research-log.md](research-log.md#oq-08)
 
-**OQ-09 — Prototype Evaluation Protocol** [OPEN]
-DEPENDS ON: OQ-05a [RESOLVED] — four constraint categories confirmed; test cases can now be specified.
-DEPENDS ON: OQ-08 [RESOLVED] — enforcement mechanism specified as per-turn symbolic state injection plus reactive ASP validation; evaluation must test whether this mechanism is sufficient.
-DEPENDS ON: OQ-01 [RESOLVED] — ASP can generate violation reports (UNSAT with named constraints); this capability is confirmed and available to the evaluation design.
-How do we determine whether the prototype achieved zero-decoherence (or meaningfully improved on baseline) in a falsifiable way?
-Specifically: what constitutes a constraint violation in measurable terms? 
-Who or what detects it — human review, a judge LLM, automated symbolic checker?
-What is the baseline being compared against (raw LLM with system prompt vs. LLM with no grounding)?
-Without an answer to this question, the prototype produces an output but not a result.
-A working RP session is not a test of the hypothesis.
-Minimum viable path: a predefined set of constraint-violation test cases administered manually against prototype output, compared against a no-DSL baseline.
-Establishes falsifiability without requiring automated evaluation infrastructure.
+**OQ-09 — Prototype Evaluation Protocol** [RESOLVED — S10] — Three-condition ablation (raw LLM / system-prompt-only / VeriForge per-turn), primary metric Constraint Violation Rate, falsification criterion ≥75% CVR reduction vs. Condition A AND statistically lower than Condition B, 12+ pre-registered test cases across Type A and Type B constraint pairs. → [research-log.md](research-log.md#oq-09)
 
 ---
 
@@ -403,5 +392,10 @@ Closed items have been migrated to [research-log.md](research-log.md#closed-veri
 - [ ] Is the enforcement mechanism (ASP-derived context injection) sufficient to constrain LLM extrapolation within constraint boundaries at prototype scope?
   This is the central unverified empirical claim of Step 4 of the hypothesis.
   Delegated to OQ-09. | Origin: S08 | Influences: OQ-09 | [Unverified]
+
+- [ ] Does reactive ASP validation of ABox deltas catch constraint violations
+  that appear in LLM surface narrative without triggering a delta at all?
+  The VDR metric in OQ-09 is designed to measure this gap, but the
+  architectural vulnerability is [Inferred] — not yet tested. | Origin: S10 | Influences: OQ-09 | [Inferred]
 
 ```
