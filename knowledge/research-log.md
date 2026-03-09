@@ -9,6 +9,52 @@ Research Log — Append-Only Historical Record
 
 _Resolved OQ entries are migrated here during audits. Empty until first audit._
 
+### OQ-01 — DSL Formalism [RESOLVED — S04]
+
+Selected formalism: Hybrid JSON + ASP (Clingo).
+Decisive factors:
+(1) LLM→ASP translation precedent exists — LLMASP, DSPy-ASP, [Paper:Hite2025], [Paper:PJWang2024] future work.
+(2) ASP is documented in applied narrative constraint enforcement and LLM narrative plan verification — [Paper:PJWang2024], [Paper:YiWang2025].
+(3) ASP is tractable for solo non-professional developers — see OQ-06.
+
+Candidates evaluated and disposition:
+
+OWL/RDF — disqualified.
+Open-world assumption (absence of a fact does not imply the fact is false) is structurally incompatible with closed-world narrative enforcement where unstated facts must be treated as false.
+Tooling complexity (Java reasoners, Protégé) is an additional disqualifier at solo prototype scale.
+[Verified]
+
+Grammar formalisms (BNF/EBNF/PEG) — disqualified.
+Define syntactic validity only; cannot express inter-entity constraints ("the dead cannot act") or detect semantic contradictions.
+May be useful as a surface syntax layer for WorldDSL, but provide no inference or constraint enforcement.
+[Verified]
+
+Option C — Executable Python rules — eliminated.
+Cannot perform automatic inference from first principles.
+Equivalent to pre-programming every implication; does not solve the stated problem.
+[Verified]
+
+Option B — Datalog (pyDatalog) — disqualified.
+pyDatalog explicitly abandoned by its maintainer as of 2022, with no releases since November 2022.
+No maintained Python-native Datalog alternative identified.
+[Verified — pyDatalog GitHub and PyPI, accessed March 2026]
+
+IDP-Z3 (FO-dot + Z3 SMT, KU Leuven) — disqualified as Option B replacement.
+Actively maintained (pip install idp-engine, April 2025); explicit TBox/ABox block structure; closed-world enumeration semantics; built-in explanation output.
+Disqualifying gap: no LLM→FO-dot translation precedent found.
+No narrative or game domain adoption found.
+Lower solo developer tractability than ASP.
+[Verified]
+
+Option A — Hybrid JSON + ASP (Clingo) — selected.
+Maximum inference capability; active maintenance (Potassco/TU Dresden); Python API available (pip install clingo).
+LLM→ASP translation precedent: LLMASP, DSPy-ASP, [Paper:Hite2025], [Paper:PJWang2024].
+Applied narrative use: [Paper:PJWang2024], [Paper:YiWang2025].
+Solo developer tractability: [Doc:PotasscoStart], [Doc:CMUMartens2017], [Repo:botcasp].
+Remaining cost: ASP requires a mental model shift from imperative programming; JSON→ASP translation layer required.
+Both are tractable at prototype scope (2–5 entities, 2–3 hard constraints).
+[Verified]
+
 ---
 
 ## AUDIT LOG
