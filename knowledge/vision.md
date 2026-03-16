@@ -371,6 +371,39 @@ Is there prior work on structured worldbuilding elicitation in literature?
 
 ---
 
+### EVALUATION METHODOLOGY NOTE
+
+The OQ-09 ablation design is a controlled experiment, not an observational study.
+This distinction determines what methodological machinery is and is not required.
+
+The causal question — does per-turn symbolic state injection specifically reduce 
+constraint violations, beyond what session-start injection alone achieves? — is 
+answered directly by comparing Condition B to Condition C across an identical 
+scripted test battery, with the LLM fixed across all conditions. Because the 
+injection condition is assigned by the experimenter and not inferred from 
+observational data, there is no unobserved confounding to control for, no 
+counterfactual to construct statistically, and no need for sensitivity analyses 
+designed to rule out omitted variables.
+
+What the design requires: pre-registered falsification criteria (so results cannot 
+be retroactively reframed), an adversarially-designed test battery (so the test 
+applies genuine pressure to the hypothesis), and a primary oracle independent of 
+the system under evaluation (the ASP solver, not an LLM judge, for delta 
+validation). All three are in place.
+
+What the design does not establish: external validity beyond prototype scope 
+(single tavern, 3–4 characters, 2–3 hard constraints), or generalization across 
+LLM architectures, session lengths, or constraint types not in the test battery. 
+These are known scope boundaries, not design weaknesses.
+
+Appropriate epistemic claim if falsification criteria are met: per-turn symbolic 
+state injection is sufficient to constrain LLM extrapolation within the tested 
+constraint types at prototype scope. This is necessary but not sufficient for the 
+full hypothesis. Scale, constraint complexity, and model variation are 
+post-prototype questions.
+
+---
+
 ## CLAIMS REQUIRING TARGETED VERIFICATION
 
 Open items requiring literature search before the architecture can be treated as ground truth.
