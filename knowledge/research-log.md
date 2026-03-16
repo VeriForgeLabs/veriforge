@@ -714,3 +714,70 @@ Confirms the measurement gap: no published framework measures constraint-specifi
 violation rates against formal symbolic constraints in interactive RP.
 
 ---
+
+### Ankyra-00 — RAG Rival Hypothesis Research (pre-S11)
+
+[AnkyraNote-00-T1] OQ-09-T1 — RAG baseline as untested rival identified and 
+formalized | Ankyra-00 review | [Paper:RoleRAG2025] [Paper:IDRAG2025] 
+[Paper:TRPGRAG2025] [Paper:GSW2025]
+
+RAG is a credible rival for persona/fact-recall consistency but not for
+hard closed-world relational constraint enforcement (Type A / Type B
+integrity constraints). The OQ-09 ablation does not include a RAG baseline
+condition. OQ-09-T1 captures this as a named open thread requiring
+disposition before prototype evaluation begins.
+
+NQS addendum: A secondary human-evaluated Narrative Quality Score metric
+has been added to the OQ-09 protocol to guard against the CVR=0/unusable
+output failure mode. This does not reopen OQ-09.
+
+---
+
+[Paper:RoleRAG2025] Yongjie Wang, Jonathan Leung, Zhiqi Shen,
+"RoleRAG: Enhancing LLM Role-Playing via Graph Guided Retrieval,"
+Nanyang Technological University, arXiv:2505.18541, May 2025.
+URL: https://arxiv.org/abs/2505.18541
+Status: [Verified]
+Notes: Graph-guided RAG for character-aligned RP; uses entity disambiguation
+and boundary-aware retrieval from structured knowledge graph; addresses
+persona/fact-recall consistency, not hard relational constraint enforcement.
+Cited as evidence that RAG is a credible rival in OQ-09-T1.
+
+[Paper:IDRAG2025] Daniel Platnick, Mohamed E. Bengueddache, Marjan Alirezaie,
+Dava J. Newman, Alex Pentland, Hossein Rahnama,
+"ID-RAG: Identity Retrieval-Augmented Generation for Long-Horizon Persona
+Coherence in Generative Agents," arXiv:2509.25299, September 2025.
+URL: https://arxiv.org/abs/2509.25299
+Status: [Verified]
+Notes: Identity knowledge-graph grounding for long-horizon persona coherence;
+outperforms baselines on identity recall in social simulation; targets
+persona consistency, not closed-world relational inference.
+Cited as evidence that RAG is a credible rival in OQ-09-T1.
+
+[Paper:TRPGRAG2025] Gabriel Rudan Sales Matos, José Wellington Franco da Silva,
+Artur de Oliveira da Rocha Franco, José Gilvan Rodrigues Maia,
+José Antônio Fernandes de Macêdo,
+"Creating Tabletop RPG Dialogues via Retrieval-Augmented Generation,"
+SBGames 2025 (XXIV Brazilian Symposium on Games and Digital Entertainment),
+Universidade Federal do Ceará, 2025.
+URL: https://sol.sbc.org.br/index.php/sbgames/article/download/37366/37148/
+Status: [Verified] — precision metric figures confirmed against primary
+source; N=11 participants; evidentiary weight limited by small sample —
+Notes: RAG outperforms standard LLM baselines on human-rated coherence,
+cohesion, creativity, and engagement in TTRPG dialogue generation (N=11).
+Nearest published precedent for RAG in tabletop RP context.
+Does not test hard relational constraint enforcement.
+Cited as domain-adjacent precedent in OQ-09-T1; small sample limits
+weight of numeric claims.
+
+[Paper:GSW2025] Shreyas Rajesh, Pavan Holur, Chenda Duan, David Chong,
+Vwani Roychowdhury,
+"Beyond Fact Retrieval: Episodic Memory for RAG with Generative Semantic
+Workspaces," arXiv:2511.07587, November 2025.
+URL: https://arxiv.org/abs/2511.07587
+Status: [Verified]
+Notes: Neuro-inspired generative memory framework (GSW) for spatiotemporal
+entity tracking; explicitly notes that current RAG solutions fail to build
+space-time-anchored narrative representations for tracking entities through
+episodic events; outperforms structured RAG baselines on episodic memory
+benchmark. Cited as evidence of RAG's epistemic limitations in OQ-09-T1.
