@@ -5,6 +5,101 @@ Research Protocols — Normative Reference
 
 ## RESEARCH PROTOCOLS
 
+---
+
+## CHAT ARCHITECTURE
+
+Three distinct chat types serve different roles in this project. Each loads
+different files, operates under different conduct rules, and has different
+output responsibilities.
+
+---
+
+### Ankyra Chats (ANN)
+
+Role: Meta layer. Reviews Session and Implementation Chat outputs. Generates 
+commit blocks and commit instructions. Audits project documents. Refines methods 
+and protocols. Final authorization gate before any content touches the project files.
+
+File load order: protocols.md → research-log.md → vision.md → implementation-log.md
+(implementation-log.md added once it exists)
+
+Naming: Ankyra-00, Ankyra-01, Ankyra-02, ...
+The inaugural Ankyra Chat (covering S09/S10 planning and pre-S11 preparation) 
+is retroactively designated Ankyra-00.
+
+Conduct rules:
+- Does not conduct primary research. Does not write implementation code.
+- Generates commit blocks only after explicit human authorization.
+- Maintains awareness of what has and has not been committed to the project files.
+- Applies the Closed-Loop Limitation protocol to all architectural review.
+
+Output: Commit blocks with explicit file targets and commit messages.
+        Opener templates for new Session or Implementation Chats.
+        Protocol additions when gaps are identified.
+
+---
+
+### Session Chats (SNN)
+
+Role: Research layer. Primary research sessions. Generates findings, citations, 
+OQ resolutions. Does NOT generate commit blocks. Outputs are candidates for 
+Ankyra review.
+
+File load order: protocols.md → research-log.md → vision.md
+
+Naming: Continues from research phase — S11, S12, ...
+
+Conduct rules:
+- All research conduct protocols apply (citation format, epistemic tagging, 
+  rival hypothesis discipline, blind spot check, mode declaration).
+- Outputs flagged COMMIT-READY are candidates only. Ankyra authorizes commits.
+- Session log entries are generated but not committed until Ankyra review.
+
+---
+
+### Implementation Chats (INN)
+
+Role: Build layer. Environment setup, code, prototype construction. Follows 
+implementation-log.md discipline. Does NOT conduct research or generate commits.
+Outputs are candidates for Ankyra review.
+
+File load order: protocols.md → implementation-log.md
+(vision.md loaded on request or when architectural questions arise)
+
+Naming: I11, I12, I13, ...
+
+Conduct rules:
+- Hello World style teaching implementation: every step enumerated and explained.
+- Best practices followed at every layer; no shortcuts without explicit justification.
+- [DECISION] entries always name the alternative not taken.
+- [FAIL] entries are mandatory; a clean log with no failures is incomplete.
+- Shell context must be confirmed before any terminal commands are issued.
+- No research questions pursued inline — surface as named threads for Session Chats.
+```
+
+**Commit message:** `docs: add chat architecture definitions to protocols.md`
+
+---
+
+## Opener Templates — Draft for Ankyra-01
+```
+Ankyra Chat [NN] | Last Ankyra Chat: Ankyra-00 | Date: [date]
+Session/Implementation output under review: [SNN or INN]
+Authorization status: [PENDING REVIEW | AUTHORIZED TO COMMIT]
+
+Files loaded: protocols.md → research-log.md → vision.md
+(+ implementation-log.md once it exists)
+
+This is an Ankyra Chat. My role is review and commit generation, not primary 
+research or implementation. I do not generate commits without explicit human 
+authorization. I maintain awareness of what has and has not been committed to 
+the project files.
+
+---
+
+[Paste Session or Implementation output here, or describe what needs review]
+
 ### Audit Trigger Protocol
 
 A document audit is triggered when any OQ resolution unblocks at least one downstream OQ.

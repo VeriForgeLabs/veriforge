@@ -369,6 +369,34 @@ Is there prior work on structured worldbuilding elicitation in literature?
 
 **OQ-09 — Prototype Evaluation Protocol** [RESOLVED — S10] — Three-condition ablation (raw LLM / system-prompt-only / VeriForge per-turn), primary metric Constraint Violation Rate, falsification criterion ≥75% CVR reduction vs. Condition A AND statistically lower than Condition B, 12+ pre-registered test cases across Type A and Type B constraint pairs. → [research-log.md](research-log.md#oq-09)
 
+**OQ-09-T1 — RAG baseline as untested rival** [OPEN — Ankyra-00]
+RAG-based narrative consistency (graph-guided retrieval, identity-structured
+retrieval) is an active rival for persona/fact-recall consistency in RP systems.
+[Verified] — [Paper:RoleRAG2025] [Paper:IDRAG2025]
+Whether modern RAG performs comparably to Condition C (per-turn symbolic
+injection) specifically on hard Type A and Type B integrity constraints
+is untested in the current OQ-09 ablation design.
+This is a more specific question than RAG vs. VeriForge on RP quality generally:
+RAG is not a credible rival for closed-world formal inference, but it is a
+credible rival for fact-recall consistency.
+[Inferred] — A Condition D RAG baseline would isolate the value of symbolic
+inference over retrieval; expected result is parity on persona consistency,
+failure on hard relational constraints, but this is unverified.
+Disposition required before prototype runs.
+→ [research-log.md](research-log.md#oq-09-t1)
+
+**OQ-09 — Narrative Quality Score (NQS) — Protocol Addendum**
+Secondary metric (human-evaluated): Narrative Quality Score (NQS) on a
+5-point Likert scale for engagement and creativity per condition (or
+pairwise preference between blinded outputs).
+Rationale: guards against over-constrained refusal prose; a system that
+achieves CVR = 0 by producing unusable or flat output fails the prototype
+success criterion ("working for actual RP sessions").
+Evaluator: same human reviewers as CVR.
+Threshold for success: Condition C NQS not significantly lower than Condition B.
+This is a minor protocol extension to a resolved OQ. It does not reopen OQ-09
+and does not trigger an audit.
+
 ---
 
 ### EVALUATION METHODOLOGY NOTE
