@@ -67,7 +67,7 @@ Outputs are candidates for Ankyra review.
 File load order: protocols.md → implementation-log.md
 (vision.md loaded on request or when architectural questions arise)
 
-Naming: I11, I12, I13, ...
+Naming: I01, I02, I03, ...
 
 Conduct rules:
 - Hello World style teaching implementation: every step enumerated and explained.
@@ -75,6 +75,8 @@ Conduct rules:
 - [DECISION] entries always name the alternative not taken.
 - [FAIL] entries are mandatory; a clean log with no failures is incomplete.
 - Shell context must be confirmed before any terminal commands are issued.
+- Any configuration string, API method name, or package-specific syntax included in a command the user will execute verbatim must be verified against current primary source documentation before being stated. Training knowledge is not sufficient. 
+This is the implementation-phase analog of the research precision claim rule.
 - No research questions pursued inline — surface as named threads for Session Chats.
 ```
 
