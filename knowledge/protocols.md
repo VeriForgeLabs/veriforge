@@ -72,10 +72,10 @@ Naming: I01, I02, I03, ...
 Conduct rules:
 - Hello World style teaching implementation: every step enumerated and explained.
 - Best practices followed at every layer; no shortcuts without explicit justification.
-- [DECISION] entries always name the alternative not taken.
 - [FAIL] entries are mandatory; a clean log with no failures is incomplete.
+- [THREAD] entries name open items that surface during implementation and require future disposition; each must state an explicit routing destination (Session Chat, protocols.md patch, or named implementation phase) and a named trigger condition for when disposition is required.
 - Shell context must be confirmed before any terminal commands are issued.
-- Any configuration string, API method name, or package-specific syntax included in a command the user will execute verbatim must be verified against current primary source documentation before being stated. Training knowledge is not sufficient. 
+- Any configuration string, API method name, or package-specific syntax included in a command the user will execute verbatim must be verified against current primary source documentation before being stated. Training knowledge is not sufficient.
 This is the implementation-phase analog of the research precision claim rule.
 - No research questions pursued inline — surface as named threads for Session Chats.
 ```
@@ -371,8 +371,7 @@ Baseline (b) is required to isolate the specific contribution of per-turn inject
 
 ### Session Mode Declaration
 
-Each session opener must declare its operative mode. Modes are mutually exclusive
-for any given session segment; a session may shift modes explicitly but not implicitly.
+Each session opener must declare its operative mode. Modes are mutually exclusive for any given session segment; a session may shift modes explicitly but not implicitly.
 
 EXPLORE — Generate hypotheses freely. Flag all outputs [Inferred]. 
            Nothing commits without explicit promotion in a subsequent VERIFY pass.
@@ -392,22 +391,43 @@ Each session opener must include one forced question before research begins:
 
   "What question would a skeptic say this session focus is implicitly not asking?"
 
-The answer must be stated explicitly and either: (a) acknowledged as out of scope 
-with one sentence justifying that, or (b) folded into the session focus.
+The answer must be stated explicitly and either: (a) acknowledged as out of scope with one sentence justifying that, or (b) folded into the session focus.
 An unanswered blind spot check is a quality flag, not a neutral finding.
+
+---
+
+### Implementation Log Entry Format
+
+Each implementation chat appends one section block to implementation-log.md.
+The section header format is:
+
+### INN — [Phase Name] | [Date] | [Status]
+
+Three entry types are defined, all append-only within the chat's section block.
+
+[DECISION] IMP-INN-DNN — [Title]
+Chosen: [what was selected]
+Alternative not taken: [what was rejected]
+Reason: [why]
+
+[FAIL] IMP-INN-FNN — [Title]
+Error: [what went wrong]
+Cause: [why it happened]
+Resolution: [how it was fixed]
+Methodology patch recommended: [yes/no]
+
+[THREAD] IMP-INN-TNN — [Title]
+Description: [what the thread is about]
+Routes to: [Session Chat | protocols.md | implementation phase]
+Disposition trigger: [named condition or event that requires this to be resolved]
 
 ---
 
 ### Closed-Loop Limitation
 
-The adversarial framing preamble reduces sycophancy structurally. It does not 
-eliminate the closed-loop problem: asking the same model to evaluate outputs it 
-helped generate provides weaker external pressure than an independent check.
+The adversarial framing preamble reduces sycophancy structurally. It does not eliminate the closed-loop problem: asking the same model to evaluate outputs it helped generate provides weaker external pressure than an independent check.
 
-For high-stakes design decisions (prototype architecture, evaluation design, 
-falsification criteria), at least one verification pass should use a cold context — 
-a fresh conversation with no prior session history — or a separate model run 
-independently on the same question.
+For high-stakes design decisions (prototype architecture, evaluation design, falsification criteria), at least one verification pass should use a cold context — a fresh conversation with no prior session history — or a separate model run independently on the same question.
 
 This is a standing protocol requirement for prototype-phase architectural decisions.
 It is advisory for research-phase synthesis.
