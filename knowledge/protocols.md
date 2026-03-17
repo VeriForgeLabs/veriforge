@@ -24,7 +24,7 @@ Role: Meta layer.
 - Refines methods and protocols.
 - Final authorization gate before any content touches the project files.
 
-File load order: protocols.md → research-log.md → vision.md → implementation-log.md
+File load order: protocols.md → research-log.md → vision.md → implementation-log.md → learning-notes.md
 
 Naming: Ankyra-00, Ankyra-01, Ankyra-02, ...
 The inaugural Ankyra Chat (covering S09/S10 planning and pre-S11 preparation) is retroactively designated Ankyra-00.
@@ -71,7 +71,7 @@ Role: Build layer.
 - Does NOT conduct research or generate commits.
 - Outputs are candidates for Ankyra review.
 
-File load order: protocols.md → implementation-log.md (vision.md loaded on request or when architectural questions arise)
+File load order: protocols.md → implementation-log.md → learning-notes.md (vision.md loaded on request or when architectural questions arise)
 
 Naming: I01, I02, I03, ...
 
@@ -82,6 +82,16 @@ Conduct rules:
 - [THREAD] entries name open items that surface during implementation and require future disposition; each must state an explicit routing destination (Session Chat, protocols.md patch, or named implementation phase) and a named trigger condition for when disposition is required.
 - Shell context must be confirmed before any terminal commands are issued.
 - Any configuration string, API method name, or package-specific syntax included in a command the user will execute verbatim must be verified against current primary source documentation before being stated;training knowledge is not sufficient.
+- The four core project files in knowledge/ — protocols.md, research-log.md, vision.md, and implementation-log.md — are untouched by implementation commits.
+  knowledge/learning-notes.md is a fifth file in the same directory with a different function: personal reference capture.
+  It is populated by Ankyra commits from NOTE-READY blocks and is not part of the research integrity boundary.
+- When an INN chat produces a conceptual explanation, pattern walkthrough, or "why this works" reasoning worth preserving, flag it ✓ NOTE-READY and include a pre-formatted markdown block targeting a named section in knowledge/learning-notes.md. NOTE-READY blocks are candidates for Ankyra commit to learning-notes.md only — not to the core four files. 
+  NOTE-READY is distinct from COMMIT-READY. Format:
+
+  ✓ NOTE-READY
+  Target: knowledge/learning-notes.md — ## [Section] / ### [Subsection]
+  
+  [markdown content]
   
 This is the implementation-phase analog of the research precision claim rule.
 - No research questions pursued inline — surface as named threads for Session Chats.
@@ -96,7 +106,7 @@ Ankyra Chat [NN] | Last Ankyra Chat: Ankyra-00 | Date: [date]
 Session/Implementation output under review: [SNN or INN]
 Authorization status: [PENDING REVIEW | AUTHORIZED TO COMMIT]
 
-Files loaded: protocols.md → research-log.md → vision.md → implementation-log.md
+Files loaded: protocols.md → research-log.md → vision.md → implementation-log.md → learning-notes.md
 
 This is an Ankyra Chat.
 My role is review and commit generation, not primary research or implementation.
@@ -135,10 +145,7 @@ No language remains that refers to this OQ as open, pending, or requiring invest
 All citations referenced within the entry exist as full entries in research-log.md.
 If any citation is missing from research-log.md, add it before proceeding to Step 2.
 
-HALT CONDITION: If the entry cannot be made accurate without re-opening the OQ —
-for example, because the resolution was based on a finding later caught as a citation error,
-or because the stated decision contradicts a committed finding —
-halt the audit, flag the condition to the human operator, and do not proceed to Step 2.
+HALT CONDITION: If the entry cannot be made accurate without re-opening the OQ — for example, because the resolution was based on a finding later caught as a citation error, or because the stated decision contradicts a committed finding — halt the audit, flag the condition to the human operator, and do not proceed to Step 2.
 Migration of an incorrectly resolved OQ is worse than leaving it in place.
 The OQ-reopening protocol applies in this case (see below).
 
@@ -170,8 +177,7 @@ Remove any "must be investigated in OQ-XX" language.
 Cross-reference line (after Step 3 is complete):
 Leave it. It is correct by construction.
 
-After Step 2, no occurrence of this OQ's identifier in vision.md may point to it as open, pending,
-or unresolved — except the cross-reference line that Step 3 will create.
+After Step 2, no occurrence of this OQ's identifier in vision.md may point to it as open, pending, or unresolved — except the cross-reference line that Step 3 will create.
 
 ---
 
@@ -183,8 +189,7 @@ Execute in this exact order. Do not reorder sub-steps.
 The entry being migrated must be accurate before it is archived.
 Migration of an inaccurate entry is not permitted.
 
-3b. Append the full resolved OQ entry — as corrected by Step 1 — to research-log.md
-under a new subsection header in this format:
+3b. Append the full resolved OQ entry — as corrected by Step 1 — to research-log.md under a new subsection header in this format:
 
 ### OQ-XX — [Name] [RESOLVED — SNN]
 
