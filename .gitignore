@@ -1,3 +1,5 @@
 /scratch/
+.venv/
+*.egg-info
 *.tmp
 .DS_Store
