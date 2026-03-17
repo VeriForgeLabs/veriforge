@@ -87,8 +87,8 @@ Conduct rules:
   It is populated directly by the developer from NOTE-READY blocks and is not part of the research integrity boundary.
 - When an INN chat produces a conceptual explanation, pattern walkthrough, or "why this works" reasoning worth preserving, flag it ✓ NOTE-READY and include a pre-formatted markdown block targeting a named section in knowledge/learning-notes.md. 
   NOTE-READY blocks are added directly by the developer to learning-notes.md — no Ankyra oversight required. 
-  NOTE-READY is distinct from COMMIT-READY, which requires Ankyra review and explicit authorization. 
-  NOTE-READY is distinct from COMMIT-READY. Format:
+  NOTE-READY is distinct from COMMIT-READY, which requires Ankyra review and explicit authorization.
+  Format:
 
   ✓ NOTE-READY
   Target: knowledge/learning-notes.md — ## [Section] / ### [Subsection]
@@ -415,7 +415,7 @@ The section header format is:
 
 ### INN — [Phase Name] | [Date] | [Status]
 
-Three entry types are defined, all append-only within the chat's section block.
+Four entry types are defined. All are append-only except [THREAD], which may have a Resolution: field added in-place when the thread closes.
 
 [DECISION] IMP-INN-DNN — [Title]
 Chosen: [what was selected]
@@ -432,9 +432,6 @@ Methodology patch recommended: [yes/no]
 Description: [what the thread is about]
 Routes to: [Session Chat | protocols.md | implementation phase]
 Disposition trigger: [named condition or event that requires this to be resolved]
-Resolution: [one sentence stating what was decided and where it is documented]
-
-[RESOLVED] IMP-INN-TNN — [Thread Title]
 Resolution: [one sentence stating what was decided and where it is documented]
 
 [THREAD] entries are the single exception to the append-only rule.

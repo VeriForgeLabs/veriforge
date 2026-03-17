@@ -4,7 +4,8 @@
 ## VeriForge Implementation — Personal Learning Reference
 Pedagogical companion to the implementation phase.
 Captures conceptual explanations, pattern walkthroughs, and "why this works" reasoning produced during Implementation Chats (INN).
-Populated via NOTE-READY blocks flagged in INN output and committed by Ankyra.
+Populated directly by the developer from NOTE-READY blocks flagged in INN output.
+No Ankyra oversight required for learning-notes.md entries.
 Covers Phase 0 forward — research phase concepts are archived in research-log.md.
 
 Load order: INN chats load this file last — protocols.md → implementation-log.md → learning-notes.md.
@@ -15,10 +16,11 @@ Load order: INN chats load this file last — protocols.md → implementation-lo
 
 ### Ground Facts
 
-An ASP program is a set of logical statements.
+An Answer Set Programming (ASP) program is a set of logical statements.
 The simplest statements are *ground facts* — assertions that something is unconditionally true.
 There is no `if`, no condition, no variable.
 Just a predicate name and its arguments, terminated with a period.
+
 ```asp
 character(guard).
 ```
@@ -85,3 +87,219 @@ Key API objects:
 | `ctl.ground([("base", [])])` | Required before every solve call; "base" is the default theory |
 | `model.symbols(shown=True)` | All atoms in the stable model; "shown" means all atoms when no `#show` directives are present |
 | `result.satisfiable` | Boolean VeriForge's enforcement loop interrogates — `True` for SAT, `False` on constraint violation (Patterns 2–4) |
+
+### Integrity Constraints
+
+An **integrity constraint** is an ASP rule with an empty head — nothing on the left side of the `:-` operator:
+
+```asp
+asp:- body.
+```
+Read it as: **"it must not be the case that body is true."**
+
+If the body conditions are all satisfied by the current facts, the solver rejects the entire program as UNSATISFIABLE (UNSAT). 
+There is no stable model — no valid world state exists under these facts and rules combined.
+This is the mechanism VeriForge uses to enforce hard rules. 
+The constraint doesn't derive any new facts. 
+It eliminates any world state where the prohibited condition holds.
+
+**Mapping to WorldDSL Category 4:**
+
+Category 4 (integrity constraints) encodes two types of hard rules, both using identical ASP syntax:
+
+|Type | Description | Example| 
+|---|---|---|
+| Type A — State consistency | A condition that must never be true regardless of how the state was reached | `a dead entity cannot act` |
+|Type B — Transition validity | A move or state change that is structurally prohibited | `an entity can only move to an adjacent location` |
+
+Both encode as `:- body.` — the distinction is semantic, not syntactic.
+
+**The toy constraint:**
+```asp
+aspimprisoned(prisoner).
+
+:- character(X), imprisoned(X), located_at(X, L), L != cell.
+```
+
+Read: **"it must not be the case that an imprisoned character is located somewhere other than the cell."**
+
+Two things to notice. First, `imprisoned(prisoner).` is a **static property** (Category 2) — it never changes. 
+Second, the constraint uses a **variable** `X` rather than the constant `prisoner` directly. 
+This generalises the rule: any character marked imprisoned is covered, not just this one. Variables in ASP are uppercase; constants are lowercase.
+
+**SAT vs. UNSAT — the core of the enforcement loop:**
+
+The solver is run twice in `02_integrity_constraints.py` using different ABox states:
+
+```python
+# Test 1: prisoner in cell — no violation — expect SAT.
+run("VALID STATE", "")
+
+# Test 2: prisoner in corridor — violates constraint — expect UNSAT.
+run("INVALID STATE", "located_at(prisoner, corridor).")
+```
+
+The second call uses `ctl.add("base", [], extra_facts)` to **inject additional ASP facts at ground time**.
+This is the exact mechanism VeriForge will use to inject proposed ABox deltas for validation — the delta arrives as a string of ASP facts, the solver checks whether they violate any integrity constraint, and the result is SAT (commit) or UNSAT (surface conflict).
+
+**Expected output:**
+```bash
+VALID STATE — Stable model:
+  character(guard)
+  character(merchant)
+  character(prisoner)
+  has_bars(cell)
+  imprisoned(prisoner)
+  located_at(guard,corridor)
+  located_at(merchant,corridor)
+  located_at(prisoner,cell)
+  location(cell)
+  location(corridor)
+VALID STATE — Satisfiable: True
+
+INVALID STATE — Satisfiable: False
+```
+
+Note what is absent in the INVALID STATE case: no stable model is printed, because none exists.
+The solver found a contradiction and stopped.
+`result.satisfiable` is `False`.
+This boolean is what VeriForge's enforcement loop interrogates after every proposed ABox delta.
+
+What `ctl.add()` does:
+
+| Argument| Value | Role| 
+|---|---|---|
+| First | `"base"` | Names the theory to add facts into — must match `ctl.ground([("base", [])])` | 
+| Second | `[]` | Parameter list — empty at prototype scope|
+| Third | `extra_facts` | A string of valid ASP source injected before grounding |
+
+This is the first appearance of `ctl.add()`.
+In Pattern 1, the entire program came from a `.lp` file.
+`ctl.add()` lets you inject additional ASP source programmatically — without modifying the file. At runtime, VeriForge will call `ctl.add()` to inject the current ABox state before each solve call.
+
+### Named-Violation Auxiliary Predicates — Initial Approach (superseded — see corrected section below)
+
+**The problem with pure UNSAT:**
+Pattern 2 correctly rejects invalid states with `Satisfiable: False`.
+But `False` tells you nothing about *which* constraint fired or *which* entity caused it.
+VeriForge's session loop needs a human-readable identifier to surface to the operator.
+
+**The solution — two rules working together:**
+
+The first rule *derives* a named atom when a violation condition holds:
+
+```asp
+violation(prisoner_not_in_cell) :-
+    imprisoned(X),
+    located_at(X, L),
+    L != cell.
+```
+
+Read: "derive the atom `violation(prisoner_not_in_cell)` if any imprisoned character is located outside the cell."
+
+The second rule *enforces* the constraint by rejecting any model containing a violation:
+
+```asp
+:- violation(prisoner_not_in_cell).
+```
+
+Read: "it must not be the case that `violation(prisoner_not_in_cell)` is true."
+
+**Why keep both rules?**
+The derivation rule alone produces the named atom but doesn't reject the world — the solver would accept an invalid state as long as it can name the violation.
+The constraint rule alone produces UNSAT but no identifier.
+Together: the derivation fires first (naming the iolation), then the constraint fires (rejecting the world).
+The violation atom appears in the solver's conflict analysis and can be extracted before UNSAT is finalised.
+
+**Reading violation atoms from the Python API:**
+Instead of checking `result.satisfiable`, the enforcement loop inspects the model for `violation(...)` atoms.
+This requires a different solve pattern:
+
+```python
+violations = []
+
+with ctl.solve(yield_=True) as handle:
+    for model in handle:
+        # Check for violation atoms before the constraint fires
+        violations = [
+            str(atom) for atom in model.symbols(shown=True)
+            if str(atom).startswith("violation(")
+        ]
+    result = handle.get()
+
+if violations:
+    print(f"Constraint violation detected: {violations}")
+else:
+    print("SAT — no violations")
+```
+
+**Mapping to VeriForge:**
+Each integrity constraint in the WorldDSL will have a paired violation predicate.
+When the ASP validation layer runs after a proposed ABox delta, it reports not just SAT/UNSAT but the specific named violation — e.g., `violation(prisoner_not_in_cell)` —
+which the session loop surfaces to the human operator.
+
+**Key structural point:**
+The violation predicate name is the human-readable error message.
+Name it descriptively: `violation(prisoner_not_in_cell)`, not `violation(c1)`.
+The operator reading "prisoner_not_in_cell" knows immediately what happened.
+
+### Named-Violation Auxiliary Predicates (corrected)
+
+**Why pure UNSAT is insufficient:**
+Pattern 2 correctly rejects invalid states — `result.satisfiable` is `False`.
+But when a program is UNSAT, the solver yields zero models. 
+No atoms can be read.
+`False` tells you a violation occurred; it cannot tell you which one.
+
+**The correct architecture for named violations:**
+
+Derive a named atom when the violation condition holds, with NO paired constraint:
+
+```asp
+violation(prisoner_not_in_cell) :-
+    imprisoned(X),
+    located_at(X, L),
+    L != cell.
+```
+
+The program is now always SAT — the solver always yields a model.
+The enforcement loop reads that model and checks for `violation(...)` atoms.
+
+| Model contains `violation(...)` atoms? | Enforcement decision |
+|---|---|
+| No | SAT — clean state, commit the ABox delta |
+| Yes | Violation — surface the named identifier to the operator |
+
+**Why this is correct for VeriForge:**
+VeriForge does not need UNSAT. It needs to know *which* rule was violated.
+Named atoms in a SAT model provide that information directly.
+The enforcement loop's signal changes from `result.satisfiable` to `if violations`.
+
+**Critical fix — ABox state must never be hardcoded in the .lp file:**
+ASP accumulates facts — it does not override them.
+If `located_at(prisoner, corridor)` is in the `.lp` file and you inject `located_at(prisoner, cell)` via `ctl.add()`, both atoms are simultaneously true.
+The prisoner is in two places at once — every location-based constraint fires.
+
+The `.lp` file encodes rules and static structure only.
+All mutable state (Category 3) is injected via `ctl.add()` at runtime.
+This is exactly how VeriForge will work: the ABox JSON is loaded and injected as ground facts at the start of each enforcement call, never hardcoded.
+
+**Reading violation atoms from the Python API:**
+
+```python
+violations = []
+
+with ctl.solve(yield_=True) as handle:
+    for model in handle:
+        # The program is always SAT now — this loop always executes once.
+        violations = [
+            str(atom) for atom in model.symbols(shown=True)
+            if str(atom).startswith("violation(")
+        ]
+    result = handle.get()
+
+if violations:
+    print(f"Constraint violation: {violations}")
+else:
+    print("SAT — no violations")
+```
