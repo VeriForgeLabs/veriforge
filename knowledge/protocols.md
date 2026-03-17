@@ -84,8 +84,10 @@ Conduct rules:
 - Any configuration string, API method name, or package-specific syntax included in a command the user will execute verbatim must be verified against current primary source documentation before being stated;training knowledge is not sufficient.
 - The four core project files in knowledge/ — protocols.md, research-log.md, vision.md, and implementation-log.md — are untouched by implementation commits.
   knowledge/learning-notes.md is a fifth file in the same directory with a different function: personal reference capture.
-  It is populated by Ankyra commits from NOTE-READY blocks and is not part of the research integrity boundary.
-- When an INN chat produces a conceptual explanation, pattern walkthrough, or "why this works" reasoning worth preserving, flag it ✓ NOTE-READY and include a pre-formatted markdown block targeting a named section in knowledge/learning-notes.md. NOTE-READY blocks are candidates for Ankyra commit to learning-notes.md only — not to the core four files. 
+  It is populated directly by the developer from NOTE-READY blocks and is not part of the research integrity boundary.
+- When an INN chat produces a conceptual explanation, pattern walkthrough, or "why this works" reasoning worth preserving, flag it ✓ NOTE-READY and include a pre-formatted markdown block targeting a named section in knowledge/learning-notes.md. 
+  NOTE-READY blocks are added directly by the developer to learning-notes.md — no Ankyra oversight required. 
+  NOTE-READY is distinct from COMMIT-READY, which requires Ankyra review and explicit authorization. 
   NOTE-READY is distinct from COMMIT-READY. Format:
 
   ✓ NOTE-READY
@@ -430,6 +432,14 @@ Methodology patch recommended: [yes/no]
 Description: [what the thread is about]
 Routes to: [Session Chat | protocols.md | implementation phase]
 Disposition trigger: [named condition or event that requires this to be resolved]
+Resolution: [one sentence stating what was decided and where it is documented]
+
+[RESOLVED] IMP-INN-TNN — [Thread Title]
+Resolution: [one sentence stating what was decided and where it is documented]
+
+[THREAD] entries are the single exception to the append-only rule.
+When a thread is closed, a Resolution: field is added in-place to the original entry.
+[DECISION] and [FAIL] entries remain strictly append-only.
 
 ---
 

@@ -1,4 +1,4 @@
-# implementation-log.md
+
 
 ## VeriForge Implementation — Governing Document
 Append-only record of implementation decisions, failures, and open threads, governed by the implementation phase map below.
@@ -122,3 +122,22 @@ Methodology patch recommended: yes — implementation conduct rules updated to r
 Description: INN chats produce conceptual explanations and pattern walkthroughs that are not captured by [DECISION] or [FAIL] entries and are lost when the chat context closes; a dedicated format and file home is needed to capture this content for the developer's ongoing reference.
 Routes to: implementation phase — format and file home must be designed before I02 opens.
 Disposition trigger: Phase 1 start; if learning notes have proven unnecessary by then the thread closes without action; if useful, the format question resolves at that point with actual evidence of what is needed.
+Resolution: knowledge/learning-notes.md created and NOTE-READY workflow defined in Ankyra-02; format is topic-organized markdown populated directly by the developer from INN NOTE-READY blocks without Ankyra oversight.
+
+[DECISION] IMP-I01-D05 — Named-violation detection mechanism
+Chosen: derivation-only violation predicates with SAT model inspection.
+Alternative not taken: paired derivation + integrity constraint (:- violation(X)) producing UNSAT.
+Reason: when a program is UNSAT the clingo Python API yields zero models — the for model in handle loop never executes and no atoms are readable. Derivation-only predicates keep the program always SAT; the enforcement loop reads violation(...) atoms from the yielded model directly. This produces a human-readable violation identifier rather than a bare boolean.
+
+[FAIL] IMP-I01-F02 — Hardcoded mutable state in Pattern 3 .lp file
+Error: located_at facts hardcoded in 03_named_violations.lp while also injected via ctl.add() — both became simultaneously true; constraints fired on both atoms regardless of injected state.
+Cause: failure to apply the four-category framework before writing the file; Category 3 mutable state must always be injected at runtime, never hardcoded in the rules file.
+Resolution: removed all located_at facts from the .lp file; all ABox state now injected exclusively via ctl.add() in the Python script.
+Methodology patch recommended: no — the principle is already established in OQ-05a; this was a failure to apply it, not a gap in the protocol.
+
+[FAIL] IMP-I01-F03 — Paired constraint design makes violation atoms unreachable
+Error: violation(X) derived then immediately rejected via :- violation(X); program becomes UNSAT; Python API yields zero models; for model in handle loop never executes; violations list permanently empty.
+Cause: correct ASP reasoning about the paired pattern combined with insufficient reasoning about Python API behavior under UNSAT — zero model yield is a consequence that required empirical discovery.
+Resolution: dropped paired constraint entirely; violation predicates are derivation-only; program is always SAT; enforcement loop checks for presence of violation(...) atoms in the yielded model rather than interrogating result.satisfiable.
+Methodology patch recommended: no — this is expected implementation trial-and-error; the corrected design is now the documented pattern.
+
