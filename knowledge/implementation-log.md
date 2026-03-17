@@ -17,7 +17,7 @@ The resolution criterion for each phase is pre-registered and cannot be changed 
 
 DEPENDS ON: nothing
 BLOCKS: Phase 1
-Status: [IN PROGRESS — I01]
+Status: [RESOLVED — I01]
 
 Resolution criterion:
 Given the toy example (guard, prisoner, merchant, one cell, one hard constraint), all four ASP patterns execute correctly and produce expected output via the Python API.
@@ -90,7 +90,7 @@ Done means: the harness can run a full condition and produce a CVR figure withou
 
 _Entries are appended here as implementation work proceeds. Each chat appends one section block._
 
-### I01 — Phase 0: Clingo Fundamentals | March 2026 | [IN PROGRESS]
+### I01 — Phase 0: Clingo Fundamentals | March 2026 | [RESOLVED]
 
 [DECISION] IMP-I01-D01 — Development environment
 Chosen: WSL Ubuntu filesystem, bash shell, VS Code with Remote-WSL extension pointing at WSL.

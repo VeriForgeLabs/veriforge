@@ -303,3 +303,35 @@ if violations:
 else:
     print("SAT — no violations")
 ```
+
+### Python Enforcement Loop
+
+Pattern 4 composes the three prior patterns into a single callable function — `validate_delta()` — that represents the complete per-turn symbolic validation cycle.
+
+**Function signature:**
+
+```python
+def validate_delta(
+    rules_file: str,
+    current_abox: str,
+    proposed_delta: str,
+) -> ValidationResult:
+```
+
+**What it does:**
+Loads the rules file, injects current ABox state, injects the proposed delta on top, runs the solver, and returns a `ValidationResult` — a named tuple carrying a `clean` boolean and a `violations` list.
+
+**The enforcement signal:**
+`clean=True` and an empty `violations` list means commit.
+`clean=False` with one or more named violation identifiers means block and surface the identifiers to the operator.
+`result.satisfiable` is never interrogated — the signal is `len(violations) == 0`.
+
+**Why current_abox and proposed_delta are separate arguments:**
+Both are injected via `ctl.add()` before grounding.
+Keeping them as separate strings preserves the distinction between "what the world looks like now" and "what the LLM wants to change."
+In Phase 2, the current ABox will be serialised from JSON; the proposed delta will be extracted from the LLM's structured output. The separation is architectural, not cosmetic.
+
+**The boundary this function represents:**
+Everything inside `validate_delta()` is symbolic — deterministic, inspectable, and independent of any LLM all.
+Everything outside it is session management.
+This boundary is the core of VeriForge's architectural separation between the symbolic enforcement layer and the generative layer.
