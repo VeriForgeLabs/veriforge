@@ -1,6 +1,6 @@
 # vision.md
 
-_Document version: 0.10 — March 2026_
+_Document version: 0.11 — March 2026_
 _Next review trigger: OQ-09 (Evaluation Protocol) research complete_
 
 ## Semantics-Driven Worldbuilding DSL Project
@@ -8,7 +8,7 @@ Project Knowledge File — Hypothesis Document
 
 ## ⚠ FRAMING PREAMBLE — READ FIRST
 
-This document represents one researcher's working understanding as of March 2026. 
+This document represents one researcher's working understanding as of March 2026.
 It is a **hypothesis document**, not a conclusions document.
 
 When referencing this material:
@@ -18,18 +18,18 @@ When referencing this material:
 - Epistemic markers on every significant claim are authoritative: `[Verified]` | `[Inferred]` | `[Unverified]`
 - The Open Questions and Unverified Assertions sections are the most valuable parts — prioritize investigating those over confirming what is stated.
 
-**Your job is not to validate this document.** 
+**Your job is not to validate this document.**
 **It is to find out where it is wrong, incomplete, or missing something important.**
 
 ---
 
 ## AUTHORITATIVE TERM DEFINITIONS
 
-These terms have specific meanings within this project. 
+These terms have specific meanings within this project.
 Use them consistently to prevent semantic drift and ambiguity.
 
 **Zero-decoherence** The target property that no narrative output can contradict a previously established fact derivable from the WorldDSL specification or committed session state.
-Coined term — not standard in the literature. 
+Coined term — not standard in the literature.
 [Unverified] — whether an equivalent formal concept exists under another name —
 
 **WorldDSL** The machine-readable artifact encoding a specific world as structured ground truth.
@@ -58,11 +58,11 @@ Storage (JSON file), state transitions (ASP-gated commit), validation (ASP solve
 Retrieval at scale remains a known out-of-scope problem.
 
 **Narrative drift** Gradual divergence of LLM outputs from established world facts over the course of a long session or across sessions.
-Caused by statelessness of LLMs and probabilistic generation. 
+Caused by statelessness of LLMs and probabilistic generation.
 [Verified] — This is a documented problem in NLP/game literature.
 
 **NeSy (Neurosymbolic)** An AI architecture that combines neural components (LLMs) with symbolic components (logic programs, constraint solvers, ontologies) to achieve capabilities neither can achieve alone.
-The hybrid NeSy approach — keeping LLM intact while delegating logical enforcement to a separate symbolic module — is the relevant sub-category for this project. 
+The hybrid NeSy approach — keeping LLM intact while delegating logical enforcement to a separate symbolic module — is the relevant sub-category for this project.
 [Verified] — This is an active research field with published frameworks.
 
 ---
@@ -77,7 +77,7 @@ Potential for collaborative players or co-developers if concept validates.
 **Scope:** Minimum viable prototype targets a single location cluster with 2–5 entities and 2–3 hard constraints.
 This is sufficient to test the core hypothesis end-to-end.
 Full-world scope is out of scope for the initial prototype.
-[Paper:Zhou2025] [Paper:ElBoudouri2025] 
+[Paper:Zhou2025] [Paper:ElBoudouri2025]
 
 ---
 
@@ -122,23 +122,23 @@ These claims are grounded in literature found during research sessions.
 Full references in the Research Log section.
 
 - `[Verified]` Narrative drift and decoherence in LLMs over long sessions is a documented, measured problem in NLP and game AI literature.
-    
+
 - `[Verified]` The NeSy hybrid architecture — LLM paired with external symbolic module — is an active research area.
   The hybrid approach (LLM intact + separate symbolic layer) is considered more promising than integrative approaches for general logical reasoning.
-    
+
 - `[Verified]` NL→logic-program translation fails on two error types: syntactic (detectable, solver crashes) and semantic (silent, spec compiles but misrepresents intent).
   Semantic error is the dangerous class.
-    
+
 - `[Verified]` ASP + LLM integration (LLMASP, DSPy-ASP frameworks) exists and shows up to 50% accuracy improvement over direct prompting.
   Iterative feedback loops (LLM revises until solver accepts) are a documented approach.
-    
+
 - `[Verified]` Stateful narrative consistency across sessions is an unsolved open problem.
   Current approaches (RAG, context injection, BDI memory architectures) are partial mitigations, not solutions.
-    
+
 - `[Verified]` Sycophancy in LLMs is documented at ~58% baseline across frontier models.
   Caused by RLHF training.
   Mitigation: explicit skepticism instructions + hypothesis framing, not elaborate templates.
-    
+
 - `[Verified]` Anchoring bias: user-provided context carries more weight than model's generalized knowledge.
   Framing as hypothesis vs. ground truth produces measurably different model behavior.
 
@@ -173,7 +173,6 @@ Full references in the Research Log section.
 
 - `[Verified]` ASP is documented in applied narrative constraint enforcement and LLM narrative plan verification — not only in general logical reasoning benchmarks.
   ASP constraints govern high-level narrative function sequencing with LLM rendering scenes from ASP-constrained outlines.
-  
   [Paper:PJWang2024], [Paper:YiWang2025]
 
 - `[Verified]` LLMs struggle with consistent state tracking without symbolic verification.
@@ -192,7 +191,7 @@ Full references in the Research Log section.
 - `[Verified]` GDL's keyword vocabulary maps onto the four WorldDSL categories: `role` → entity registry; `init` without `next` rules → static properties; `init`/`true`/`next` → mutable state; `legal` → integrity constraints (transition validity).
   `goal` and `terminal` are game-specific and have no RP equivalent.
   The `does` keyword (action invocation) has no WorldDSL equivalent — the OQ-02b reactive delta architecture handles actions as proposed ABox deltas validated against constraints, not as pre-enumerated named actions.
-  [Doc:WikipediaGDL] [Doc:ThielschemGDLII]
+  [Doc:WikipediaGDL], [Doc:ThielschemGDLII]
 
 - `[Verified]` Story2Game's world model entity taxonomy (Player, Character, Item, Room, Container) maps onto Category 1 (entity registry with sub-typing).
   Spatial adjacency between rooms collapses into Category 2 (static property).
@@ -208,13 +207,9 @@ Full references in the Research Log section.
   → [OQ-05a — RESOLVED — S06]
   → [OQ-02 — RESOLVED — S05]
 
-- `[Verified]` Epistemic and uncertain world facts are correctly 
-  excluded from the DSL at prototype scope.
-  GDL required a separate extension (GDL-II) to handle 
-  incomplete information, confirming that the base closed-world 
-  formalism assumes certainty.
-  At prototype scope with a human operator, character knowledge 
-  is adjudicated narratively, not formally tracked in the DSL.
+- `[Verified]` Epistemic and uncertain world facts are correctly   excluded from the DSL at prototype scope.
+  GDL required a separate extension (GDL-II) to handle incomplete information, confirming that the base closed-world formalism assumes certainty.
+  At prototype scope with a human operator, character knowledge is adjudicated narratively, not formally tracked in the DSL.
   [Doc:ThielschemGDLII]
 
 - `[Verified]` Context utilization degradation is an empirically documented risk for system prompt injection as an enforcement mechanism.
@@ -222,7 +217,7 @@ Full references in the Research Log section.
   GPT-4 effectively uses approximately 10% of its 128K window on such tasks.
   Scope condition: this finding applies to distributed-fact reasoning tasks; ASP-derived facts injected at the start of context (system prompt) have partial positional advantage per Liu2024 (U-shaped curve, primacy effect), but this advantage does not counteract the Li2024 attention decay mechanism as session length grows.
   OQ-08 RESOLVED — this distinction was investigated; per-turn symbolic state injection (not front-loaded session-start injection) was selected as the operative enforcement mechanism on this basis.
-  [Paper:Kuratov2024] [Paper:Behrouz2025Titans]
+  [Paper:Kuratov2024], [Paper:Behrouz2025Titans]
 
 - `[Inferred]` Transformer attention is a dense probabilistic distribution across all prior positions, not a discrete directed acyclic graph of parent-child provenance.
   Post-hoc attribution via attention weights is an approximation heuristic, not an architectural fact.
@@ -230,6 +225,7 @@ Full references in the Research Log section.
   This is a mechanistic argument for the necessity of an external symbolic verification layer, not merely an empirical observation about LLM inconsistency.
   Strengthens Step 4 of the core hypothesis without changing its epistemic status.
   [Inferred] — OQ-08 research completed without finding a published NeSy or interpretability paper formalizing this claim directly; remains [Inferred] and unverified; targeted verification deferred to post-prototype —
+
 - `[Verified]` Session-start system prompt injection is empirically insufficient as a sole enforcement mechanism.
   Significant instruction drift is measurable within eight rounds on LLaMA2-chat-70B and GPT-3.5.
   The causal mechanism is attention decay — attention allocated to system prompt tokens declines progressively as conversation length grows.
@@ -248,7 +244,7 @@ Full references in the Research Log section.
   Slice of Life (Treanor, Samuel, Nelson) maintains a symbolic social record updated each turn and constructs the LLM prompt from the current symbolic state at every generation step.
   The explicit design decision: simulation state is kept entirely symbolic; the LLM generates surface dialogue text only and does not advance simulation state.
   No quantitative constraint violation rate is reported — the system is described as working in practice but has not been formally benchmarked for constraint adherence.
-  [Paper:Treanor2024] [Paper:Treanor2025]
+  [Paper:Treanor2024], [Paper:Treanor2025]
   [Verified] — absence finding; no quantitative constraint adherence benchmark found for this architecture across FDG 2024 and FDG 2025 papers —
   → [OQ-08 — RESOLVED — S08]
 
@@ -256,22 +252,22 @@ Full references in the Research Log section.
 
 ## WHAT IS SYNTHESIZED — NOT YET VERIFIED
 
-These claims are logically inferred from verified findings but have not been confirmed against literature. 
+These claims are logically inferred from verified findings but have not been confirmed against literature.
 **Do not treat as ground truth.**
 
 - `[Inferred]` A four-component decomposition: (1) DSL schema design, (2) minimal viable DSL for a test world, (3) NL→DSL pipeline with verification, (4) stateful session layer.
 - Presented as pragmatic development ordering — not validated as correct or complete.
-    
+
 - `[Inferred]` A three-tier constraint system: hard constraints (inviolable), soft constraints with flagged extrapolation, and unconstrained creative latitude.
   Analogized from physical simulation.
   Not a named approach in the literature.
-    
+
 - `[Inferred]` A flag-then-commit state mechanism: LLM or human flags narrative events as permanent state changes; human reviews; commits to DSL ABox.
   Reasonable design, but no published system implementing this specific mechanism was found.
-    
+
 - `[Inferred]` "Minimal viable DSL" as a solo-tractable starting strategy: begin with only vital-fact layer (entity registry, vital states, permanent relationships, Tier 1 constraints).
   Pragmatically reasonable but not validated against actual worldbuilding DSL scope in practice.
-    
+
 - `[Inferred]` The meta-questionnaire as structured NL elicitation may be novel relative to existing literature.
   Not confirmed.
 
@@ -330,9 +326,13 @@ These claims are logically inferred from verified findings but have not been con
 
 These are the most important parts of this document.
 
-**OQ-01 — DSL Formalism** [RESOLVED — S04] — Hybrid JSON + ASP (Clingo) selected. → [research-log.md](research-log.md#oq-01)
+**OQ-01 — DSL Formalism**
+[RESOLVED — S04] — Hybrid JSON + ASP (Clingo) selected.
+→ [research-log.md](research-log.md#oq-01)
 
-**OQ-02 — Stateful Session Layer** [RESOLVED — S05] — ASP-Gated Automatic State Commit with Audit Log; JSON file storage; full load at session start. → [research-log.md](research-log.md#oq-02)
+**OQ-02 — Stateful Session Layer**
+[RESOLVED — S05] — ASP-Gated Automatic State Commit with Audit Log; JSON file storage; full load at session start.
+→ [research-log.md](research-log.md#oq-02)
 
 **OQ-03 — Verification and Error Correction Loop** [OPEN]
 DEPENDS ON: OQ-01 [RESOLVED] — error correction loop design depends on what solver error output looks like in ASP.
@@ -353,11 +353,17 @@ A constrained extrapolation mechanism that surfaces proposed rules for human app
 **OQ-05 — Prototype Scope**
 Decomposed into two sub-questions, both resolved:
 
-**OQ-05b — Scale Threshold** [RESOLVED — S02] — Hypothesis testable at minimal scale: 2–5 entities, one location cluster, 2–3 hard constraints. → [research-log.md](research-log.md#oq-05b)
+**OQ-05b — Scale Threshold**
+[RESOLVED — S02] — Hypothesis testable at minimal scale: 2–5 entities, one location cluster, 2–3 hard constraints.
+→ [research-log.md](research-log.md#oq-05b)
 
-**OQ-05a — Representational Scope** [RESOLVED — S06] — Four functional categories confirmed: entity registry, static properties, mutable state, and integrity constraints (Type A state consistency + Type B transition validity), all expressible in ASP/Clingo. → [research-log.md](research-log.md#oq-05a)
+**OQ-05a — Representational Scope**
+[RESOLVED — S06] — Four functional categories confirmed: entity registry, static properties, mutable state, and integrity constraints (Type A state consistency + Type B transition validity), all expressible in ASP/Clingo.
+→ [research-log.md](research-log.md#oq-05a)
 
-**OQ-06 — Developer Toolset Fit** [RESOLVED — S04] — ASP/Clingo confirmed tractable for a solo non-professional developer via novice documentation, game design course materials, and a solo hobbyist project. → [research-log.md](research-log.md#oq-06)
+**OQ-06 — Developer Toolset Fit**
+[RESOLVED — S04] — ASP/Clingo confirmed tractable for a solo non-professional developer via novice documentation, game design course materials, and a solo hobbyist project.
+→ [research-log.md](research-log.md#oq-06)
 
 **OQ-07 — Meta-Questionnaire Design** [OPEN]
 No hard dependencies identified.
@@ -365,37 +371,32 @@ What makes a questionnaire both comprehensive and self-consistent?
 How are co-evolution and self-reference implemented structurally?
 Is there prior work on structured worldbuilding elicitation in literature?
 
-**OQ-08 — LLM Output Enforcement Mechanism** [RESOLVED — S08] — Per-turn symbolic state injection plus reactive ASP validation selected as the enforcement mechanism; whether this is sufficient to constrain LLM extrapolation at interactive RP pace is the load-bearing empirical claim delegated to OQ-09. → [research-log.md](research-log.md#oq-08)
+**OQ-08 — LLM Output Enforcement Mechanism**
+[RESOLVED — S08] — Per-turn symbolic state injection plus reactive ASP validation selected as the enforcement mechanism; whether this is sufficient to constrain LLM extrapolation at interactive RP pace is the load-bearing empirical claim delegated to OQ-09.
+→ [research-log.md](research-log.md#oq-08)
 
-**OQ-09 — Prototype Evaluation Protocol** [RESOLVED — S10] — Three-condition ablation (raw LLM / system-prompt-only / VeriForge per-turn), primary metric Constraint Violation Rate, falsification criterion ≥75% CVR reduction vs. Condition A AND statistically lower than Condition B, 12+ pre-registered test cases across Type A and Type B constraint pairs. → [research-log.md](research-log.md#oq-09)
+**OQ-09 — Prototype Evaluation Protocol**
+[RESOLVED — S10] — Three-condition ablation (raw LLM / system-prompt-only / VeriForge per-turn), primary metric Constraint Violation Rate, falsification criterion ≥75% CVR reduction vs. Condition A AND statistically lower than Condition B, 12+ pre-registered test cases across Type A and Type B constraint pairs.
+→ [research-log.md](research-log.md#oq-09)
 
 **OQ-09-T1 — RAG baseline as untested rival** [OPEN — Ankyra-00]
-RAG-based narrative consistency (graph-guided retrieval, identity-structured
-retrieval) is an active rival for persona/fact-recall consistency in RP systems.
-[Verified] — [Paper:RoleRAG2025] [Paper:IDRAG2025]
-Whether modern RAG performs comparably to Condition C (per-turn symbolic
-injection) specifically on hard Type A and Type B integrity constraints
-is untested in the current OQ-09 ablation design.
-This is a more specific question than RAG vs. VeriForge on RP quality generally:
-RAG is not a credible rival for closed-world formal inference, but it is a
-credible rival for fact-recall consistency.
-[Inferred] — A Condition D RAG baseline would isolate the value of symbolic
-inference over retrieval; expected result is parity on persona consistency,
-failure on hard relational constraints, but this is unverified.
+RAG-based narrative consistency (graph-guided retrieval, identity-structured retrieval) is an active rival for persona/fact-recall consistency in RP systems.
+[Verified] — [Paper:RoleRAG2025], [Paper:IDRAG2025]
+Whether modern RAG performs comparably to Condition C (per-turn symbolic injection) specifically on hard Type A and Type B integrity constraints is untested in the current OQ-09 ablation design.
+This is a more specific question than RAG vs. VeriForge on RP quality generally: RAG is not a credible rival for closed-world formal inference, but it is a credible rival for fact-recall consistency.
+[Inferred] — A Condition D RAG baseline would isolate the value of symbolic inference over retrieval; expected result is parity on persona consistency, failure on hard relational constraints, but this is unverified.
 Disposition required before prototype runs.
+Required by: Phase 4 (Evaluation Harness) — must be disposed before test cases are pre-registered.
 → [research-log.md](research-log.md#oq-09-t1)
+→ [implementation-log.md](implementation-log.md#phase-4)
 
 **OQ-09 — Narrative Quality Score (NQS) — Protocol Addendum**
-Secondary metric (human-evaluated): Narrative Quality Score (NQS) on a
-5-point Likert scale for engagement and creativity per condition (or
-pairwise preference between blinded outputs).
-Rationale: guards against over-constrained refusal prose; a system that
-achieves CVR = 0 by producing unusable or flat output fails the prototype
-success criterion ("working for actual RP sessions").
+Secondary metric (human-evaluated): Narrative Quality Score (NQS) on a 5-point Likert scale for engagement and creativity per condition (or pairwise preference between blinded outputs).
+Rationale: guards against over-constrained refusal prose; a system that achieves CVR = 0 by producing unusable or flat output fails the prototype success criterion ("working for actual RP sessions").
 Evaluator: same human reviewers as CVR.
 Threshold for success: Condition C NQS not significantly lower than Condition B.
-This is a minor protocol extension to a resolved OQ. It does not reopen OQ-09
-and does not trigger an audit.
+This is a minor protocol extension to a resolved OQ.
+It does not reopen OQ-09 and does not trigger an audit.
 
 ---
 
@@ -404,31 +405,18 @@ and does not trigger an audit.
 The OQ-09 ablation design is a controlled experiment, not an observational study.
 This distinction determines what methodological machinery is and is not required.
 
-The causal question — does per-turn symbolic state injection specifically reduce 
-constraint violations, beyond what session-start injection alone achieves? — is 
-answered directly by comparing Condition B to Condition C across an identical 
-scripted test battery, with the LLM fixed across all conditions. Because the 
-injection condition is assigned by the experimenter and not inferred from 
-observational data, there is no unobserved confounding to control for, no 
-counterfactual to construct statistically, and no need for sensitivity analyses 
-designed to rule out omitted variables.
+The causal question — does per-turn symbolic state injection specifically reduce constraint violations, beyond what session-start injection alone achieves? — is answered directly by comparing Condition B to Condition C across an identical scripted test battery, with the LLM fixed across all conditions.
+Because the injection condition is assigned by the experimenter and not inferred from observational data, there is no unobserved confounding to control for, no counterfactual to construct statistically, and no need for sensitivity analyses designed to rule out omitted variables.
 
-What the design requires: pre-registered falsification criteria (so results cannot 
-be retroactively reframed), an adversarially-designed test battery (so the test 
-applies genuine pressure to the hypothesis), and a primary oracle independent of 
-the system under evaluation (the ASP solver, not an LLM judge, for delta 
-validation). All three are in place.
+What the design requires: pre-registered falsification criteria (so results cannot be retroactively reframed), an adversarially-designed test battery (so the test applies genuine pressure to the hypothesis), and a primary oracle independent of the system under evaluation (the ASP solver, not an LLM judge, for delta validation).
+All three are in place.
 
-What the design does not establish: external validity beyond prototype scope 
-(single tavern, 3–4 characters, 2–3 hard constraints), or generalization across 
-LLM architectures, session lengths, or constraint types not in the test battery. 
+What the design does not establish: external validity beyond prototype scope (single tavern, 3–4 characters, 2–3 hard constraints), or generalization across LLM architectures, session lengths, or constraint types not in the test battery.
 These are known scope boundaries, not design weaknesses.
 
-Appropriate epistemic claim if falsification criteria are met: per-turn symbolic 
-state injection is sufficient to constrain LLM extrapolation within the tested 
-constraint types at prototype scope. This is necessary but not sufficient for the 
-full hypothesis. Scale, constraint complexity, and model variation are 
-post-prototype questions.
+Appropriate epistemic claim if falsification criteria are met: per-turn symbolic state injection is sufficient to constrain LLM extrapolation within the tested constraint types at prototype scope.
+This is necessary but not sufficient for the full hypothesis.
+Scale, constraint complexity, and model variation are post-prototype questions.
 
 ---
 
@@ -438,29 +426,26 @@ Open items requiring literature search before the architecture can be treated as
 Closed items have been migrated to [research-log.md](research-log.md#closed-verification-items).
 
 - [ ] Does a named formalism exist for "zero-decoherence" as defined here? | Origin: S01 | Influences: OQ-09 | [Unverified]
-
 - [ ] Is the meta-questionnaire approach novel, or does prior work cover it? | Origin: S01 | Influences: OQ-07 | [Unverified]
-
 - [ ] What does DSL-Xpert 2.0 actually do for automatic error correction? | Origin: S03 | Influences: OQ-03 | [Unverified]
-
 - [ ] What is the documented scope of hand-built worldbuilding DSLs in practice? | Origin: S01 | Influences: OQ-07 | [Unverified]
-
 - [ ] What is the actual failure rate of NL→ASP translation for domain specification tasks (vs. logical reasoning tasks studied in literature)? | Origin: S03 | Influences: OQ-03 | [Unverified]
+- [ ] Is there a benchmark measuring formal constraint-specification violation rates specifically (as opposed to personality/style drift)? RPEval covers personality/style drift; a direct measurement standard for zero-decoherence does not yet exist in this project's research log. | Origin: S02 | Influences: OQ-09 | [Unverified]
+- [ ] Is the enforcement mechanism (ASP-derived context injection) sufficient to constrain LLM extrapolation within constraint boundaries at prototype scope? This is the central unverified empirical claim of Step 4 of the hypothesis. Delegated to OQ-09 [RESOLVED — S10] — evaluation protocol designed; empirical test is prototype phase. | Origin: S08 | Influences: OQ-09 | [Unverified]
+- [ ] Does reactive ASP validation of ABox deltas catch constraint violations that appear in LLM surface narrative without triggering a delta at all? The VDR metric in OQ-09 is designed to measure this gap, but the architectural vulnerability is [Inferred] — not yet tested. | Origin: S10 | Influences: OQ-09 | [Inferred]
+- [ ] Confirm primary source and URL for [Paper:Wang2024] DSPy-ASP framework; the accuracy figure (up to 50% improvement) is a precision claim on a secondary source only. | Origin: S01 | Influences: OQ-01 (historical) | [Unverified]
 
-- [ ] Is there a benchmark measuring formal constraint-specification violation rates specifically (as opposed to personality/style drift)?
-  RPEval covers personality/style drift; a direct measurement standard for zero-decoherence does not yet exist in this project's research log. | Origin: S02 | Influences: OQ-09 | [Unverified]
+---
 
-- [ ] Is the enforcement mechanism (ASP-derived context injection) sufficient to constrain LLM extrapolation within constraint boundaries at prototype scope?
-  This is the central unverified empirical claim of Step 4 of the hypothesis.
-  Delegated to OQ-09 [RESOLVED — S10] — evaluation protocol designed; empirical test is prototype phase. | Origin: S08 | Influences: OQ-09 | [Unverified]
+## IMPLEMENTATION STATUS
 
-- [ ] Does reactive ASP validation of ABox deltas catch constraint violations
-  that appear in LLM surface narrative without triggering a delta at all?
-  The VDR metric in OQ-09 is designed to measure this gap, but the
-  architectural vulnerability is [Inferred] — not yet tested. | Origin: S10 | Influences: OQ-09 | [Inferred]
+Implementation phases are tracked in full in [implementation-log.md](implementation-log.md).
+The summary below reflects current status only — resolution criteria and log entries are in implementation-log.md.
 
-- [ ] Confirm primary source and URL for [Paper:Wang2024] DSPy-ASP framework;
-  the accuracy figure (up to 50% improvement) is a precision claim on a secondary source only.
-  | Origin: S01 | Influences: OQ-01 (historical) | [Unverified]
+**PHASE 0 — Clingo Fundamentals** [IN PROGRESS — I01] → [implementation-log.md](implementation-log.md#phase-0)
+**PHASE 1 — Tavern WorldDSL Artifact** [BLOCKED] → [implementation-log.md](implementation-log.md#phase-1)
+**PHASE 2 — ASP Validation Layer** [BLOCKED] → [implementation-log.md](implementation-log.md#phase-2)
+**PHASE 3 — Session Loop** [BLOCKED] → [implementation-log.md](implementation-log.md#phase-3)
+**PHASE 4 — Evaluation Harness** [BLOCKED — OQ-09-T1 OPEN] → [implementation-log.md](implementation-log.md#phase-4)
 
 ```

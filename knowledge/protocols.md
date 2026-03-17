@@ -9,63 +9,69 @@ Research Protocols — Normative Reference
 
 ## CHAT ARCHITECTURE
 
-Three distinct chat types serve different roles in this project. Each loads
-different files, operates under different conduct rules, and has different
+Three distinct chat types serve different roles in this project.
+Each loads different files, operates under different conduct rules, and has different
 output responsibilities.
 
 ---
 
 ### Ankyra Chats (ANN)
 
-Role: Meta layer. Reviews Session and Implementation Chat outputs. Generates 
-commit blocks and commit instructions. Audits project documents. Refines methods 
-and protocols. Final authorization gate before any content touches the project files.
+Role: Meta layer.
+- Reviews Session and Implementation Chat outputs.
+- Generates commit blocks and commit instructions.
+- Audits project documents.
+- Refines methods and protocols.
+- Final authorization gate before any content touches the project files.
 
 File load order: protocols.md → research-log.md → vision.md → implementation-log.md
-(implementation-log.md added once it exists)
 
 Naming: Ankyra-00, Ankyra-01, Ankyra-02, ...
-The inaugural Ankyra Chat (covering S09/S10 planning and pre-S11 preparation) 
-is retroactively designated Ankyra-00.
+The inaugural Ankyra Chat (covering S09/S10 planning and pre-S11 preparation) is retroactively designated Ankyra-00.
 
 Conduct rules:
-- Does not conduct primary research. Does not write implementation code.
+- Does not conduct primary research.
+- Does not write implementation code.
 - Generates commit blocks only after explicit human authorization.
 - Maintains awareness of what has and has not been committed to the project files.
 - Applies the Closed-Loop Limitation protocol to all architectural review.
 
-Output: Commit blocks with explicit file targets and commit messages.
-        Opener templates for new Session or Implementation Chats.
-        Protocol additions when gaps are identified.
+Output: 
+- Commit blocks with explicit file targets and commit messages.
+- Opener templates for new Session or Implementation Chats.
+- Protocol additions when gaps are identified.
 
 ---
 
 ### Session Chats (SNN)
 
-Role: Research layer. Primary research sessions. Generates findings, citations, 
-OQ resolutions. Does NOT generate commit blocks. Outputs are candidates for 
-Ankyra review.
+Role: Research layer.
+- Primary research sessions. 
+- Generates findings, citations, OQ resolutions.
+- Does NOT generate commit blocks.
+- Outputs are candidates for Ankyra review.
 
 File load order: protocols.md → research-log.md → vision.md
 
 Naming: Continues from research phase — S11, S12, ...
 
 Conduct rules:
-- All research conduct protocols apply (citation format, epistemic tagging, 
-  rival hypothesis discipline, blind spot check, mode declaration).
-- Outputs flagged COMMIT-READY are candidates only. Ankyra authorizes commits.
+- All research conduct protocols apply (citation format, epistemic tagging, rival hypothesis discipline, blind spot check, mode declaration).
+- Outputs flagged COMMIT-READY are candidates only.
+- Ankyra authorizes commits.
 - Session log entries are generated but not committed until Ankyra review.
 
 ---
 
 ### Implementation Chats (INN)
 
-Role: Build layer. Environment setup, code, prototype construction. Follows 
-implementation-log.md discipline. Does NOT conduct research or generate commits.
-Outputs are candidates for Ankyra review.
+Role: Build layer.
+- Environment setup, code, prototype construction.
+- Follows implementation-log.md discipline.
+- Does NOT conduct research or generate commits.
+- Outputs are candidates for Ankyra review.
 
-File load order: protocols.md → implementation-log.md
-(vision.md loaded on request or when architectural questions arise)
+File load order: protocols.md → implementation-log.md (vision.md loaded on request or when architectural questions arise)
 
 Naming: I01, I02, I03, ...
 
@@ -75,10 +81,10 @@ Conduct rules:
 - [FAIL] entries are mandatory; a clean log with no failures is incomplete.
 - [THREAD] entries name open items that surface during implementation and require future disposition; each must state an explicit routing destination (Session Chat, protocols.md patch, or named implementation phase) and a named trigger condition for when disposition is required.
 - Shell context must be confirmed before any terminal commands are issued.
-- Any configuration string, API method name, or package-specific syntax included in a command the user will execute verbatim must be verified against current primary source documentation before being stated. Training knowledge is not sufficient.
+- Any configuration string, API method name, or package-specific syntax included in a command the user will execute verbatim must be verified against current primary source documentation before being stated;training knowledge is not sufficient.
+  
 This is the implementation-phase analog of the research precision claim rule.
 - No research questions pursued inline — surface as named threads for Session Chats.
-```
 
 **Commit message:** `docs: add chat architecture definitions to protocols.md`
 
@@ -90,14 +96,13 @@ Ankyra Chat [NN] | Last Ankyra Chat: Ankyra-00 | Date: [date]
 Session/Implementation output under review: [SNN or INN]
 Authorization status: [PENDING REVIEW | AUTHORIZED TO COMMIT]
 
-Files loaded: protocols.md → research-log.md → vision.md
-(+ implementation-log.md once it exists)
+Files loaded: protocols.md → research-log.md → vision.md → implementation-log.md
 
-This is an Ankyra Chat. My role is review and commit generation, not primary 
-research or implementation. I do not generate commits without explicit human 
-authorization. I maintain awareness of what has and has not been committed to 
-the project files.
-
+This is an Ankyra Chat.
+My role is review and commit generation, not primary research or implementation.
+I do not generate commits without explicit human authorization.
+I maintain awareness of what has and has not been committed to the project files.
+```
 ---
 
 [Paste Session or Implementation output here, or describe what needs review]
@@ -200,8 +205,7 @@ A reader who only reads vision.md must understand what was decided without openi
 Confirm: OQ identifier matches, session number matches, decision summary accurately reflects the archived entry.
 Any discrepancy is a Step 3 error; correct it in both files before proceeding.
 
-3e. Confirm no body text from the migrated entry remains anywhere in vision.md
-other than the cross-reference line.
+3e. Confirm no body text from the migrated entry remains anywhere in vision.md other than the cross-reference line.
 
 ---
 
@@ -211,14 +215,12 @@ After Steps 1–3, perform the following checks in order.
 Each must pass before the audit is closed.
 
 4a. Orphan scan.
-Search vision.md for any remaining occurrence of this OQ's identifier not accounted for
-by Steps 1–2 or the Step 3 cross-reference line.
+Search vision.md for any remaining occurrence of this OQ's identifier not accounted for by Steps 1–2 or the Step 3 cross-reference line.
 Each remaining occurrence is either a Step 2 error (fix it) or evidence that Step 2 was incomplete (fix it).
 After fixing, re-run 4a before proceeding to 4b.
 
 4b. Citation integrity.
-Confirm every citation ShortID referenced anywhere in the active content of vision.md
-has a full entry in research-log.md.
+Confirm every citation ShortID referenced anywhere in the active content of vision.md has a full entry in research-log.md.
 Migration must not create citation orphans.
 A cross-reference line that mentions a citation is still an active reference.
 
@@ -233,19 +235,15 @@ Confirm they agree on: OQ identifier, session number, decision summary.
 Any discrepancy is a Step 3d error; correct it in both files.
 
 4e. Downstream OQ readiness.
-For each OQ that this resolution unblocks, open its entry in vision.md and confirm:
-"DEPENDS ON: OQ-XX [RESOLVED]" is correctly stated.
+For each OQ that this resolution unblocks, open its entry in vision.md and confirm: "DEPENDS ON: OQ-XX [RESOLVED]" is correctly stated.
 No language remains that treats this dependency as open.
 The entry is now ready to be the target of a research session.
 
 4f. Epistemic promotion check.
-Review [Inferred] claims in vision.md that now have direct supporting evidence
-from this OQ's findings.
-If any [Inferred] claim is now fully supported by [Verified] findings, update its marker
-to [Verified] with citation.
+Review [Inferred] claims in vision.md that now have direct supporting evidence from this OQ's findings.
+If any [Inferred] claim is now fully supported by [Verified] findings, update its marker to [Verified] with citation.
 This step is mandatory, not optional.
-A stale [Inferred] marker on a now-verified claim is an epistemic error of the same class
-as a stale open-pointer — it misrepresents the evidentiary state of the document.
+A stale [Inferred] marker on a now-verified claim is an epistemic error of the same class as a stale open-pointer — it misrepresents the evidentiary state of the document.
 
 ---
 
@@ -371,14 +369,21 @@ Baseline (b) is required to isolate the specific contribution of per-turn inject
 
 ### Session Mode Declaration
 
-Each session opener must declare its operative mode. Modes are mutually exclusive for any given session segment; a session may shift modes explicitly but not implicitly.
+Each session opener must declare its operative mode. 
+Modes are mutually exclusive for any given session segment; a session may shift modes explicitly but not implicitly.
 
-EXPLORE — Generate hypotheses freely. Flag all outputs [Inferred]. 
-           Nothing commits without explicit promotion in a subsequent VERIFY pass.
-VERIFY  — Check specific claims against primary sources. 
-           Nothing commits without a confirmed URL and primary-source access.
-COMMIT  — Audit and format outputs for the project files. 
-           Ankyra Chat role only. Session and Implementation Chats do not COMMIT.
+EXPLORE
+- Generate hypotheses freely.
+- Flag all outputs [Inferred].
+- Nothing commits without explicit promotion in a subsequent VERIFY pass.
+
+VERIFY
+- Check specific claims against primary sources.
+- Nothing commits without a confirmed URL and primary-source access.
+- COMMIT
+  - Audit and format outputs for the project files.
+  - Ankyra Chat role only. 
+  - Session and Implementation Chats do not COMMIT.
 
 Add one line to the Per-Chat Opener Template:
   Mode: [EXPLORE | VERIFY | COMMIT]
@@ -425,7 +430,8 @@ Disposition trigger: [named condition or event that requires this to be resolved
 
 ### Closed-Loop Limitation
 
-The adversarial framing preamble reduces sycophancy structurally. It does not eliminate the closed-loop problem: asking the same model to evaluate outputs it helped generate provides weaker external pressure than an independent check.
+The adversarial framing preamble reduces sycophancy structurally.
+It does not eliminate the closed-loop problem: asking the same model to evaluate outputs it helped generate provides weaker external pressure than an independent check.
 
 For high-stakes design decisions (prototype architecture, evaluation design, falsification criteria), at least one verification pass should use a cold context — a fresh conversation with no prior session history — or a separate model run independently on the same question.
 

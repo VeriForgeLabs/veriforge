@@ -7,7 +7,8 @@ Research Log — Append-Only Historical Record
 
 ## RESOLVED OQ ARCHIVE
 
-_Resolved OQ entries are migrated here during audits. Empty until first audit._
+_Resolved OQ entries are migrated here during audits._
+_Empty until first audit._
 
 ### OQ-01 — DSL Formalism [RESOLVED — S04]
 
@@ -57,7 +58,8 @@ Both are tractable at prototype scope (2–5 entities, 2–3 hard constraints).
 
 ### OQ-02 — Stateful Session Layer [RESOLVED — S05]
 
-Decomposed into four sub-questions. All resolved or decided.
+Decomposed into four sub-questions.
+All resolved or decided.
 
 **OQ-02a — Storage** [DECIDED — prototype scope]
 JSON file.
@@ -109,8 +111,7 @@ Scaling up adds breadth of coverage but does not add testability of the core hyp
 [Paper:Zhou2025] [Paper:ElBoudouri2025]
 
 Note: Initially marked [PROVISIONALLY RESOLVED] at S02.
-Promoted to [RESOLVED] at S09 audit — no contradicting evidence found in Sessions 3–8;
-WHAT IS VERIFIED carries the same claim as [Verified] with the same sources.
+Promoted to [RESOLVED] at S09 audit — no contradicting evidence found in Sessions 3–8; WHAT IS VERIFIED carries the same claim as [Verified] with the same sources.
 
 ### OQ-05a — Representational Scope [RESOLVED — S06]
 
@@ -134,9 +135,7 @@ The ABox-snapshot validation pattern (not fluent-with-time-steps) is appropriate
 ### OQ-06 — Developer Toolset Fit [RESOLVED — S04]
 
 ASP/Clingo is tractable for a solo non-professional developer.
-Evidence: Potassco Getting Started guide (genuinely novice-oriented, pip install clingo, no JVM required) [Doc:PotasscoStart];
-CMU CSC 791 course notes on ASP for game design (Martens, 2017), using dungeon generation as motivating example [Doc:CMUMartens2017];
-solo hobbyist project modeling social deduction game rules as Clingo constraints with sat/unsat test suite [Repo:botcasp].
+Evidence: Potassco Getting Started guide (genuinely novice-oriented, pip install clingo, no JVM required) [Doc:PotasscoStart]; CMU CSC 791 course notes on ASP for game design (Martens, 2017), using dungeon generation as motivating example [Doc:CMUMartens2017]; solo hobbyist project modeling social deduction game rules as Clingo constraints with sat/unsat test suite [Repo:botcasp].
 IDP-Z3 has no equivalent hobbyist community, game design adoption, or solo project precedent.
 [Verified]
 
@@ -175,8 +174,7 @@ DEPENDS ON: OQ-08 [RESOLVED] — enforcement mechanism specified as per-turn sym
 DEPENDS ON: OQ-01 [RESOLVED] — ASP generates named UNSAT violation reports; this capability is the primary evaluation oracle.
 
 The claim under test:
-Per-turn symbolic state injection plus reactive ASP validation is sufficient
-to keep LLM extrapolation within constraint boundaries at interactive RP pace.
+Per-turn symbolic state injection plus reactive ASP validation is sufficient to keep LLM extrapolation within constraint boundaries at interactive RP pace.
 
 ---
 
@@ -222,12 +220,10 @@ Rationale: violations targeted by VeriForge are formal constraint violations der
 
 Falsification criteria (all must hold for the claim to be supported):
 
-(1) Condition C CVR ≤ 25% of Condition A CVR
-    (≥75% reduction from ungrounded baseline)
+(1) Condition C CVR ≤ 25% of Condition A CVR (≥75% reduction from ungrounded baseline)
     [Unverified] — pre-registered design decision; no literature precedent for this threshold in interactive NeSy RP evaluation.
 
-(2) Condition C CVR is statistically lower than Condition B CVR
-    (per-turn re-injection specifically contributes beyond session-start injection)
+(2) Condition C CVR is statistically lower than Condition B CVR (per-turn re-injection specifically contributes beyond session-start injection)
 
 (3) VDR ≥ 80%
     [Unverified] — pre-registered design decision; no literature precedent for this threshold in interactive NeSy RP evaluation.
@@ -258,15 +254,15 @@ Rival hypothesis:
 Condition B (session-start injection) is sufficient; per-turn re-injection adds no measurable benefit over a 5–10 turn RP session at prototype scope.
 This is structurally what the evaluation design tests.
 If Conditions B and C produce indistinguishable CVRs, the correct interpretation is that session-start injection is sufficient at prototype scope — a valid finding, not a failure.
-The rival hypothesis was pre-rejected in OQ-08 based on Li2024 drift evidence within 8 turns, but that evidence was measured on older models. OQ-09 is partly a test of whether that concern is empirically significant at the scale and with the models actually used.
+The rival hypothesis was pre-rejected in OQ-08 based on Li2024 drift evidence within 8 turns, but that evidence was measured on older models.
+OQ-09 is partly a test of whether that concern is empirically significant at the scale and with the models actually used.
 
 ---
 
 Remaining gaps (not blocking resolution; relevant to implementation):
 
 Gap 1 — Surface-text leak (see CLAIMS in vision.md):
-Reactive ASP validation of ABox deltas may not catch constraint violations
-that appear in LLM surface narrative without triggering a delta.
+Reactive ASP validation of ABox deltas may not catch constraint violations that appear in LLM surface narrative without triggering a delta.
 VDR metric is designed to measure this; the vulnerability is [Inferred] pending empirical test.
 
 Gap 2 — OQ-08-T2 (two-step action declaration):
@@ -285,7 +281,8 @@ Sources:
 
 ## AUDIT LOG
 
-_Audit records are appended here after each audit closes. Empty until first audit._
+_Audit records are appended here after each audit closes._
+_Empty until first audit._
 
 [AUDIT-S09-OQ-01] OQ-01 resolved | March 9, 2026 | Steps completed: 1, 2, 3, 4
 Issues found:
@@ -670,7 +667,8 @@ Notes: Benchmark for instruction adherence across long generated outputs at 16K 
 [S10-E2] Surface-text leak gap identified as [Inferred] architectural vulnerability; added to CLAIMS for empirical testing | New CLAIMS entry | None
 [S10-E3] Three citation corrections applied per QA pass: VDR threshold epistemic flag, CED denominator distinction, surface-text leak reclassified as architectural finding | Resolved | None
 
-[Paper:Mu2023] Norman Mu, Sarah Chen, Zifan Wang, Sizhe Chen, David Karamardian, Lulwa Aljeraisy, Basel Alomair, Dan Hendrycks, David Wagner, "Can LLMs Follow Simple Rules?" arXiv:2311.04235v3, UC Berkeley / Center for AI Safety, 2023. URL: https://arxiv.org/abs/2311.04235
+[Paper:Mu2023] Norman Mu, Sarah Chen, Zifan Wang, Sizhe Chen, David Karamardian, Lulwa Aljeraisy, Basel Alomair, Dan Hendrycks, David Wagner, "Can LLMs Follow Simple Rules?" arXiv:2311.04235v3, UC Berkeley / Center for AI Safety, 2023.
+URL: https://arxiv.org/abs/2311.04235
 Status: [Verified]
 Notes: Proposes RuLES — programmatic evaluation functions per scenario to determine rule violations without manual review or unreliable heuristics.
 Directly validates the use of the ASP solver as a deterministic evaluation oracle for OQ-09 CVR measurement.
@@ -682,9 +680,7 @@ Notes: Three-paradigm constraint evaluation: code verification (Python), LLM ver
 Code verification preferred for structural constraints; LLM verification reserved for constraints requiring semantic understanding.
 Provides methodological precedent for OQ-09 two-tier evaluation design (ASP as code-verification tier; human/LLM judge for surface-text violations).
 
-[Paper:Li2026] Junjie Li, Xinrui Guo, Yuhao Wu, Roy Ka-Wei Lee, Hongzhi Li,
-Yutao Xie, "Lost in Stories: Consistency Bugs in Long Story Generation by LLMs," Microsoft / Singapore University of Technology and Design,
-arXiv:2603.05890v1, 2026.
+[Paper:Li2026] Junjie Li, Xinrui Guo, Yuhao Wu, Roy Ka-Wei Lee, Hongzhi Li, Yutao Xie, "Lost in Stories: Consistency Bugs in Long Story Generation by LLMs," Microsoft / Singapore University of Technology and Design, arXiv:2603.05890v1, 2026.
 URL: https://arxiv.org/abs/2603.05890
 Status: [Verified]
 Notes: Introduces ConStory-Bench — 2,000 prompts, five-dimension error taxonomy, 19 fine-grained subtypes, ConStory-Checker automated pipeline.
@@ -700,10 +696,12 @@ Confirms the measurement gap: no published framework measures constraint-specifi
 
 [AnkyraNote-00-T1] OQ-09-T1 — RAG baseline as untested rival identified and formalized | Ankyra-00 review | [Paper:RoleRAG2025] [Paper:IDRAG2025] [Paper:TRPGRAG2025] [Paper:GSW2025]
 
-RAG is a credible rival for persona/fact-recall consistency but not for hard closed-world relational constraint enforcement (Type A / Type B integrity constraints). 
-The OQ-09 ablation does not include a RAG baseline condition. OQ-09-T1 captures this as a named open thread requiring disposition before prototype evaluation begins.
+RAG is a credible rival for persona/fact-recall consistency but not for hard closed-world relational constraint enforcement (Type A / Type B integrity constraints).
+The OQ-09 ablation does not include a RAG baseline condition.
+OQ-09-T1 captures this as a named open thread requiring disposition before prototype evaluation begins.
 
-NQS addendum: A secondary human-evaluated Narrative Quality Score metric has been added to the OQ-09 protocol to guard against the CVR=0/unusable output failure mode. This does not reopen OQ-09.
+NQS addendum: A secondary human-evaluated Narrative Quality Score metric has been added to the OQ-09 protocol to guard against the CVR=0/unusable output failure mode.
+This does not reopen OQ-09.
 
 [Paper:RoleRAG2025] Yongjie Wang, Jonathan Leung, Zhiqi Shen, "RoleRAG: Enhancing LLM Role-Playing via Graph Guided Retrieval," Nanyang Technological University, arXiv:2505.18541, May 2025.
 URL: https://arxiv.org/abs/2505.18541
@@ -725,8 +723,7 @@ Nearest published precedent for RAG in tabletop RP context.
 Does not test hard relational constraint enforcement.
 Cited as domain-adjacent precedent in OQ-09-T1; small sample limits weight of numeric claims.
 
-[Paper:GSW2025] Shreyas Rajesh, Pavan Holur, Chenda Duan, David Chong,
-Vwani Roychowdhury, "Beyond Fact Retrieval: Episodic Memory for RAG with Generative Semantic Workspaces," arXiv:2511.07587, November 2025.
+[Paper:GSW2025] Shreyas Rajesh, Pavan Holur, Chenda Duan, David Chong, Vwani Roychowdhury, "Beyond Fact Retrieval: Episodic Memory for RAG with Generative Semantic Workspaces," arXiv:2511.07587, November 2025.
 URL: https://arxiv.org/abs/2511.07587
 Status: [Verified]
 Notes: Neuro-inspired generative memory framework (GSW) for spatiotemporal entity tracking; explicitly notes that current RAG solutions fail to build space-time-anchored narrative representations for tracking entities through episodic events; outperforms structured RAG baselines on episodic memory benchmark. 
