@@ -246,3 +246,59 @@ Evidence:
 - test_type_b_non_adjacent_move_violation: PASSED — entrance → cellar rejected with violation(non_adjacent_move(guard, entrance, cellar)).
 All five tests: 5 passed in 0.03s.
 Per IMP-I01-D05: program is always SAT; violations read as atoms from yielded model; result.satisfiable not interrogated in any test.
+
+### I04 — Phase 3: Session Loop | March 2026 | [RESOLVED]
+
+[DECISION] IMP-I04-D01 — Structured LLM output format
+Chosen: XML-style tags in free text (<narrative>...</narrative> and <delta>...</delta>).
+Alternative not taken: tool use / structured output via API tool_choice parameter.
+Reason: XML tags are transparent, require no schema definition, and degrade gracefully — malformed JSON inside <delta> produces an empty dict rather than a crash.
+Transparency and teachability outweigh reliability at prototype scope.
+Tool use deferred to post-prototype for robustness.
+
+[DECISION] IMP-I04-D02 — Session loop module location
+Chosen: prototype/session_loop.py (engine at prototype/ level).
+Alternative not taken: prototype/tavern/session_loop.py.
+Reason: the tavern is a world instance; the session loop is the engine.
+The engine must not live inside the world it runs — that location would misrepresent the architectural relationship and make the loop world-specific by convention.
+
+[DECISION] IMP-I04-D03 — Constraint descriptions in context string
+Chosen: hard-coded human-readable constraint descriptions in build_context_string().
+Alternative not taken: programmatic derivation from tavern_rules.lp.
+Reason: parsing .lp files and translating ASP syntax to English is out of scope for Phase 3.
+The hard-coded descriptions are accurate, maintainable at prototype scope, and directly readable. Programmatic derivation deferred to post-prototype.
+
+[DECISION] IMP-I04-D04 — Model selection
+Chosen: claude-haiku-4-5-20251001 for Phase 3 prototype iteration.
+Alternative not taken: claude-sonnet-4-6 (frontier model).
+Reason: Phase 3 target is the symbolic enforcement mechanism, not LLM output quality.
+Haiku is fast and cost-efficient for iterative development.
+The Phase 4 ablation study requires a frontier model; the model is a single constant (session_loop.MODEL) trivially changed for Phase 4.
+
+[DECISION] IMP-I04-D05 — Condition B context injection point
+Chosen: session_context prepended to user message (uniform with Condition C).
+Alternative not taken: injecting Condition B context into the system prompt.
+Reason: the Anthropic API system prompt is fixed per request; there is no way to set it once and reuse it across calls in a stateless API design.
+Prepending to the user message is mechanically consistent across conditions and keeps the system prompt reserved for behavioral instructions only.
+Revisit for Phase 4 if the evaluation design requires stricter Condition B fidelity.
+
+[FAIL] IMP-I04-F01 — LLM self-censored delta; empty delta bypassed the symbolic layer
+Error: demo run produced proposed_delta={} and reported CLEAN; Phase 3 exit criterion check showed "Constraint-violating delta caught : FAIL".
+Cause: SYSTEM_PROMPT did not specify that the delta encodes ATTEMPTED actions, not successful outcomes. The LLM read constraint A1 in the injected context, understood the guard was forbidden from the cellar, wrote a narrative in which he fails to enter, and correctly emitted {} — from its perspective nothing changed.
+The symbolic layer received no delta to validate.
+This is a semantically coherent failure: the LLM resolved a role boundary ambiguity by acting as both narrator and enforcer.
+The system prompt did not establish that proposing the attempt is the LLM's job; deciding what commits is the symbolic layer's job.
+Resolution: SYSTEM_PROMPT updated with two additions: (1) <narrative> instruction reads "write the attempt as if it will succeed — the rules engine decides whether it commits"; (2) <delta> instruction reads "always emit the delta for what was attempted, even if the action might be forbidden — you do not need to pre-filter it."
+Constraint header in build_context_string() updated from "will be BLOCKED" to "the rules engine enforces these; emit your delta for what was attempted."
+Methodology patch recommended: no — this is the expected shape of LLM prompt engineering iteration. The corrected instruction is the documented pattern.
+
+[RESOLVED] IMP-I04 — Phase 3 exit criterion met: end-to-end turn runs without errors, LLM receives injected context, and a constraint-violating proposed delta is caught before committing.
+Evidence:
+- Loop ran without errors              : PASS
+- LLM received injected context        : PASS
+  - full world state and constraint descriptions confirmed present in context_injected output.
+- Constraint-violating delta caught    : PASS
+  - proposed_delta: {"character_locations": {"guard": "cellar"}}
+  - violation detected: violation(unauthorized_in_cellar(guard)) 
+  - ABox before and after turn: identical — guard remains at main_hall.
+  - commit_to_abox() was not called.
