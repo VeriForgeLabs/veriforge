@@ -3,15 +3,12 @@
 ## Semantics-Driven Worldbuilding DSL Project
 Research Protocols — Normative Reference
 
-## RESEARCH PROTOCOLS
-
 ---
 
 ## CHAT ARCHITECTURE
 
-Three distinct chat types serve different roles in this project.
-Each loads different files, operates under different conduct rules, and has different
-output responsibilities.
+Four distinct chat types serve different roles in this project.
+Each loads different files, operates under different conduct rules, and has different output responsibilities.
 
 ---
 
@@ -36,7 +33,7 @@ Conduct rules:
 - Maintains awareness of what has and has not been committed to the project files.
 - Applies the Closed-Loop Limitation protocol to all architectural review.
 
-Output: 
+Output:
 - Commit blocks with explicit file targets and commit messages.
 - Opener templates for new Session or Implementation Chats.
 - Protocol additions when gaps are identified.
@@ -46,7 +43,7 @@ Output:
 ### Session Chats (SNN)
 
 Role: Research layer.
-- Primary research sessions. 
+- Primary research sessions.
 - Generates findings, citations, OQ resolutions.
 - Does NOT generate commit blocks.
 - Outputs are candidates for Ankyra review.
@@ -57,8 +54,7 @@ Naming: Continues from research phase — S11, S12, ...
 
 Conduct rules:
 - All research conduct protocols apply (citation format, epistemic tagging, rival hypothesis discipline, blind spot check, mode declaration).
-- Outputs flagged COMMIT-READY are candidates only.
-- Ankyra authorizes commits.
+- Outputs flagged COMMIT-READY are candidates only. Ankyra authorizes commits.
 - Session log entries are generated but not committed until Ankyra review.
 
 ---
@@ -79,26 +75,27 @@ Conduct rules:
 - Hello World style teaching implementation: every step enumerated and explained.
 - Best practices followed at every layer; no shortcuts without explicit justification.
 - [FAIL] entries are mandatory; a clean log with no failures is incomplete.
+- [DECISION] entries are required whenever a design choice is made; each must name the alternative not taken and the reason for rejection.
+  A log with no [DECISION] entries is as incomplete as one with no [FAIL] entries.
 - [THREAD] entries name open items that surface during implementation and require future disposition; each must state an explicit routing destination (Session Chat, protocols.md patch, or named implementation phase) and a named trigger condition for when disposition is required.
 - Shell context must be confirmed before any terminal commands are issued.
-- Any configuration string, API method name, or package-specific syntax included in a command the user will execute verbatim must be verified against current primary source documentation before being stated;training knowledge is not sufficient.
+- Any configuration string, API method name, or package-specific syntax included in a command the user will execute verbatim must be verified against current primary source documentation before being stated; training knowledge is not sufficient.
 - The four core project files in knowledge/ — protocols.md, research-log.md, vision.md, and implementation-log.md — are untouched by implementation commits.
   knowledge/learning-notes.md is a fifth file in the same directory with a different function: personal reference capture.
   It is populated directly by the developer from NOTE-READY blocks and is not part of the research integrity boundary.
-- When an INN chat produces a conceptual explanation, pattern walkthrough, or "why this works" reasoning worth preserving, flag it ✓ NOTE-READY and include a pre-formatted markdown block targeting a named section in knowledge/learning-notes.md. 
-  NOTE-READY blocks are added directly by the developer to learning-notes.md — no Ankyra oversight required. 
+- When an INN chat produces a conceptual explanation, pattern walkthrough, or "why this works" reasoning worth preserving, flag it ✓ NOTE-READY and include a pre-formatted markdown block targeting a named section in knowledge/learning-notes.md.
+  NOTE-READY blocks are added directly by the developer to learning-notes.md — no Ankyra oversight required.
   NOTE-READY is distinct from COMMIT-READY, which requires Ankyra review and explicit authorization.
-  Format:
 
+  Format:
+  ```
   ✓ NOTE-READY
   Target: knowledge/learning-notes.md — ## [Section] / ### [Subsection]
-  
-  [markdown content]
-  
-This is the implementation-phase analog of the research precision claim rule.
-- No research questions pursued inline — surface as named threads for Session Chats.
 
-**Commit message:** `docs: add chat architecture definitions to protocols.md`
+  [markdown content]
+  ```
+
+- No research questions pursued inline — surface as named threads for Session Chats.
 
 ---
 
@@ -106,7 +103,7 @@ This is the implementation-phase analog of the research precision claim rule.
 
 Role: Ideation layer.
 - Loose questions, what-ifs, analogies, half-formed hunches, adjacent ideas.
-- No obligation to produce findings. 
+- No obligation to produce findings.
 - No commit pathway of any kind.
 - The conversation develops naturally through curiosity and discussion.
 - Connection to existing project questions is an emergent property, not a design objective.
@@ -127,7 +124,8 @@ Conduct rules:
 Silent awareness:
 The ENN chat holds the current OQ and implementation thread state as background context.
 It does not actively steer conversation toward existing questions.
-It monitors for emergence — ideas that develop naturally into something that crosses one of the following thresholds:
+It monitors for emergence — ideas that develop naturally into something that crosses one
+of the following thresholds:
 
   (a) The idea directly bears on a named open question or open thread.
   (b) The idea would materially change how a resolved question is understood.
@@ -141,58 +139,15 @@ The only structured output an ENN chat is responsible for is the **✓ HANDOFF-R
 Everything else is conversation.
 
 Handoff protocol:
-When a threshold is crossed, the ENN chat produces a ✓ HANDOFF-READY flag and a structured handoff block (template below).
-The user decides whether and when to carry it to Ankyra.
-Ankyra determines the appropriate next step (direct commit, Session Chat, or Implementation Chat) and references the ENN chat as origin in any resulting commit.
+When a threshold is crossed, the ENN chat produces a ✓ HANDOFF-READY flag and a structured handoff block (template in REFERENCE FORMATS below).
+The user decides whether and when to carry it to Ankyra. Ankyra determines the appropriate next step (direct commit, Session Chat, or Implementation Chat) and references the ENN chat as origin in any resulting commit.
 ENN chats are not tracked in any project file unless a handoff occurs and Ankyra generates a commit from it.
 
-Handoff block template:
-
-  ---
-  ✓ HANDOFF-READY
-
-  **Origin:** [ENN chat identifier, e.g., E01]
-  **Emerged from:** [One sentence describing what was being discussed when the threshold was crossed]
-  **Threshold triggered:** [a | b | c]
-
-  **Core claim:**
-  [The idea stated as precisely as possible. One paragraph maximum.
-  State it directly so Ankyra can evaluate it.]
-
-  **Epistemic status:** [Verified | Inferred | Unverified]
-  [Brief justification — what is this based on?]
-
-  **Citations (if any):**
-  [Full citation entries in standard project format, or "none"]
-
-  **Relationship to existing project:**
-  [Which OQ, thread, or phase this bears on — or "potential new OQ" if threshold (c) was triggered.
-  One sentence per relationship.]
-
-  **Suggested Ankyra next step:**
-  [Direct commit candidate | Warrants Session Chat | Warrants Implementation Chat | Unclear — needs Ankyra evaluation]
-
-  **Full context summary:**
-  [A summary of the ENN conversation leading to this finding, sufficient for Ankyra to reconstruct the reasoning without reading the original chat.
-  Include key intermediate steps, analogies, or examples that shaped the claim.]
-  ---
-
-## Opener Templates — Draft for Ankyra-01
-
-Ankyra Chat [NN] | Last Ankyra Chat: Ankyra-00 | Date: [date]
-Session/Implementation output under review: [SNN or INN]
-Authorization status: [PENDING REVIEW | AUTHORIZED TO COMMIT]
-
-Files loaded: protocols.md → research-log.md → vision.md → implementation-log.md → learning-notes.md
-
-This is an Ankyra Chat.
-My role is review and commit generation, not primary research or implementation.
-I do not generate commits without explicit human authorization.
-I maintain awareness of what has and has not been committed to the project files.
-```
 ---
 
-[Paste Session or Implementation output here, or describe what needs review]
+## RESEARCH PROTOCOLS
+
+---
 
 ### Audit Trigger Protocol
 
@@ -201,9 +156,6 @@ The audit must be completed before the next research session begins.
 Ad hoc audits may be requested at any time but are not required between trigger events.
 The AI research partner is the executor of the audit at session start.
 The audit is completed before any research question is addressed.
-
-Files are loaded in this order at session start: protocols.md → research-log.md → vision.md.
-Loading vision.md last ensures it carries the highest recency weight at the moment of active research.
 
 Audit scope — four steps, executed in order.
 No step may be skipped.
@@ -240,8 +192,7 @@ For each occurrence, apply the appropriate action:
 [Inferred] claim with this OQ as a named dependency:
 Update the claim to reflect what was found.
 Replace "depends on OQ-XX" or "requires OQ-XX resolution" language with a statement of the actual finding or its delegation.
-If the claim depends on multiple OQs and only one is now resolved, update only the resolved dependency pointer.
-Leave remaining dependency language intact and accurate for the still-open OQs.
+If the claim depends on multiple OQs and only one is now resolved, update only the resolved dependency pointer. Leave remaining dependency language intact and accurate for still-open OQs.
 
 "BLOCKS" or "DEPENDS ON" reference in another OQ entry:
 Verify the status is now correctly stated as [RESOLVED].
@@ -272,8 +223,7 @@ Migration of an inaccurate entry is not permitted.
 
 The session number SNN is the session in which the OQ was resolved.
 Use the heading itself as the stable link anchor.
-The format ### OQ-XX produces anchor #oq-xx on GitHub — stable, short, and predictably case-folded.
-Do not use deprecated HTML <a name=""> anchors.
+The format ### OQ-XX produces anchor #oq-xx on GitHub — stable, short, and predictably case-folded. Do not use deprecated HTML <a name=""> anchors.
 
 3c. In vision.md, delete the full OQ entry body.
 Replace it with a single cross-reference line in this exact format:
@@ -298,12 +248,10 @@ Each must pass before the audit is closed.
 
 4a. Orphan scan.
 Search vision.md for any remaining occurrence of this OQ's identifier not accounted for by Steps 1–2 or the Step 3 cross-reference line.
-Each remaining occurrence is either a Step 2 error (fix it) or evidence that Step 2 was incomplete (fix it).
-After fixing, re-run 4a before proceeding to 4b.
+Each remaining occurrence is either a Step 2 error (fix it) or evidence that Step 2 was incomplete (fix it). After fixing, re-run 4a before proceeding to 4b.
 
 4b. Citation integrity.
-Confirm every citation ShortID referenced anywhere in the active content of vision.md has a full entry in research-log.md.
-Migration must not create citation orphans.
+Confirm every citation ShortID referenced anywhere in the active content of vision.md has a full entry in research-log.md. Migration must not create citation orphans.
 A cross-reference line that mentions a citation is still an active reference.
 
 4c. [Inferred] claim completeness.
@@ -317,7 +265,8 @@ Confirm they agree on: OQ identifier, session number, decision summary.
 Any discrepancy is a Step 3d error; correct it in both files.
 
 4e. Downstream OQ readiness.
-For each OQ that this resolution unblocks, open its entry in vision.md and confirm: "DEPENDS ON: OQ-XX [RESOLVED]" is correctly stated.
+For each OQ that this resolution unblocks, open its entry in vision.md and confirm:
+"DEPENDS ON: OQ-XX [RESOLVED]" is correctly stated.
 No language remains that treats this dependency as open.
 The entry is now ready to be the target of a research session.
 
@@ -337,7 +286,7 @@ git commit -m "audit: OQ-XX resolved — [one-phrase description of what migrate
 
 ---
 
-OQ Re-Opening Protocol
+### OQ Re-Opening Protocol
 
 If a research session produces evidence that directly contradicts a resolved OQ decision:
 
@@ -357,82 +306,7 @@ The new vision.md entry is written fresh from current understanding.
 
 Add a session log entry in research-log.md documenting the contradiction and the re-opening.
 
-### Citation Format
-
-Every factual claim uses inline citation: `[Tag:ShortID]`
-Tags (exactly these, no others): `Paper` | `Repo` | `Doc` | `Blog` | `Forum` | `Social` | `Video`
-ShortID format: `AuthorYYYY` (e.g., `[Paper:Zhang2024]`)
-Full citations are logged in the Research Log with URL and access date.
-Epistemic markers are always clean tokens: [Verified], [Inferred], [Unverified].
-Supporting citations or explanatory notes follow outside the bracket, set off with em-dashes: [Verified] — Paper:X — Never embed explanatory text inside the bracket itself.
-
-Precision claims — accuracy figures, percentages, named mechanisms — require primary source confirmation before committing.
-Abstract-level verification is not sufficient for precision claims.
-When a precision claim is cited via a secondary source, the status note must identify the actual primary source and flag it for direct confirmation.
-
-### Research Log Entry Format
-
-```
-[Tag:ShortID] Author(s), "Title," Source/Venue, Year.
-URL: [url]
-Status: [Verified] | [Unverified]
-Adjoining em-dash note specifies qualifying conditions where relevant:
-e.g. [Verified] — via secondary source only —
-e.g. [Unverified] — needs re-check; may be outdated —
-Notes: [one sentence on relevance]
-```
-
-### Session Log Format
-
-Each research session adds entries in this format:
-
-```
-[SN-EN] Topic | Status (Open/Resolved/Superseded) | Key sources
-```
-
-Where N = session number, EN = entry number within session.
-
-### Per-Chat Opener Template
-
-Paste this at the start of each new research chat:
-
-```
-Session [N] | Last snapshot: [date or "none"]
-Focus: [one sentence on today's research question]
-Open questions being addressed: [OQ-XX, OQ-YY or "none"]
-Pending verifications: [list or "none"]
-
-[Your question]
-
-Files are loaded at session start in this order: protocols.md → research-log.md → vision.md.
-Loading vision.md last ensures it carries the highest recency weight at the moment of active research.
-If a document audit is triggered, the AI research partner completes it before addressing any research question.
-
-```
-
-### Snapshot Trigger
-
-When a research session produces a COMMIT-READY finding, update this document manually.
-Add the finding to the appropriate section with its epistemic status.
-Session log entry required for every update.
-
-### Audit Log Format
-
-Each audit produces one entry appended to the Audit Log in research-log.md.
-Use this exact format:
-
-[AUDIT-SNN-OQ-XX] OQ-XX resolved | [Date] | Steps completed: [1, 2, 3, 4]
-Issues found:
-  - [Issue description] → [Resolution applied] → Methodology patch recommended: [yes/no]
-Methodology patches flagged: [yes/no]
-If yes: identify the protocol step affected and the proposed fix in plain language.
-Audit closed: [yes/no]
-If no: state the blocking condition explicitly.
-
-If no issues were found, the "Issues found" field reads: none.
-The Audit Log is append-only.
-Entries are never edited after the audit closes.
-If a methodology patch is recommended, the patch is applied to protocols.md (or the Research Protocols section of vision-and-protocols.md prior to the file split) in the same commit as the audit.
+---
 
 ### Rival Hypothesis Discipline
 
@@ -441,17 +315,11 @@ This applies at session level, not only at audit level.
 When a research session proposes a mechanism as the solution to an open question, the session log must record: (1) what the strongest competing mechanism was, and (2) why it was rejected or deferred.
 Absence of a stated rival is a quality flag, not a neutral finding.
 
-For OQ-09 specifically, the research session must specify before any prototype session counts as a test:
-(1) The measurable outcome that would constitute falsification of the per-turn injection sufficiency claim.
-(2) Baseline conditions — at minimum: (a) raw LLM with no DSL grounding, and (b) system-prompt-only injection without per-turn re-injection.
-Baseline (b) is required to isolate the specific contribution of per-turn injection from symbolic grounding generally.
-(3) The improvement threshold that would count as meaningful — "better than baseline" is not a sufficient criterion.
-
 ---
 
 ### Session Mode Declaration
 
-Each session opener must declare its operative mode. 
+Each Session Chat (SNN) opener must declare its operative mode.
 Modes are mutually exclusive for any given session segment; a session may shift modes explicitly but not implicitly.
 
 EXPLORE
@@ -462,56 +330,22 @@ EXPLORE
 VERIFY
 - Check specific claims against primary sources.
 - Nothing commits without a confirmed URL and primary-source access.
-- COMMIT
-  - Audit and format outputs for the project files.
-  - Ankyra Chat role only. 
-  - Session and Implementation Chats do not COMMIT.
 
-Add one line to the Per-Chat Opener Template:
-  Mode: [EXPLORE | VERIFY | COMMIT]
+COMMIT
+- Audit and format outputs for the project files.
+- Ankyra Chat role only.
+- Session and Implementation Chats do not COMMIT.
 
 ---
 
 ### Blind Spot Check
 
-Each session opener must include one forced question before research begins:
+Each Session Chat (SNN) opener must include one forced question before research begins.
 
   "What question would a skeptic say this session focus is implicitly not asking?"
 
 The answer must be stated explicitly and either: (a) acknowledged as out of scope with one sentence justifying that, or (b) folded into the session focus.
 An unanswered blind spot check is a quality flag, not a neutral finding.
-
----
-
-### Implementation Log Entry Format
-
-Each implementation chat appends one section block to implementation-log.md.
-The section header format is:
-
-### INN — [Phase Name] | [Date] | [Status]
-
-Four entry types are defined. All are append-only except [THREAD], which may have a Resolution: field added in-place when the thread closes.
-
-[DECISION] IMP-INN-DNN — [Title]
-Chosen: [what was selected]
-Alternative not taken: [what was rejected]
-Reason: [why]
-
-[FAIL] IMP-INN-FNN — [Title]
-Error: [what went wrong]
-Cause: [why it happened]
-Resolution: [how it was fixed]
-Methodology patch recommended: [yes/no]
-
-[THREAD] IMP-INN-TNN — [Title]
-Description: [what the thread is about]
-Routes to: [Session Chat | protocols.md | implementation phase]
-Disposition trigger: [named condition or event that requires this to be resolved]
-Resolution: [one sentence stating what was decided and where it is documented]
-
-[THREAD] entries are the single exception to the append-only rule.
-When a thread is closed, a Resolution: field is added in-place to the original entry.
-[DECISION] and [FAIL] entries remain strictly append-only.
 
 ---
 
@@ -526,3 +360,235 @@ This is a standing protocol requirement for prototype-phase architectural decisi
 It is advisory for research-phase synthesis.
 
 ---
+
+### Snapshot Trigger
+
+When a Session Chat (SNN) produces a COMMIT-READY finding, update vision.md manually.
+Add the finding to the appropriate section with its epistemic status.
+Session log entry required for every update.
+
+---
+
+## IMPLEMENTATION PROTOCOLS
+
+---
+
+### Implementation Log Entry Format
+
+Each implementation chat appends one section block to implementation-log.md.
+The section header format is:
+
+### IXX — [Phase Name] | [Date] | [Status]
+
+Where XX is the implementation chat number (e.g., I01, I02).
+
+Four entry types are defined. All are append-only except [THREAD], which may have a
+Resolution: field added in-place when the thread closes.
+```
+[DECISION] IMP-IXX-DNN — [Title]
+Chosen: [what was selected]
+Alternative not taken: [what was rejected]
+Reason: [why]
+
+[FAIL] IMP-IXX-FNN — [Title]
+Error: [what went wrong]
+Cause: [why it happened]
+Resolution: [how it was fixed]
+Methodology patch recommended: [yes/no]
+
+[THREAD] IMP-IXX-TNN — [Title]
+Description: [what the thread is about]
+Routes to: [Session Chat | protocols.md | implementation phase]
+Disposition trigger: [named condition or event that requires this to be resolved]
+Resolution: (added in-place when thread closes — not populated at creation)
+```
+
+[THREAD] entries are the single exception to the append-only rule.
+When a thread is closed, a Resolution: field is added in-place to the original entry.
+[DECISION] and [FAIL] entries remain strictly append-only.
+
+---
+
+## REFERENCE FORMATS
+
+---
+
+### Opener Templates
+
+#### Ankyra Chat (ANN) Opener
+```
+Ankyra Chat [NN] | Previous: Ankyra-[NN-1] | Date: [DATE]
+Mode: COMMIT
+Under review: [SNN output | INN output | protocol discussion | none]
+
+Files loaded: protocols.md → research-log.md → vision.md → implementation-log.md → learning-notes.md
+
+This is an Ankyra Chat.
+My role is review and commit generation, not primary research or implementation.
+I do not generate commits without explicit human authorization.
+I maintain awareness of what has and has not been committed to the project files.
+
+What is committed vs. pending:
+[State explicitly what was last committed to each file and what is known to be pending.]
+
+---
+
+[Paste Session or Implementation output here, or describe what needs review]
+```
+
+---
+
+#### Session Chat (SNN) Opener
+```
+Session [N] | Last snapshot: [date or "none"]
+Mode: [EXPLORE | VERIFY]
+Focus: [one sentence on today's research question]
+Open questions being addressed: [OQ-XX, OQ-YY or "none"]
+Pending verifications: [list or "none"]
+
+Blind spot check: [What question would a skeptic say this session focus is implicitly not asking? State it and either acknowledge as out of scope (one sentence) or fold in.]
+
+Files are loaded at session start in this order: protocols.md → research-log.md → vision.md.
+Loading vision.md last ensures it carries the highest recency weight at the moment of active research.
+If a document audit is triggered, complete it before addressing any research question.
+
+---
+
+[Your question]
+```
+
+---
+
+#### Implementation Chat (INN) Opener
+```
+Implementation Chat [IXX] | Date: [DATE]
+Phase: [Phase number and name, e.g., Phase 0 — Clingo Fundamentals]
+Phase status: [NOT STARTED | IN PROGRESS | BLOCKED]
+Shell context: [WSL bash | PowerShell | other — confirm before any terminal commands]
+
+Files loaded: protocols.md → implementation-log.md → learning-notes.md
+
+This is an Implementation Chat.
+My role is building, not research or committing.
+I do not generate commit blocks.
+I flag conceptual explanations worth preserving as ✓ NOTE-READY blocks.
+I surface research questions as named [THREAD] entries for Session Chats.
+
+---
+
+[Describe what we are building today and where we left off]
+```
+
+---
+
+#### Exploration Chat (ENN) Opener
+```
+Exploration Chat [ENN] | Date: [DATE]
+
+Files loaded: protocols.md → research-log.md → vision.md → implementation-log.md
+
+This is an Exploration Chat.
+The conversation goes wherever it goes.
+I hold the current project state as silent background context.
+I will flag ✓ HANDOFF-READY if an idea crosses a threshold worth elevating.
+I do not generate commit blocks or steer toward existing OQs.
+
+---
+
+[Start the conversation]
+```
+
+---
+
+### ENN Handoff Block Template
+```
+---
+✓ HANDOFF-READY
+
+**Origin:** [ENN chat identifier, e.g., E01]
+**Emerged from:** [One sentence describing what was being discussed when the threshold was crossed]
+**Threshold triggered:** [a | b | c]
+
+**Core claim:**
+[The idea stated as precisely as possible. One paragraph maximum.
+State it directly so Ankyra can evaluate it.]
+
+**Epistemic status:** [Verified | Inferred | Unverified]
+[Brief justification — what is this based on?]
+
+**Citations (if any):**
+[Full citation entries in standard project format, or "none"]
+
+**Relationship to existing project:**
+[Which OQ, thread, or phase this bears on — or "potential new OQ" if threshold (c) was triggered. One sentence per relationship.]
+
+**Suggested Ankyra next step:**
+[Direct commit candidate | Warrants Session Chat | Warrants Implementation Chat | Unclear — needs Ankyra evaluation]
+
+**Full context summary:**
+[A summary of the ENN conversation leading to this finding, sufficient for Ankyra to reconstruct the reasoning without reading the original chat.
+Include key intermediate steps, analogies, or examples that shaped the claim.]
+---
+```
+
+---
+
+### Citation Format
+
+Every factual claim uses inline citation: `[Tag:ShortID]`
+Tags (exactly these, no others): `Paper` | `Repo` | `Doc` | `Blog` | `Forum` | `Social` | `Video`
+ShortID format: `AuthorYYYY` (e.g., `[Paper:Zhang2024]`)
+Full citations are logged in the Research Log with URL.
+Epistemic markers are always clean tokens: [Verified], [Inferred], [Unverified].
+Supporting citations or explanatory notes follow outside the bracket, set off with em-dashes:
+[Verified] — Paper:X — Never embed explanatory text inside the bracket itself.
+
+Precision claims — accuracy figures, percentages, named mechanisms — require primary source confirmation before committing.
+Abstract-level verification is not sufficient for precision claims.
+When a precision claim is cited via a secondary source, the status note must identify the actual primary source and flag it for direct confirmation.
+
+---
+
+### Research Log Entry Format
+```
+[Tag:ShortID] Author(s), "Title," Source/Venue, Year.
+URL: [url]
+Status: [Verified] | [Unverified]
+Adjoining em-dash note specifies qualifying conditions where relevant:
+e.g. [Verified] — via secondary source only —
+e.g. [Unverified] — needs re-check; may be outdated —
+Notes: [one sentence on relevance]
+```
+
+---
+
+### Session Log Format
+
+Each research session adds entries in this format:
+```
+[SN-EN] Topic | Status (Open/Resolved/Superseded) | Key sources
+```
+
+Where N = session number, EN = entry number within session.
+
+---
+
+### Audit Log Format
+
+Each audit produces one entry appended to the Audit Log in research-log.md.
+Use this exact format:
+```
+[AUDIT-SNN-OQ-XX] OQ-XX resolved | [Date] | Steps completed: [1, 2, 3, 4]
+Issues found:
+  - [Issue description] → [Resolution applied] → Methodology patch recommended: [yes/no]
+Methodology patches flagged: [yes/no]
+If yes: identify the protocol step affected and the proposed fix in plain language.
+Audit closed: [yes/no]
+If no: state the blocking condition explicitly.
+```
+
+If no issues were found, the "Issues found" field reads: none.
+The Audit Log is append-only.
+Entries are never edited after the audit closes.
+If a methodology patch is recommended, the patch is applied to protocols.md in the same
+commit as the audit.
