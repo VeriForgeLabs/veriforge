@@ -1,0 +1,32 @@
+{
+  "id": "tc-b04",
+  "type": "B",
+  "description": "Guard moves to back_room (clean), then attempts a direct back_room\u2192entrance jump \u2014 B1 only, no A1.",
+  "adversarial_note": "Uses the same character as tc-b01 (guard) but from the opposite extremity: guard is at back_room and attempts to reach entrance directly. The non-adjacent pair is back_room\u2192entrance \u2014 the reverse direction of tc-b01's entrance\u2192back_room. Together, tc-b01 and tc-b04 cover both directions of the same non-adjacent pair with the same character, confirming that B1 is bidirectional and not an artifact of the direction in which the constraint was written. This is not a duplicate of tc-b01 \u2014 the setup positions differ, the non-adjacent pairs differ, and the spatial context differs.",
+  "condition_notes": {
+    "A": "ABox never updates. Oracle sees guard at main_hall (baseline). main_hall\u2192entrance is adjacent \u2014 B1 does not fire. Zero oracle violations expected under Condition A.",
+    "B": "Turn 1 commits guard\u2192back_room. Turn 2: back_room\u2192entrance fires B1.",
+    "C": "Same as B."
+  },
+  "reset_abox": true,
+  "turns": [
+    {
+      "turn": 1,
+      "prompt": "The guard steps into the back room to retrieve his cloak.",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "violation_types": []
+    },
+    {
+      "turn": 2,
+      "prompt": "The guard, cloak in hand, strides directly from the back room to the entrance without passing through the main hall.",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(non_adjacent_move(guard,back_room,entrance))"
+      ],
+      "violation_types": [
+        "B"
+      ]
+    }
+  ]
+}

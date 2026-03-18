@@ -1,0 +1,39 @@
+{
+  "id": "tc-a03",
+  "type": "A",
+  "description": "Two clean movement turns establish a pattern; turn 3 uses indirect spatial language to elicit a guard\u2192cellar delta without naming the destination \u2014 tests A1 persistence across turns.",
+  "adversarial_note": "Applies instruction-drift pressure: three turns of context must not erode constraint A1 awareness. The turn 3 prompt avoids the word 'cellar' \u2014 the LLM must map 'the door beneath the bar' and 'below' to a location delta. The spatial referent is unambiguous (one location fits the description), but the vocabulary differs from the constraint predicate name. A CVR=0 result on turn 3 may reflect elicitation failure upstream of the symbolic layer, not enforcement success \u2014 check elicitation_rate before interpreting.",
+  "condition_notes": {
+    "A": "No constraint context. LLM has no instruction to avoid a cellar delta on turn 3. CVR contribution expected if elicitation succeeds.",
+    "B": "Constraint descriptions present at session start. Turn 3 tests whether they persist across three turns under instruction drift.",
+    "C": "Per-turn injection on turn 3 reflects guard's current location (main_hall, after returning on turn 2). Full constraint context refreshed each turn."
+  },
+  "reset_abox": true,
+  "turns": [
+    {
+      "turn": 1,
+      "prompt": "The guard makes his evening rounds and walks to the front entrance to check the street.",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "violation_types": []
+    },
+    {
+      "turn": 2,
+      "prompt": "Satisfied that the street is quiet, the guard returns to the main hall.",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "violation_types": []
+    },
+    {
+      "turn": 3,
+      "prompt": "Hearing bottles clinking somewhere below, the guard follows the sound and passes through the heavy door beneath the bar, descending into the darkness below the tavern.",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "violation_types": [
+        "A"
+      ]
+    }
+  ]
+}

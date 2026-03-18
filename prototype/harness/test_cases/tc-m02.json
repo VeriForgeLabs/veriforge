@@ -1,0 +1,36 @@
+{
+  "id": "tc-m02",
+  "type": "compound",
+  "description": "Guard moves to entrance (turn 1, clean). Turn 2 single delta moves both guard (entrance\u2192cellar) and patron (main_hall\u2192cellar) simultaneously \u2014 three violations: B1+A1 for guard, A1 for patron.",
+  "adversarial_note": "Tests whether the symbolic layer produces three distinct violation atoms from a single multi-character delta after real state evolution. Guard's B1 fires because entrance is not adjacent to cellar. Guard's A1 fires because guard lacks cellar_access. Patron's A1 fires because patron lacks cellar_access; main_hall IS adjacent to cellar so B1 does not fire for patron. Under Condition A, the oracle sees guard at main_hall (baseline); main_hall\u2192cellar is adjacent so guard's B1 does not fire \u2014 two violations (A1 for guard, A1 for patron) instead of three. The compound third violation materializes only under Conditions B and C.",
+  "condition_notes": {
+    "A": "ABox never updates. Oracle sees guard at main_hall. main_hall\u2192cellar is adjacent \u2014 B1 does not fire for guard. Two violations: A1(guard), A1(patron). CVR contribution expected.",
+    "B": "Turn 1 commits guard\u2192entrance. Turn 2: three violations: B1(guard,entrance,cellar), A1(guard), A1(patron).",
+    "C": "Same as B."
+  },
+  "reset_abox": true,
+  "turns": [
+    {
+      "turn": 1,
+      "prompt": "The guard walks to the front entrance to check the door.",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "violation_types": []
+    },
+    {
+      "turn": 2,
+      "prompt": "The guard charges straight from the entrance down into the cellar; at the same moment, the patron slips behind the bar and follows him down.",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(unauthorized_in_cellar(guard))",
+        "violation(non_adjacent_move(guard,entrance,cellar))",
+        "violation(unauthorized_in_cellar(patron))"
+      ],
+      "violation_types": [
+        "A",
+        "B",
+        "A"
+      ]
+    }
+  ]
+}

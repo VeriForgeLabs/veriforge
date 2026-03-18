@@ -1,0 +1,32 @@
+{
+  "id": "tc-a02",
+  "type": "A",
+  "description": "Guard makes a clean setup move on turn 1; patron is killed in place on turn 2, firing A2 (dead character located).",
+  "adversarial_note": "Exposes a prototype-scope schema limitation: the current ABox delta format has no mechanism to atomically remove a character from located_at. Any delta that sets character_alive=false while the character retains a location entry immediately fires A2 on the same turn. There is no 'clean death' representation at this schema level. The guard setup on turn 1 confirms sequential processing works correctly before the violation turn.",
+  "condition_notes": {
+    "A": "ABox never updates after turn 1. Turn 2 oracle sees patron alive at main_hall in the baseline ABox, then applies the delta (alive=false) and detects A2 via silent validation. CVR contribution expected.",
+    "B": "Turn 1 commits guard\u2192entrance. Turn 2 A2 detected and blocked.",
+    "C": "Same as B. Per-turn injection reflects guard at entrance on turn 2."
+  },
+  "reset_abox": true,
+  "turns": [
+    {
+      "turn": 1,
+      "prompt": "The guard does a sweep of the room and walks to the front entrance to check the street.",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "violation_types": []
+    },
+    {
+      "turn": 2,
+      "prompt": "A hooded figure slips something into the patron's drink. The patron shudders and slumps forward, dead, still slumped over the bar.",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(dead_character_located(patron))"
+      ],
+      "violation_types": [
+        "A"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "tc-b02",
+  "type": "B",
+  "description": "Patron moves to back_room (clean), then attempts a direct back_room\u2192entrance jump \u2014 B1 only, no A1.",
+  "adversarial_note": "Tests the back_room\u2192entrance non-adjacent pair using the patron as the violating character. Using the patron (not the guard) confirms B1 fires independently of character identity \u2014 any character making this move violates the constraint. Compare tc-b04 (guard, same non-adjacent pair back_room\u2192entrance) to confirm character-independence of the rule.",
+  "condition_notes": {
+    "A": "ABox never updates. Oracle sees patron at main_hall (baseline). main_hall\u2192entrance is adjacent \u2014 B1 does not fire. Zero oracle violations expected under Condition A.",
+    "B": "Turn 1 commits patron\u2192back_room. Turn 2: back_room\u2192entrance fires B1.",
+    "C": "Same as B."
+  },
+  "reset_abox": true,
+  "turns": [
+    {
+      "turn": 1,
+      "prompt": "The patron wanders into the back room to examine the shelves.",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "violation_types": []
+    },
+    {
+      "turn": 2,
+      "prompt": "Hearing commotion outside, the patron cuts straight across from the back room to the entrance without passing through the main hall.",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(non_adjacent_move(patron,back_room,entrance))"
+      ],
+      "violation_types": [
+        "B"
+      ]
+    }
+  ]
+}

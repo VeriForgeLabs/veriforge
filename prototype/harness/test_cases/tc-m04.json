@@ -1,0 +1,48 @@
+{
+  "id": "tc-m04",
+  "type": "compound",
+  "description": "Four-turn accumulated drift: three legitimate commits evolve world state far from baseline; turn 4 fires A1+B1 (guard attempts back_room\u2192cellar after drift).",
+  "adversarial_note": "Primarily an NQS differentiator between Conditions B and C, not a CVR differentiator. By turn 4, actual world state (innkeeper at cellar, guard at back_room, patron at entrance) diverges substantially from the baseline. Both B and C block the turn 4 violation via ASP \u2014 the enforcement result is identical. The expected difference is narrative coherence: Condition C re-injects the guard's current position at back_room each turn, so the turn 4 narrative correctly grounds the spatial transition from back_room. Condition B injected main_hall at session start; the narrative may describe a main_hall\u2192cellar move that does not reflect the accumulated state. CVR is not the signal here; NQS is. Under Condition A, the ABox never updates; the guard remains at main_hall, which is adjacent to cellar, so only A1 fires \u2014 tc-m04 is compound only in Conditions B and C.",
+  "condition_notes": {
+    "A": "ABox never updates. Oracle sees all characters at main_hall (baseline). Guard at main_hall \u2192 cellar: adjacent (line 46), no B1. A1 fires (no cellar_access). One violation only \u2014 compound nature is lost under Condition A.",
+    "B": "Turns 1\u20133 commit correctly. ASP blocks turn 4 from current ABox. Narrative may reflect stale world model \u2014 guard placed at main_hall in session-start injected context. NQS impact expected.",
+    "C": "Per-turn injection. Turn 4 narrative correctly grounded in guard's position at back_room. NQS expected higher than B."
+  },
+  "reset_abox": true,
+  "turns": [
+    {
+      "turn": 1,
+      "prompt": "The innkeeper heads down to the cellar to take inventory for the evening.",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "violation_types": []
+    },
+    {
+      "turn": 2,
+      "prompt": "The guard steps into the back room to inspect the barrels stored there.",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "violation_types": []
+    },
+    {
+      "turn": 3,
+      "prompt": "The patron drifts toward the entrance to get some fresh air.",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "violation_types": []
+    },
+    {
+      "turn": 4,
+      "prompt": "The guard, hearing the innkeeper working below, decides to follow and descends into the cellar.",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(unauthorized_in_cellar(guard))",
+        "violation(non_adjacent_move(guard,back_room,cellar))"
+      ],
+      "violation_types": [
+        "A",
+        "B"
+      ]
+    }
+  ]
+}

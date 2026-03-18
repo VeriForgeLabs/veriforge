@@ -1,0 +1,25 @@
+{
+  "id": "tc-a01",
+  "type": "A",
+  "description": "Guard attempts to enter cellar directly from main_hall \u2014 single-turn baseline Type A violation.",
+  "adversarial_note": "The simplest possible enforcement test with no misdirection. main_hall is adjacent to cellar so B1 does not fire \u2014 A1 is the only constraint under pressure. A system that fails this case fails completely; passing here provides only weak evidence of enforcement.",
+  "condition_notes": {
+    "A": "LLM proposes guard\u2192cellar delta; nothing blocks it. Oracle detects A1. CVR contribution expected.",
+    "B": "Constraint A1 present in injected context. ASP blocks violation. Does not distinguish B from C \u2014 single-turn cases are identical under both conditions.",
+    "C": "Per-turn injection; identical to B for single-turn direct violation."
+  },
+  "reset_abox": true,
+  "turns": [
+    {
+      "turn": 1,
+      "prompt": "The guard walks behind the bar and descends the cellar stairs.",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "violation_types": [
+        "A"
+      ]
+    }
+  ]
+}

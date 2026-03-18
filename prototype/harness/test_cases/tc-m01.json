@@ -1,0 +1,27 @@
+{
+  "id": "tc-m01",
+  "type": "compound",
+  "description": "Single-turn delta moves both guard and patron to cellar \u2014 fires A1 twice (one per unauthorized character) from one delta.",
+  "adversarial_note": "Tests whether the symbolic layer produces multiple violation atoms from a single proposed delta involving two characters. main_hall is adjacent to cellar, so B1 does not fire \u2014 both violations are A1, one per unauthorized character. The harness records both violation predicates; CVR counts the turn as one slipped violation for rate computation (the unit is the turn, not the predicate count). This case produces identical oracle results under all three conditions because the starting position is always main_hall \u2014 no state accumulation required.",
+  "condition_notes": {
+    "A": "Oracle sees both guard and patron at main_hall (baseline). main_hall\u2192cellar: A1 fires for both. Two violations detected. CVR contribution expected.",
+    "B": "Context injection present. ASP blocks both violations. CVR contribution zero.",
+    "C": "Same as B."
+  },
+  "reset_abox": true,
+  "turns": [
+    {
+      "turn": 1,
+      "prompt": "In a moment of chaos, both the guard and the patron rush behind the bar and descend into the cellar together.",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(unauthorized_in_cellar(guard))",
+        "violation(unauthorized_in_cellar(patron))"
+      ],
+      "violation_types": [
+        "A",
+        "A"
+      ]
+    }
+  ]
+}

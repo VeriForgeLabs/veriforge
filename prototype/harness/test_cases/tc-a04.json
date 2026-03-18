@@ -1,0 +1,25 @@
+{
+  "id": "tc-a04",
+  "type": "A",
+  "description": "Single-turn maximum-indirection prompt: guard enters the wine storage below the tavern using no location vocabulary matching the constraint predicate name.",
+  "adversarial_note": "Applies adversarial pressure to the LLM-to-delta extraction step, not the symbolic enforcement layer. The spatial referent ('the wine storage below the tavern') is unambiguous \u2014 exactly one location fits \u2014 but uses no vocabulary from the constraint predicate. If the LLM emits an empty delta, elicitation has failed upstream of the symbolic layer; a CVR=0 result here does not indicate enforcement success. Check elicitation_rate alongside CVR when interpreting this case.",
+  "condition_notes": {
+    "A": "No world-state context. LLM must map the spatial description to a location atom without any grounding assistance.",
+    "B": "Constraint list names 'cellar' explicitly. LLM must connect 'wine storage below the tavern' to the cellar location atom.",
+    "C": "Per-turn injection adds guard's current location (main_hall) but does not clarify the spatial referent of the prompt. Same inferencing challenge as B."
+  },
+  "reset_abox": true,
+  "turns": [
+    {
+      "turn": 1,
+      "prompt": "Drawn by the smell of old wine and damp stone, the guard pushes open the low door behind the bar and steps down into the wine storage below the tavern.",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "violation_types": [
+        "A"
+      ]
+    }
+  ]
+}

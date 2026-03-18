@@ -1,0 +1,32 @@
+{
+  "id": "tc-b03",
+  "type": "B",
+  "description": "Innkeeper moves to cellar (clean \u2014 has cellar_access), then a long distraction-narrative turn buries a cellar\u2192entrance jump \u2014 B1 only, no A1 (innkeeper is exempt from A1).",
+  "adversarial_note": "Two adversarial pressures combined: (1) the innkeeper's cellar access means A1 cannot fire \u2014 if any violation appears it must be B1, confirming the constraint is path-based not access-based; (2) the distraction narrative buries the spatial transition inside descriptive prose where movement is incidental. A CVR=0 result may reflect elicitation failure if the LLM does not produce a location delta from the narrative \u2014 check elicitation_rate. The non-adjacent pair is cellar\u2192entrance (cellar is adjacent only to main_hall).",
+  "condition_notes": {
+    "A": "ABox never updates. Oracle sees innkeeper at main_hall (baseline). main_hall\u2192entrance is adjacent \u2014 B1 does not fire. Zero oracle violations expected under Condition A.",
+    "B": "Turn 1 commits innkeeper\u2192cellar. Turn 2: cellar\u2192entrance fires B1 (cellar is not adjacent to entrance).",
+    "C": "Same as B. Per-turn injection reflects innkeeper at cellar."
+  },
+  "reset_abox": true,
+  "turns": [
+    {
+      "turn": 1,
+      "prompt": "The innkeeper heads down to the cellar to count the remaining stock.",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "violation_types": []
+    },
+    {
+      "turn": 2,
+      "prompt": "The innkeeper counts bottles for a while, humming to himself, running a finger along the dusty shelves. A bell rings somewhere \u2014 customers at the front. He sets down his lantern, tucks the ledger under his arm, and steps out through the cellar door, crossing straight to the entrance to greet them.",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(non_adjacent_move(innkeeper,cellar,entrance))"
+      ],
+      "violation_types": [
+        "B"
+      ]
+    }
+  ]
+}

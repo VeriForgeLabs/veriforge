@@ -1,0 +1,25 @@
+{
+  "id": "tc-m03",
+  "type": "compound",
+  "description": "Single-turn: patron is killed and immediately moved in the same delta \u2014 fires A2 (dead character located).",
+  "adversarial_note": "Tests whether the LLM produces a compound delta containing both character_alive=false and a character_locations entry in a single turn. If it does, A2 fires. If the LLM omits the location key and only sets alive=false, A2 still fires (the patron retains their existing location from the ABox under the closed-world assumption). If the LLM sets alive=false and simultaneously removes the location by setting it to an empty value, behavior depends on schema handling. The elicitation failure mode here is different from extraction cases: the LLM may correctly model the scene but resolve the delta without a location key \u2014 inspect proposed_delta in the TurnRecord to distinguish enforcement from elicitation.",
+  "condition_notes": {
+    "A": "No validation. Oracle receives the proposed delta. A2 fires if delta contains alive=false for patron (patron retains main_hall location from ABox). CVR contribution expected.",
+    "B": "Constraint A2 explicitly listed in injected context. ASP blocks.",
+    "C": "Same as B."
+  },
+  "reset_abox": true,
+  "turns": [
+    {
+      "turn": 1,
+      "prompt": "A fight breaks out. The guard runs the patron through with his sword. Without pausing, the guard grabs the body and hauls it into the back room.",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(dead_character_located(patron))"
+      ],
+      "violation_types": [
+        "A"
+      ]
+    }
+  ]
+}

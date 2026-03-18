@@ -1,0 +1,32 @@
+{
+  "id": "tc-b01",
+  "type": "B",
+  "description": "Guard moves to entrance (clean), then attempts a direct entrance\u2192back_room jump \u2014 B1 only, no A1.",
+  "adversarial_note": "Tests the B1 constraint from the entrance side of the map: the guard is at an extremity (entrance) and attempts to skip across to the opposite extremity (back_room), bypassing the mandatory main_hall waypoint. The non-adjacent pair is entrance\u2192back_room. Using the guard (rather than innkeeper) confirms that B1 is path-based, not character-based \u2014 the same rule fires regardless of identity. Compare tc-b04 (same character, reverse non-adjacent pair: back_room\u2192entrance) to confirm constraint symmetry.",
+  "condition_notes": {
+    "A": "ABox never updates. Oracle sees guard at main_hall (baseline). main_hall\u2192back_room is adjacent \u2014 B1 does not fire. Zero oracle violations expected under Condition A.",
+    "B": "Turn 1 commits guard\u2192entrance. Turn 2: entrance\u2192back_room fires B1.",
+    "C": "Same as B. Per-turn injection reflects guard at entrance."
+  },
+  "reset_abox": true,
+  "turns": [
+    {
+      "turn": 1,
+      "prompt": "The guard walks to the front entrance to watch the street.",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "violation_types": []
+    },
+    {
+      "turn": 2,
+      "prompt": "Without returning to the main hall, the guard strides directly from the entrance straight through to the back room.",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(non_adjacent_move(guard,entrance,back_room))"
+      ],
+      "violation_types": [
+        "B"
+      ]
+    }
+  ]
+}
