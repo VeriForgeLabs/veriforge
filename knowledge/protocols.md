@@ -102,8 +102,83 @@ This is the implementation-phase analog of the research precision claim rule.
 
 ---
 
+### Exploration Chats (ENN)
+
+Role: Ideation layer.
+- Loose questions, what-ifs, analogies, half-formed hunches, adjacent ideas.
+- No obligation to produce findings. 
+- No commit pathway of any kind.
+- The conversation develops naturally through curiosity and discussion.
+- Connection to existing project questions is an emergent property, not a design objective.
+
+File load order: protocols.md → research-log.md → vision.md → implementation-log.md
+Full document context is required for silent background awareness.
+Loaded files are not surfaced into the conversation unless directly relevant to a question being discussed.
+
+Naming: E01, E02, E03, ...
+
+Conduct rules:
+- No epistemic tagging required unless a claim is being seriously entertained for handoff.
+- No citation requirement unless precision matters to the question.
+- No COMMIT-READY pathway. No commit blocks of any kind.
+- No blind spot check or mode declaration required.
+- The conversation goes wherever it goes.
+
+Silent awareness:
+The ENN chat holds the current OQ and implementation thread state as background context.
+It does not actively steer conversation toward existing questions.
+It monitors for emergence — ideas that develop naturally into something that crosses one of the following thresholds:
+
+  (a) The idea directly bears on a named open question or open thread.
+  (b) The idea would materially change how a resolved question is understood.
+  (c) The idea is substantive enough to warrant a new named open question or implementation thread that does not currently exist.
+
+When a threshold is crossed, the ENN chat immediately flags it and prompts the user to initiate a handoff.
+It does not initiate the handoff autonomously.
+The threshold must be crossed naturally through the development of the conversation — the ENN chat does not push toward or seek a relation to existing OQs.
+
+The only structured output an ENN chat is responsible for is the **✓ HANDOFF-READY** block.
+Everything else is conversation.
+
+Handoff protocol:
+When a threshold is crossed, the ENN chat produces a ✓ HANDOFF-READY flag and a structured handoff block (template below).
+The user decides whether and when to carry it to Ankyra.
+Ankyra determines the appropriate next step (direct commit, Session Chat, or Implementation Chat) and references the ENN chat as origin in any resulting commit.
+ENN chats are not tracked in any project file unless a handoff occurs and Ankyra generates a commit from it.
+
+Handoff block template:
+
+  ---
+  ✓ HANDOFF-READY
+
+  **Origin:** [ENN chat identifier, e.g., E01]
+  **Emerged from:** [One sentence describing what was being discussed when the threshold was crossed]
+  **Threshold triggered:** [a | b | c]
+
+  **Core claim:**
+  [The idea stated as precisely as possible. One paragraph maximum.
+  State it directly so Ankyra can evaluate it.]
+
+  **Epistemic status:** [Verified | Inferred | Unverified]
+  [Brief justification — what is this based on?]
+
+  **Citations (if any):**
+  [Full citation entries in standard project format, or "none"]
+
+  **Relationship to existing project:**
+  [Which OQ, thread, or phase this bears on — or "potential new OQ" if threshold (c) was triggered.
+  One sentence per relationship.]
+
+  **Suggested Ankyra next step:**
+  [Direct commit candidate | Warrants Session Chat | Warrants Implementation Chat | Unclear — needs Ankyra evaluation]
+
+  **Full context summary:**
+  [A summary of the ENN conversation leading to this finding, sufficient for Ankyra to reconstruct the reasoning without reading the original chat.
+  Include key intermediate steps, analogies, or examples that shaped the claim.]
+  ---
+
 ## Opener Templates — Draft for Ankyra-01
-```
+
 Ankyra Chat [NN] | Last Ankyra Chat: Ankyra-00 | Date: [date]
 Session/Implementation output under review: [SNN or INN]
 Authorization status: [PENDING REVIEW | AUTHORIZED TO COMMIT]
