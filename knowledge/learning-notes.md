@@ -552,3 +552,61 @@ so both sources of instruction agree on who decides what.
 This matters for the OQ-09 ablation: Condition B has constraint descriptions
 in the injected context and would exhibit the same failure without this fix.
 The corrected SYSTEM_PROMPT is shared across all three conditions.
+
+## Phase 4 — Evaluation Harness
+
+### The Plan-Before-Generate Protocol
+
+Phase 4 introduced a discipline that prior phases did not make explicit:
+code generation requires an explicit authorization gate after the design is
+finalized, not before. The sequence is:
+
+  1. Propose the design in plain language.
+  2. Surface blocking issues and flags — stop here and resolve them.
+  3. Receive explicit authorization for all items.
+  4. Then generate code.
+
+Skipping step 3 produces code on unresolved premises, which then requires
+regeneration after the premises are corrected. The pre-registration requirement
+(test cases committed before any condition runs) makes this discipline
+especially load-bearing: a schema error caught at design time costs a
+conversation turn; the same error caught after commit costs a re-registration.
+
+### Why tc-m04 Requires Primary Source Verification
+
+tc-m04 is the key case for distinguishing Condition B from Condition C.
+Its design depends on three-turn state accumulation leading to a compound
+violation on turn 4 (guard at back_room attempts cellar — B1 + A1).
+
+Before this case could be locked, two adjacency facts required verification
+against tavern_rules.lp:
+
+  1. main_hall is adjacent to cellar — so the innkeeper's turn 1 move is clean.
+  2. back_room is NOT adjacent to cellar — so B1 fires on the guard's turn 4 move.
+
+Both facts were confirmed from the primary source (lines 46–47 and the absence
+of adjacent(back_room, cellar)). Without that check, the entire drift
+accumulation design could have collapsed on turn 1.
+
+The general principle: any test case whose violation predicate depends on
+a structural topology fact (adjacency, access control) requires direct
+confirmation from the rules file before pre-registration, not from comments
+in other files.
+
+### The Condition A Oracle Gap
+
+run_turn() in Condition A never calls validate_delta() — it returns early
+with committed=False and violations=[]. To compute CVR consistently across
+all three conditions, run_harness.py calls run_silent_validation() after
+each Condition A turn as a post-hoc observer.
+
+This creates a documented measurement gap for state-dependent test cases:
+because Condition A never writes the ABox, the oracle always evaluates the
+delta against the baseline state. For cases where a violation depends on
+prior state commits (e.g., tc-b01: guard must be at entrance before the
+entrance→back_room B1 can fire), the oracle under Condition A sees guard at
+main_hall, main_hall→back_room is adjacent, and B1 does not fire.
+
+This is not a harness bug — it is a structural property of Condition A's
+statelessness. It is documented in each affected case's condition_notes.
+The expected Condition A behavior for Type B cases is zero oracle violations.

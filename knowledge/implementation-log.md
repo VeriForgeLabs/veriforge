@@ -81,7 +81,7 @@ DEPENDS ON: Phase 3 [RESOLVED — I04]
 DEPENDS ON: OQ-09-T1 disposition [RESOLVED — S12] — Condition D excluded; test cases may be pre-registered.
   (OQ-thread dependencies borrow status notation from the OQ system; [OPEN] here means the thread has not yet been disposed, not that it is in the implementation phase status set.)
 BLOCKS: OQ-09 empirical test
-Status: [NOT STARTED]
+Status: [RESOLVED — I05]
 
 Resolution criterion:
 12 pre-registered test cases committed to the repo before any condition is run — 4 Type A, 4 Type B, 4 compound — each as a scripted prompt sequence.
@@ -302,3 +302,64 @@ Evidence:
   - violation detected: violation(unauthorized_in_cellar(guard)) 
   - ABox before and after turn: identical — guard remains at main_hall.
   - commit_to_abox() was not called.
+
+### I05 — Phase 4: Evaluation Harness | March 2026 | [IN PROGRESS]
+
+[DECISION] IMP-I05-D01 — Harness model override via module-level patching
+Chosen: session_loop.MODEL patched at harness startup (session_loop.MODEL = args.model).
+Alternative not taken: adding a model parameter to run_turn().
+Reason: run_turn()'s signature is stable and tested against Phase 3 criteria;
+MODEL is an intentionally global swap-point constant (IMP-I04-D04); patching at
+harness startup respects the Phase 3 design decision while enabling the Phase 4
+model change without modifying tested code.
+
+[DECISION] IMP-I05-D02 — Test cases as declarative JSON, not executable scripts
+Chosen: 12 JSON files in prototype/harness/test_cases/, loaded and driven by run_harness.py.
+Alternative not taken: Python scripts with hardcoded run_turn() calls per case.
+Reason: declarative data separates "what is being tested" from "how the harness runs it";
+the JSON files are the pre-registration artifact, re-runnable under any condition without
+modification, and human-inspectable without executing code.
+
+[DECISION] IMP-I05-D03 — Silent oracle validation for Condition A CVR measurement
+Chosen: run_harness.py calls validate_delta() as a post-hoc observer on Condition A
+TurnResults to obtain oracle classifications for CVR computation.
+Alternative not taken: inferring violations from proposed_delta field contents alone.
+Reason: the ASP oracle is the pre-registered truth source for the ablation;
+using the same oracle across all three conditions preserves metric consistency.
+Bypassing it for Condition A would make CVR non-comparable.
+
+[DECISION] IMP-I05-D04 — ABox reset from in-memory baseline before each test case
+Chosen: baseline ABox JSON dict loaded into memory once at harness startup;
+written back to disk before each test case via reset_abox().
+Alternative not taken: maintaining separate per-condition ABox files.
+Reason: separate files require synchronizing three copies of the same starting
+state; in-memory baseline is the single source of truth.
+
+[THREAD] IMP-I05-T01 — Condition B stale-context drift produces different world state
+trajectory than Condition C, visible in tc-a03 turn 3 violation predicates
+Observation: under Condition B, guard remained at entrance after turn 2 because
+the stale session-start context (guard at main_hall) caused the LLM to propose
+an empty delta for a return-to-main-hall prompt. Under Condition C, per-turn
+injection correctly showed guard at entrance; the LLM proposed the correct delta
+and it committed. The ABox state divergence then caused the turn 3 validator to
+fire B1 under Condition B (was_at=entrance) and not under Condition C (was_at=main_hall).
+This is a real behavioral signal consistent with VeriForge's hypothesis — stale
+context in Condition B produces incorrect world state evolution even on clean-designed
+turns — but it appears in the violation predicate set rather than CVR. CVR was zero
+in both conditions; the signal lives elsewhere.
+Routing: Session Chat — this is a research finding with implications for how
+the B/C distinction is characterized in the OQ-09 resolution write-up.
+Trigger: before OQ-09 is formally resolved in any Ankyra commit.
+
+[RESOLVED] IMP-I05 — Phase 4 exit criterion met.
+Evidence:
+  - 12 pre-registered test cases (4 Type A, 4 Type B, 4 compound) committed
+    to prototype/harness/test_cases/ before any condition was run.
+  - CVR and VDR computed automatically from TurnRecord oracle classifications.
+  - All three conditions ran via Phase 3 session loop with --conditions flag.
+  - Full run produced: CVR_A=1.000, CVR_B=0.000, CVR_C=0.000, VDR_A=0.667,
+    VDR_B=1.000, VDR_C=1.000. No manual tallying required.
+  - OQ-09 primary threshold (>=75% CVR reduction A→C): ✓ MET at 100%.
+  - Directionality check (CVR_B > CVR_C): not met — both at 0.000.
+  - Results archived: results/run_20260318_150753_full.json and _summary.json.
+  - NQS scores not yet populated (requires manual human rating post-run).
