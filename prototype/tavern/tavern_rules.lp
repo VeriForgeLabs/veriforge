@@ -1,6 +1,6 @@
 % ============================================================
 % VeriForge Tavern World — Rules File
-% Phase 1 artifact | implementation-log.md: I02
+% Phase 2 artifact | implementation-log.md: I02, I03
 % ============================================================
 %
 % Encodes WorldDSL Categories 1, 2, and 4.
@@ -19,30 +19,34 @@
 
 % ---- Category 1: Entity Registry -------------------------
 % Declares every named entity the world knows about.
-% These are the ground truth definitions — not assertions
+% These are ground truth definitions, not assertions
 % about current state.
 
 character(innkeeper).
 character(guard).
 character(patron).
 
-location(tavern_main).
+location(entrance).
+location(main_hall).
 location(cellar).
-location(street).
+location(back_room).
 
 
 % ---- Category 2: Static Properties -----------------------
 % Facts that never change during play.
 % Spatial topology and access-control designations are static.
-% Adjacent(A, B) is stated in both directions — the solver
-% does not derive the reverse automatically.
 
-restricted(cellar).
+% Only the innkeeper has authorised access to the cellar.
+cellar_access(innkeeper).
 
-adjacent(tavern_main, cellar).
-adjacent(cellar, tavern_main).
-adjacent(tavern_main, street).
-adjacent(street, tavern_main).
+% Adjacency is symmetric — each pair stated in both directions.
+% The solver does not derive the reverse automatically.
+adjacent(entrance, main_hall).
+adjacent(main_hall, entrance).
+adjacent(main_hall, cellar).
+adjacent(cellar, main_hall).
+adjacent(main_hall, back_room).
+adjacent(back_room, main_hall).
 
 
 % ---- Category 4: Integrity Constraints -------------------
@@ -52,33 +56,34 @@ adjacent(street, tavern_main).
 %   - Enforcement loop checks for violation(...) atoms in the
 %     yielded stable model, not result.satisfiable.
 %
-% Violation atoms use compound arguments to name the offending
-% entity: violation(unauthorized_in_cellar(guard)) is more
+% Violation atoms carry the offending entity as a compound
+% argument: violation(unauthorized_in_cellar(guard)) is more
 % actionable than violation(unauthorized_in_cellar).
-% Both are valid atoms in ASP; the argument is a compound term.
+% See: IMP-I02-D04.
 
 
-% Constraint 1 — Type A (State Consistency):
-% The cellar is a restricted area. Only the innkeeper may be there.
+% Constraint A1 — Type A (State Consistency):
+% Only characters with cellar_access may be in the cellar.
 %
-% X != innkeeper uses inequality over constants.
-% This generalises correctly if new characters are added to
-% Category 1 — they are automatically covered.
+% "not cellar_access(X)" uses negation-as-failure: if
+% cellar_access(X) is absent from the stable model, the
+% solver treats it as false. New characters granted access
+% via cellar_access(X) facts are automatically exempt
+% without modifying this rule.
 
 violation(unauthorized_in_cellar(X)) :-
     character(X),
     located_at(X, cellar),
-    X != innkeeper.
+    not cellar_access(X).
 
 
-% Constraint 2 — Type A (State Consistency):
+% Constraint A2 — Type A (State Consistency):
 % A dead character cannot occupy any location.
 %
-% "not alive(X)" is negation-as-failure under the closed-world
-% assumption: if alive(X) is absent from the stable model,
-% the solver treats it as false.
-% The ABox must assert alive(X) for every living character.
-% Omitting it is equivalent to declaring the character dead.
+% "not alive(X)" fires when alive(X) is absent from the
+% stable model. The ABox must assert alive(X) for every
+% living character. Omitting it is equivalent to declaring
+% the character dead (closed-world assumption).
 
 violation(dead_character_located(X)) :-
     character(X),
@@ -86,17 +91,40 @@ violation(dead_character_located(X)) :-
     not alive(X).
 
 
-% Constraint 3 — Type A (State Consistency):
+% Constraint A3 — Type A (State Consistency):
 % A character cannot occupy two locations simultaneously.
 %
-% This guards against the ABox management error where both old
-% and new locations persist after a move (IMP-I01-F02 failure mode).
-% L1 != L2 prevents the rule from firing on (L, L) — a character
-% being at the same location twice, which cannot occur with ground
-% facts but is excluded explicitly for correctness.
+% L1 != L2 prevents the rule from firing when both variables
+% unify to the same location — a degenerate case that cannot
+% occur with well-formed ABox facts but is excluded for
+% correctness.
 
 violation(character_at_multiple_locations(X)) :-
     character(X),
     located_at(X, L1),
     located_at(X, L2),
     L1 != L2.
+
+
+% Constraint B1 — Type B (Transition Validity):
+% A character can only move to an adjacent location.
+%
+% was_at(X, OldLoc) is injected from the current ABox by
+% the Phase 2 Python module — it records where X was before
+% this delta was proposed.
+%
+% located_at(X, NewLoc) is injected from the proposed delta
+% — it records where X wants to be after the delta commits.
+%
+% OldLoc != NewLoc guards against flagging stay-in-place as
+% a violation. A character remaining at their current location
+% satisfies was_at(X, L) and located_at(X, L) simultaneously.
+% Since no location is declared adjacent to itself, the
+% "not adjacent" check would fire incorrectly without this guard.
+
+violation(non_adjacent_move(X, OldLoc, NewLoc)) :-
+    character(X),
+    was_at(X, OldLoc),
+    located_at(X, NewLoc),
+    OldLoc != NewLoc,
+    not adjacent(OldLoc, NewLoc).
