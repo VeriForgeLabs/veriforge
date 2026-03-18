@@ -78,10 +78,10 @@ Done means: the loop runs without errors, the LLM receives injected context, and
 ### PHASE-4 — Evaluation Harness
 
 DEPENDS ON: Phase 3 [RESOLVED — I04]
-DEPENDS ON: OQ-09-T1 disposition [OPEN] — Condition D inclusion must be decided before test cases are pre-registered.
+DEPENDS ON: OQ-09-T1 disposition [RESOLVED — S12] — Condition D excluded; test cases may be pre-registered.
   (OQ-thread dependencies borrow status notation from the OQ system; [OPEN] here means the thread has not yet been disposed, not that it is in the implementation phase status set.)
 BLOCKS: OQ-09 empirical test
-Status: [UNBLOCKED]
+Status: [NOT STARTED]
 
 Resolution criterion:
 12 pre-registered test cases committed to the repo before any condition is run — 4 Type A, 4 Type B, 4 compound — each as a scripted prompt sequence.
