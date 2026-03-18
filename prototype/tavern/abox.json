@@ -1,0 +1,38 @@
+{
+  "_doc": "VeriForge Tavern ABox — Initial Mutable World State",
+  "_phase": "Phase 1 artifact | implementation-log.md: I02",
+
+  "_categories": {
+    "note": "This file encodes Category 3 (mutable state) ONLY.",
+    "category_1_and_2": "Entity registry and static properties are in tavern_rules.lp.",
+    "category_4": "Integrity constraints are in tavern_rules.lp."
+  },
+
+  "_asp_mapping": {
+    "note": "This section documents how Phase 2 will translate this JSON to ASP ground facts.",
+    "state.located_at": {
+      "structure": "{ character_name: location_name }",
+      "produces": "located_at(character_name, location_name).",
+      "example": "\"innkeeper\": \"tavern_main\" → located_at(innkeeper, tavern_main)."
+    },
+    "state.alive": {
+      "structure": "[ character_name, ... ]",
+      "produces": "alive(character_name).",
+      "example": "\"innkeeper\" → alive(innkeeper).",
+      "closed_world_note": "Characters absent from this list are treated as dead by the solver. Omission is semantically significant."
+    }
+  },
+
+  "state": {
+    "located_at": {
+      "innkeeper": "tavern_main",
+      "guard":     "tavern_main",
+      "patron":    "tavern_main"
+    },
+    "alive": [
+      "innkeeper",
+      "guard",
+      "patron"
+    ]
+  }
+}
