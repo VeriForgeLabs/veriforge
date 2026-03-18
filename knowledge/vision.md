@@ -444,7 +444,7 @@ The summary below reflects current status only — resolution criteria and log e
 
 **PHASE 0 — Clingo Fundamentals** [IN PROGRESS — I01] → [implementation-log.md](implementation-log.md#phase-0)
 **PHASE 1 — Tavern WorldDSL Artifact** [RESOLVED — I02] → [implementation-log.md](implementation-log.md#phase-1)
-**PHASE 2 — ASP Validation Layer** [BLOCKED] → [implementation-log.md](implementation-log.md#phase-2)
+**PHASE 2 — ASP Validation Layer** [RESOLVED — I03] → [implementation-log.md](implementation-log.md#phase-2)
 **PHASE 3 — Session Loop** [BLOCKED] → [implementation-log.md](implementation-log.md#phase-3)
 **PHASE 4 — Evaluation Harness** [BLOCKED — OQ-09-T1 OPEN] → [implementation-log.md](implementation-log.md#phase-4)
 
