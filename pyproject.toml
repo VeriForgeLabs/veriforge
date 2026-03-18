@@ -9,6 +9,7 @@ description = "Neuro-symbolic constraint enforcement for LLM roleplay systems"
 requires-python = ">=3.12"
 dependencies = [
     "clingo>=5.7",
+    "antrhopic",
 ]
 
 [project.optional-dependencies]
