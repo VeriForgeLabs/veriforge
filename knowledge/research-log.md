@@ -728,3 +728,43 @@ URL: https://arxiv.org/abs/2511.07587
 Status: [Verified]
 Notes: Neuro-inspired generative memory framework (GSW) for spatiotemporal entity tracking; explicitly notes that current RAG solutions fail to build space-time-anchored narrative representations for tracking entities through episodic events; outperforms structured RAG baselines on episodic memory benchmark. 
 Cited as evidence of RAG's epistemic limitations in OQ-09-T1.
+
+### S12 — OQ-09-T1 Formal Disposition
+
+[S12-E1] OQ-09-T1 formal disposition: Condition D EXCLUDED — three-part justification completed and implementation infeasibility confirmed | Resolved | [Paper:RoleRAG2025] [Paper:IDRAG2025] [Paper:TRPGRAG2025] [Paper:GSW2025]
+
+**OQ-09-T1 — RAG Baseline as Untested Rival [RESOLVED — S12]**
+
+Disposition: CONDITION D EXCLUDED.
+
+(1) Which failure modes in the test battery RAG could plausibly address.
+The test battery targets Type A (state consistency) and Type B (transition validity) constraint pairs.
+RAG could plausibly address attention-dilution failures on single-fact recall — forgetting that a character is dead because the state change has been displaced from active context.
+However, this failure mode is already addressed by Condition C (per-turn full ABox re-injection), making a separate RAG condition redundant on its strongest ground.
+Deeper Type A violations — where the LLM fails to apply the relational entailments of a known fact — require inference over the closed-world ABox, which retrieval alone cannot provide.
+[Verified] — [Paper:RoleRAG2025], [Paper:IDRAG2025]
+
+(2) Why symbolic inference is the correct comparison class for Type A and Type B constraints.
+Type A constraints are ASP integrity constraints evaluated over the ABox as a whole; they are violated when any combination of committed state facts produces an inconsistency.
+Retrieval of individual facts leaves relational entailment to the LLM, which is probabilistic — re-instantiating the problem the symbolic layer is designed to solve.
+Type B constraints are transition precondition checks: computational operations over the state graph, not retrievable facts.
+A RAG system routing the same inference problem through the LLM is a degraded version of Condition B, not a distinct experimental condition. It does not isolate symbolic inference as the operative variable.
+[Verified] — structural, from OQ-05a; [Paper:GSW2025] confirms RAG fails to build space-time-anchored narrative representations needed for episodic entity tracking.
+
+(3) Empirical conditions for overturning the exclusion.
+A skeptic must demonstrate that a RAG system operating on the same corpus (ABox + WorldDSL) achieves CVR comparable to Condition C specifically on pre-registered Type A and Type B constraint pairs.
+Human-rated coherence, engagement, or persona consistency measures are not sufficient — the bar is formal constraint satisfaction rate on structural constraints.
+No published paper meets this bar as of March 2026.
+[Verified — confirmed by absence finding across four RAG papers and S12 search pass]
+
+Implementation path infeasibility (secondary, independently sufficient ground):
+At prototype scope (single tavern, 3–4 characters, 2–3 hard constraints), the ABox fits entirely within context.
+A RAG baseline would retrieve the full corpus on virtually every query, collapsing into an injection indistinguishable from Condition C.
+Condition D cannot be implemented as a distinct experimental condition without artificially degrading RAG, which would test a straw-man rather than its best case.
+The retrieval-vs.-full-context distinction is experimentally meaningful only at scale, which is explicitly out of prototype scope per OQ-05b [RESOLVED — S02].
+[Inferred] — structural consequence of prototype scope constraints.
+
+Epistemic status of exclusion: [Inferred] — the structural argument is logically sound and consistent with all four verified RAG papers, but the specific claim that RAG cannot match Condition C CVR on Type A/B constraints has not been directly tested.
+The exclusion holds until a skeptic demonstrates otherwise under the stated empirical bar.
+
+Phase 4 unblocked. Audit trigger does not fire (no downstream OQ unblocked).
