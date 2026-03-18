@@ -1,7 +1,11 @@
 
+# implementation-log.md
 
 ## VeriForge Implementation — Governing Document
+
 Append-only record of implementation decisions, failures, and open threads, governed by the implementation phase map below.
+**[THREAD]** entries are the single exception — the **Resolution** field is added in-place when a thread closes.
+All other entry types are strictly append-only.
 
 ---
 
@@ -75,6 +79,7 @@ Done means: the loop runs without errors, the LLM receives injected context, and
 
 DEPENDS ON: Phase 3 [BLOCKED]
 DEPENDS ON: OQ-09-T1 disposition [OPEN] — Condition D inclusion must be decided before test cases are pre-registered.
+  (OQ-thread dependencies borrow status notation from the OQ system; [OPEN] here means the thread has not yet been disposed, not that it is in the implementation phase status set.)
 BLOCKS: OQ-09 empirical test
 Status: [BLOCKED]
 
@@ -88,7 +93,9 @@ Done means: the harness can run a full condition and produce a CVR figure withou
 
 ## IMPLEMENTATION LOG
 
-_Entries are appended here as implementation work proceeds. Each chat appends one section block._
+_Entries are appended here as implementation work proceeds._ 
+_Each Implementation Chat (INN) appends one section block._
+
 
 ### I01 — Phase 0: Clingo Fundamentals | March 2026 | [RESOLVED]
 
@@ -141,6 +148,8 @@ Cause: correct ASP reasoning about the paired pattern combined with insufficient
 Resolution: dropped paired constraint entirely; violation predicates are derivation-only; program is always SAT; enforcement loop checks for presence of violation(...) atoms in the yielded model rather than interrogating result.satisfiable.
 Methodology patch recommended: no — this is expected implementation trial-and-error; the corrected design is now the documented pattern.
 
+---
+
 ### I02 — Phase 1: Tavern WorldDSL Artifact | March 2026 | [RESOLVED]
 
 [DECISION] IMP-I02-D01 — Two-file artifact architecture
@@ -163,8 +172,13 @@ Chosen: violation atoms carry the offending entity as a compound argument — vi
 Alternative not taken: flat constant violation atoms as in Phase 0.
 Reason: with three characters, the flat atom names the rule that fired but not which entity triggered it. The compound argument makes the enforcement message actionable. No new API pattern is required — the enforcement loop still filters by str(atom).startswith("violation(").
 
-Resolution criterion verified: all four CLI tests produce expected output.
-  t01: SATISFIABLE, no violation atoms.
-  t02: SATISFIABLE, violation(unauthorized_in_cellar(guard)).
-  t03: SATISFIABLE, violation(dead_character_located(patron)), alive(patron) absent from model (closed-world assumption confirmed).
-  t04: SATISFIABLE, violation(character_at_multiple_locations(innkeeper)), both located_at atoms simultaneously present (IMP-I01-F02 failure mode confirmed detectable).
+[CLEAN] IMP-I02 — No failures encountered in this phase.
+Phase 1 ran without recordable errors. The two-file architecture (IMP-I02-D01) and Type A constraint scope (IMP-I02-D03) were designed around failure modes already logged in I01 (IMP-I01-F02, IMP-I01-F03).
+Absence of [FAIL] entries reflects that prior error knowledge was applied successfully, not that failures went unrecorded.
+
+[RESOLVED] IMP-I02 — Phase 1 exit criterion met: all four CLI tests produce expected SAT/UNSAT behavior on hand-crafted test inputs.
+Evidence:
+- t01: SATISFIABLE, no violation atoms.
+- t02: SATISFIABLE, violation(unauthorized_in_cellar(guard)).
+- t03: SATISFIABLE, violation(dead_character_located(patron)), alive(patron) absent from model (closed-world assumption confirmed).
+- t04: SATISFIABLE, violation(character_at_multiple_locations(innkeeper)), both located_at atoms simultaneously present (IMP-I01-F02 failure mode confirmed detectable).
