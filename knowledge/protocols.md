@@ -403,9 +403,24 @@ Disposition trigger: [named condition or event that requires this to be resolved
 Resolution: (added in-place when thread closes — not populated at creation)
 ```
 
+[CLEAN] IMP-IXX — [One sentence confirming no failures occurred in this phase.]
+[Brief explanation linking absence of failures to prior error knowledge if applicable, or a simple statement that the phase ran without recordable errors.]
+
+[RESOLVED] IMP-IXX — [Pre-registered resolution criterion, summarized in one sentence.]
+Evidence: [Observed outputs or test results that confirm the exit criterion was met.
+List each test case or verification step with its actual result.]
+
 [THREAD] entries are the single exception to the append-only rule.
 When a thread is closed, a Resolution: field is added in-place to the original entry.
 [DECISION] and [FAIL] entries remain strictly append-only.
+[CLEAN] and [RESOLVED] entries are append-only; one of each appears at most once per phase block.
+
+Usage rules:
+- [CLEAN] is required when a phase closes with no [FAIL] entries.
+  Absence of [CLEAN] when no [FAIL] entries exist is indistinguishable from incomplete recording.
+- [RESOLVED] is required as the final entry in every phase block.
+  It records the evidence that the pre-registered exit criterion was met.
+  A phase block without a [RESOLVED] entry is not closed, regardless of the status token in the phase map.
 
 ---
 
