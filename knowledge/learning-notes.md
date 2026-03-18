@@ -488,3 +488,67 @@ requires updating.
 
 **Design principle:** schema translation is a separate concern from
 ASP serialization. One function does one thing.
+
+### The Session Loop Architecture (Phase 3)
+
+Phase 3 is the first time VeriForge calls an LLM. The session loop has four
+sequential stages per turn:
+
+| Stage | What it does | LLM involved? |
+|---|---|---|
+| 1 — Context derivation | Reads abox.json → human-readable world state string | No |
+| 2 — Prompt assembly | Combines context + user message according to condition flag | No |
+| 3 — LLM call | Anthropic Messages API, returns raw text | Yes |
+| 4 — Post-processing | Parse structured response, validate delta, commit or block | No |
+
+The symbolic enforcement boundary (`validate_delta()`) sits inside Stage 4.
+Everything outside it — including the LLM call — is untrusted until Stage 4 confirms the delta is clean.
+
+**The three OQ-09 ablation conditions are routing flags, not separate builds:**
+
+| Condition | Context injected? | When? | Validation? |
+|---|---|---|---|
+| A — Raw LLM | No | — | No |
+| B — Session-start | Yes | Once, from session-start ABox | Yes |
+| C — Full VeriForge | Yes | Every turn, from current ABox | Yes |
+
+**The structured output contract:**
+The LLM is instructed via the system prompt to emit every response in this format:
+```
+<narrative>...</narrative>
+<delta>{"character_locations": {"char": "loc"}, ...}</delta>
+```
+`parse_response()` extracts both sections with `re.search(r"<narrative>(.*?)</narrative>", raw, re.DOTALL)`.
+If parsing fails, the narrative degrades to the full raw response; the delta degrades to `{}` (no-op).
+This means a parsing failure never crashes the session — it just blocks the commit.
+
+**The commit gate:**
+`commit_to_abox()` is only called inside `if result.clean`.
+`result.clean` comes from `validate_delta()`, which reads the ASP model for `violation(...)` atoms.
+The ABox is never modified by unvalidated LLM output.
+
+### The Role Boundary and IMP-I04-F01
+
+VeriForge has two layers with distinct jobs:
+  - The LLM's job: narrate what was ATTEMPTED and propose the delta.
+  - The symbolic layer's job: decide what COMMITS.
+
+IMP-I04-F01 revealed that this boundary must be stated explicitly in the
+system prompt, not just implemented in code. Without the instruction, the
+LLM resolves the ambiguity itself — it reads the constraint descriptions,
+writes a narrative where the action fails, and emits {} because from its
+perspective nothing changed. The symbolic layer receives nothing to validate.
+
+The fix is two instructions in SYSTEM_PROMPT:
+  <narrative>: "write the attempt as if it will succeed — the rules engine
+                decides whether it commits"
+  <delta>:     "always emit the delta for what was attempted, even if the
+                action might be forbidden — you do not need to pre-filter it"
+
+The constraint descriptions in build_context_string() also use the framing
+"the rules engine enforces these; emit your delta for what was attempted"
+so both sources of instruction agree on who decides what.
+
+This matters for the OQ-09 ablation: Condition B has constraint descriptions
+in the injected context and would exhibit the same failure without this fix.
+The corrected SYSTEM_PROMPT is shared across all three conditions.

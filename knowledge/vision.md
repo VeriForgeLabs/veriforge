@@ -320,6 +320,13 @@ These claims are logically inferred from verified findings but have not been con
   Per-turn re-injection does not solve the problem — it resets the positional advantage each turn.
   Whether per-turn injection is sufficient to maintain constraint adherence at interactive RP pace is [Unverified] — this is the load-bearing empirical claim of Step 4, now delegated to OQ-09 [RESOLVED — S10] — evaluation protocol designed; empirical test is prototype phase.
 
+  - `[Inferred]` The **role boundary** between the LLM and the symbolic layer must be stated explicitly in the system prompt, not only implemented in code.
+  Without explicit instruction, the LLM resolves the ambiguity between "describe what happens" and "decide what commits" by absorbing constraints into the narrative — writing a story in which the action fails and emitting an empty delta.
+  The symbolic layer receives nothing to validate. The operative instruction is: the LLM proposes what was ATTEMPTED; the symbolic layer decides what COMMITS.
+  This boundary must be present in both the system prompt (so the LLM knows its role) and the code (so the enforcement gate exists regardless of LLM behavior).
+  Confirmed empirically in I04 — IMP-I04-F01.
+  [Inferred] — the corrected system prompt resolves the failure for the tavern prototype; whether the same role boundary instruction is sufficient at greater constraint complexity or across model families is unverified.
+
 ---
 
 ## OPEN QUESTIONS (UNRESOLVED — REQUIRE RESEARCH)
@@ -442,10 +449,10 @@ Closed items have been migrated to [research-log.md](research-log.md#closed-veri
 Implementation phases are tracked in full in [implementation-log.md](implementation-log.md).
 The summary below reflects current status only — resolution criteria and log entries are in implementation-log.md.
 
-**PHASE 0 — Clingo Fundamentals** [IN PROGRESS — I01] → [implementation-log.md](implementation-log.md#phase-0)
+**PHASE 0 — Clingo Fundamentals** [RESOLVED — I01] → [implementation-log.md](implementation-log.md#phase-0)
 **PHASE 1 — Tavern WorldDSL Artifact** [RESOLVED — I02] → [implementation-log.md](implementation-log.md#phase-1)
 **PHASE 2 — ASP Validation Layer** [RESOLVED — I03] → [implementation-log.md](implementation-log.md#phase-2)
-**PHASE 3 — Session Loop** [BLOCKED] → [implementation-log.md](implementation-log.md#phase-3)
+**PHASE 3 — Session Loop** [RESOLVED — I04] → [implementation-log.md](implementation-log.md#phase-3)
 **PHASE 4 — Evaluation Harness** [BLOCKED — OQ-09-T1 OPEN] → [implementation-log.md](implementation-log.md#phase-4)
 
 ```
