@@ -32,9 +32,9 @@ Execution without understanding does not meet this criterion.
 
 ### PHASE-1 — Tavern WorldDSL Artifact
 
-DEPENDS ON: Phase 0 [IN PROGRESS — I01]
+DEPENDS ON: Phase 0 [RESOLVED — I01]
 BLOCKS: Phase 2
-Status: [BLOCKED]
+Status: [RESOLVED — I02]
 
 Resolution criterion:
 A committed JSON + ASP artifact representing the tavern world — 3–4 named entities, static properties and initial mutable state in JSON, and 2–3 hard constraints as ASP integrity constraints with named-violation predicates.
@@ -46,12 +46,12 @@ Done means: loading the .lp file in the Clingo CLI produces expected SAT/UNSAT b
 
 ### PHASE-2 — ASP Validation Layer
 
-DEPENDS ON: Phase 1 [BLOCKED]
+DEPENDS ON: Phase 1 [RESOLVED — I02]
 BLOCKS: Phase 3
 Status: [BLOCKED]
 
 Resolution criterion:
-A Python module that accepts a proposed ABox delta as structured JSON, loads the current ABox and ASP rules, runs the solver, and returns SAT with the committed delta or UNSAT with the named violation identifier.
+A Python module that accepts a proposed ABox delta as structured JSON, loads the current ABox and ASP rules, runs the solver, and returns a ValidationResult — clean=True with the committed delta, or clean=False with one or more named violation identifiers. Per IMP-I01-D05: the program is always SAT; violations are read as atoms from the yielded model, not from result.satisfiable.
 Tested against at least one Type A violation and one Type B violation from the tavern artifact.
 Done means: the module is callable, returns correct results on known-good and known-bad inputs, and has passing pytest tests for both cases.
 
@@ -141,3 +141,30 @@ Cause: correct ASP reasoning about the paired pattern combined with insufficient
 Resolution: dropped paired constraint entirely; violation predicates are derivation-only; program is always SAT; enforcement loop checks for presence of violation(...) atoms in the yielded model rather than interrogating result.satisfiable.
 Methodology patch recommended: no — this is expected implementation trial-and-error; the corrected design is now the documented pattern.
 
+### I02 — Phase 1: Tavern WorldDSL Artifact | March 2026 | [RESOLVED]
+
+[DECISION] IMP-I02-D01 — Two-file artifact architecture
+Chosen: rules file (tavern_rules.lp) encoding Categories 1, 2, 4; ABox JSON (abox.json) encoding Category 3 only.
+Alternative not taken: single .lp file encoding all four categories with hardcoded mutable state.
+Reason: IMP-I01-F02 demonstrated that hardcoded Category 3 in .lp files causes silent dual-assertion failures when the Python module also injects the same facts via ctl.add(). The two-file split enforces the architectural boundary at the file level: the rules file is write-once per world design; the ABox is updated on every committed delta.
+
+[DECISION] IMP-I02-D02 — JSON schema as Phase 2 interface contract
+Chosen: _asp_mapping comments in abox.json document the exact predicate each JSON field produces, co-located with the data.
+Alternative not taken: undocumented JSON with mapping logic embedded only in Phase 2 Python code.
+Reason: Phase 2's validate_delta() reads this JSON and generates ASP ground facts. Documenting the mapping in the JSON makes the Phase 1 artifact self-contained and gives Phase 2 a specification to implement against rather than invent.
+
+[DECISION] IMP-I02-D03 — All three Phase 1 constraints are Type A
+Chosen: three Type A (state consistency) constraints covering cellar access, dead-character location, and uniqueness of location.
+Alternative not taken: including a Type B constraint (transition validity — adjacent-location-only movement).
+Reason: Type B constraints require knowing both the old location (from the committed ABox) and the new location (from the proposed delta) at validation time. Encoding that distinction in Phase 1 CLI tests would require inventing a predicate convention — was_at/2 or similar — that Phase 2 has not yet defined. Type B constraints are correctly scoped to Phase 2, where the delta-injection mechanism is in place.
+
+[DECISION] IMP-I02-D04 — Parameterized violation predicates
+Chosen: violation atoms carry the offending entity as a compound argument — violation(unauthorized_in_cellar(guard)), not violation(unauthorized_in_cellar).
+Alternative not taken: flat constant violation atoms as in Phase 0.
+Reason: with three characters, the flat atom names the rule that fired but not which entity triggered it. The compound argument makes the enforcement message actionable. No new API pattern is required — the enforcement loop still filters by str(atom).startswith("violation(").
+
+Resolution criterion verified: all four CLI tests produce expected output.
+  t01: SATISFIABLE, no violation atoms.
+  t02: SATISFIABLE, violation(unauthorized_in_cellar(guard)).
+  t03: SATISFIABLE, violation(dead_character_located(patron)), alive(patron) absent from model (closed-world assumption confirmed).
+  t04: SATISFIABLE, violation(character_at_multiple_locations(innkeeper)), both located_at atoms simultaneously present (IMP-I01-F02 failure mode confirmed detectable).

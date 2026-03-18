@@ -335,3 +335,77 @@ In Phase 2, the current ABox will be serialised from JSON; the proposed delta wi
 Everything inside `validate_delta()` is symbolic — deterministic, inspectable, and independent of any LLM all.
 Everything outside it is session management.
 This boundary is the core of VeriForge's architectural separation between the symbolic enforcement layer and the generative layer.
+
+### The Two-File Architecture (Phase 1)
+
+The Phase 1 tavern world artifact splits across two files with distinct roles.
+
+| File | WorldDSL Categories | Changes during play? |
+|---|---|---|
+| `tavern_rules.lp` | 1 (entity registry), 2 (static props), 4 (constraints) | Never |
+| `abox.json` | 3 (mutable state) only | Yes — updated by committed ABox deltas |
+
+`tavern_rules.lp` is the TBox: schema, static facts, and constraint rules.
+`abox.json` is the ABox: the current instance of the world state.
+
+**Category 3 is never hardcoded in the rules file.** 
+(IMP-I01-F02 — doing so causes silent dual-assertion failures when the Python module also injects the same facts via `ctl.add()`.)
+
+For CLI testing in Phase 1, hand-crafted test `.lp` files stand in for the Python module.
+The solver loads the rules file and a test state file together:
+
+```bash
+clingo prototype/tavern/tavern_rules.lp prototype/tavern/tests/t02_unauthorized_cellar.lp
+```
+
+In Phase 2+, the Python module reads `abox.json`, converts it to ASP ground facts, and injects them via `ctl.add()` — replacing the test `.lp` files.
+
+**The JSON is an interface contract, not just documentation.** 
+The `_asp_mapping` fields in `abox.json` document exactly how each JSON key maps to an ASP predicate.
+Phase 2's parser implements that mapping.
+
+**Parameterized violation predicates:** 
+Phase 0 used flat constants (`violation(prisoner_not_in_cell)`).
+Phase 1 extends this to compound arguments (`violation(unauthorized_in_cellar(guard))`).
+The compound term names the offending entity.
+The enforcement loop filters the same way — `str(atom).startswith("violation(")` — and the argument is visible in the string for the Phase 2 module to parse.
+
+**Type A vs. Type B constraints:**
+All three Phase 1 constraints are Type A (state consistency — a prohibited condition in the current snapshot).
+Type B constraints (transition validity — a prohibited *move*) require knowing both old and new locations, which the Phase 2 delta-injection mechanism will supply.
+Type B constraints are introduced in Phase 2.
+
+### The Closed-World Assumption in Practice
+
+The closed-world assumption is the rule that anything not explicitly asserted in the stable model is treated as false.
+It is the default in ASP and is what makes ASP suitable for closed-world constraint enforcement.
+
+The practical consequence: **omission is semantically equivalent to negation.**
+
+In the tavern world, Constraint 2 catches a dead character with a location:
+
+```asp
+    violation(dead_character_located(X)) :-
+        character(X),
+        located_at(X, _),
+        not alive(X).
+```
+
+`not alive(X)` is **negation-as-failure**: it succeeds when `alive(X)` is absent
+from the stable model.
+There is no `dead(X)` predicate — the absence of `alive(X)` is the complete statement.
+
+CLI test t03 confirms this: the test file contains no `alive(patron)` fact.
+The stable model also contains no `alive(patron)` atom.
+The solver treats the patron as dead on that basis alone, and the violation fires correctly.
+
+**Design implication for ABox management:** 
+When an ABox delta represents a character death, the delta must remove `alive(X)` from the ABox JSON.
+It does not need to assert anything affirmative.
+The solver's closed-world assumption does the rest.
+
+**Contrast with open-world formalisms (OWL/RDF):**
+Under the open-world assumption, the absence of `alive(patron)` would mean only that the system
+does not know whether the patron is alive — not that the patron is dead.
+OWL reasoners cannot enforce "the patron is dead" from an absent fact alone.
+This is why OWL was disqualified as the WorldDSL formalism (OQ-01 [RESOLVED]).
