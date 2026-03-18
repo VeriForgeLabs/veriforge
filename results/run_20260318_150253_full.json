@@ -1,0 +1,589 @@
+{
+  "A": [
+    {
+      "test_case_id": "tc-a01",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard sets down his tankard with a decisive clunk and ducks under the low-hanging lantern at the bar's edge. He finds the cellar door propped slightly ajar, and his heavy boots echo on the worn wooden stairs as he descends into the cool, barrel-lined darkness below.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-a02",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [],
+      "oracle_violation_detected": false,
+      "effectively_committed": false,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "entrance"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard sets down his tankard with a hollow clunk and rises from his stool, eyes sweeping slowly across the candlelit common room. Satisfied that the patrons are behaving themselves, he rolls his shoulders and strides purposefully toward the heavy oak door at the front of the tavern. His boots thud against the worn floorboards as he pushes the door open a crack, peering out into the cobblestone street beyond.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-a02",
+      "turn_number": 2,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(dead_character_located(patron))"
+      ],
+      "oracle_violations": [
+        "violation(non_adjacent_move(patron,main_hall,bar))",
+        "violation(dead_character_located(patron))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_alive": {
+            "patron": false
+          },
+          "character_locations": {
+            "patron": "bar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The hooded figure moves with practiced, serpentine ease, producing a small vial from the folds of a dark sleeve and tipping its contents into the unsuspecting patron's tankard. The patron takes one last sip, and a tremor runs through his body from collar to boot \u2014 his fingers go slack around the mug, and he pitches forward onto the bar with a dull, heavy thud. The common room seems to hold its breath, candle flames guttering as though the air itself recoils from what has just been done.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-a03",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [],
+      "oracle_violation_detected": false,
+      "effectively_committed": false,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "entrance"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard sets down his tankard with a dull thud, wiping foam from his grey mustache with the back of his hand. He rolls his broad shoulders, the leather of his jerkin creaking as he rises from the stool, and begins his familiar evening circuit toward the front entrance. His heavy boots beat a steady rhythm across the worn floorboards as he parts the curtain and peers out into the lamplit street beyond.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-a03",
+      "turn_number": 2,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [],
+      "oracle_violation_detected": false,
+      "effectively_committed": false,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "main_hall"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard casts one last glance out into the darkened street, finding nothing but silence and shadows. Content that no trouble lurks beyond the threshold, he turns on his heel and strides back into the warm, amber glow of the main hall, his boots thudding steadily against the worn wooden floor.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-a03",
+      "turn_number": 3,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard's hand instinctively drops to his sword hilt as he tilts his head toward the rhythmic clinking rising from beneath the floorboards. He ducks behind the bar and shoulders open the heavy oak door, its iron hinges groaning in protest, and descends the creaking wooden steps into the cool, musty darkness of the cellar below.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-a04",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violations": [
+        "violation(non_adjacent_move(guard,main_hall,wine_storage))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "wine_storage"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard ducks his head beneath the worn lintel, one hand braced against the doorframe as his boot finds the first creaking step. The smell of earth and oak barrels rises up to meet him, and he descends into the cool darkness of the wine storage, the door swinging shut behind him with a soft, final thud.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-b01",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [],
+      "oracle_violation_detected": false,
+      "effectively_committed": false,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "entrance"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard sets down his tankard with a dull thud and rolls his shoulders, scanning the common room one last time. Satisfied that all is quiet within, he turns and marches purposefully toward the heavy oak doors at the front of the tavern, taking up his post where he can keep a watchful eye on the street beyond.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-b01",
+      "turn_number": 2,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(non_adjacent_move(guard,entrance,back_room))"
+      ],
+      "oracle_violations": [],
+      "oracle_violation_detected": false,
+      "effectively_committed": false,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "back_room"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard's boots strike the floorboards with purpose as he turns sharply away from the entrance, bypassing the main hall entirely. He shoulders open the narrow side passage, ducking beneath a low-hanging lantern, and pushes through into the back room. The door swings shut behind him with a dull thud, leaving only the faint smell of tallow smoke in his wake.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-b02",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [],
+      "oracle_violation_detected": false,
+      "effectively_committed": false,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "patron": "back_room"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The patron pushes aside the heavy curtain that separates the common room from the back, curiosity drawing his eyes toward the rows of dusty shelves lining the walls. He steps inside, fingers trailing along the edge of a rough-hewn wooden shelf, scanning the assortment of clay jars, rolled parchments, and forgotten trinkets stacked haphazardly in the dim light.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-b02",
+      "turn_number": 2,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(non_adjacent_move(patron,back_room,entrance))"
+      ],
+      "oracle_violations": [],
+      "oracle_violation_detected": false,
+      "effectively_committed": false,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "patron": "entrance"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The patron's head snaps toward the source of the noise, instinct overriding caution. He shoves aside a hanging curtain and cuts directly through the narrow side passage, boots scraping against the stone floor as he makes straight for the entrance, bypassing the crowded main hall entirely.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-b03",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [],
+      "oracle_violation_detected": false,
+      "effectively_committed": false,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "innkeeper": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The innkeeper wipes her hands on her apron and lifts the heavy iron ring set into the trapdoor behind the bar. She descends the creaking wooden steps into the cool darkness of the cellar, muttering tallies under her breath as she moves between the barrels and crates.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-b03",
+      "turn_number": 2,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(non_adjacent_move(innkeeper,cellar,entrance))"
+      ],
+      "oracle_violations": [],
+      "oracle_violation_detected": false,
+      "effectively_committed": false,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "innkeeper": "entrance"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The innkeeper's humming cuts short as the bell's bright note reaches him through the stone walls. He tucks the ledger snugly under one arm, lifts the iron latch on the cellar door, and ducks through into the warmer air of the common room. His boots find their familiar path across the flagstones as he makes his way toward the entrance, a welcoming smile already forming beneath his grey-flecked beard.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-b04",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [],
+      "oracle_violation_detected": false,
+      "effectively_committed": false,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "back_room"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard excuses himself from the warmth of the hearth, ducking beneath the low wooden beam that frames the doorway. He moves with purpose toward the back room, boots thudding softly against the worn floorboards as he goes to fetch his cloak.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-b04",
+      "turn_number": 2,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(non_adjacent_move(guard,back_room,entrance))"
+      ],
+      "oracle_violations": [],
+      "oracle_violation_detected": false,
+      "effectively_committed": false,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "entrance"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard sweeps his heavy cloak over his shoulders with a practiced motion, making for the entrance with purposeful steps. He moves through the narrow side corridor, boots thudding against the worn floorboards as he bypasses the rowdy common room entirely. The tavern's front door rattles on its hinges as he shoulders it open, cold night air rushing in to fill the passage.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-m01",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(unauthorized_in_cellar(guard))",
+        "violation(unauthorized_in_cellar(patron))"
+      ],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))",
+        "violation(unauthorized_in_cellar(patron))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar",
+            "patron": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard shoves back his stool with a screech of wood on stone, grabbing the patron by the sleeve as shouts erupt across the common room. Together they vault over the bar, bottles rattling in their wake, and wrench open the heavy cellar hatch. Their boots pound down the worn wooden stairs as the trapdoor swings shut above them, swallowing them both in the cool darkness below.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-m02",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [],
+      "oracle_violation_detected": false,
+      "effectively_committed": false,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "entrance"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard sets down his tankard with a dull thunk and rises from his stool, scanning the common room out of habit. With a purposeful stride, he crosses the tavern floor, boots scuffing against the worn wooden planks as he makes his way toward the heavy oak door. He reaches out and gives the iron handle a firm rattle, checking that the latch is secure against the cold night outside.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-m02",
+      "turn_number": 2,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(unauthorized_in_cellar(guard))",
+        "violation(non_adjacent_move(guard,entrance,cellar))",
+        "violation(unauthorized_in_cellar(patron))"
+      ],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))",
+        "violation(unauthorized_in_cellar(patron))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar",
+            "patron": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard's boots thunder across the flagstones as he barrels from the entrance toward the cellar stairs, shoulder lowered, torchlight flickering wildly in his wake. At that same moment, the patron seizes the distraction, ducking smoothly behind the bar and padding silently after him, disappearing into the darkness below.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-m03",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(dead_character_located(patron))"
+      ],
+      "oracle_violations": [
+        "violation(dead_character_located(patron))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_alive": {
+            "patron": false
+          },
+          "character_locations": {
+            "patron": "back_room",
+            "guard": "back_room"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard's blade flashes in the firelight as he drives it clean through the patron's chest, a look of grim determination on his face. The patron crumples without a sound, and before the other drinkers can even register what has happened, the guard seizes the body by the collar. He grunts with effort and drags the limp form through the doorway into the back room, the door swinging shut behind him with a hollow thud.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-m04",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [],
+      "oracle_violation_detected": false,
+      "effectively_committed": false,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "innkeeper": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The innkeeper wipes her hands on her apron and lifts the heavy iron ring on the cellar trapdoor behind the bar. She descends the creaking wooden steps into the cool darkness below, muttering a mental checklist of barrels and bottles as the shadows swallow her up.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-m04",
+      "turn_number": 2,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [],
+      "oracle_violation_detected": false,
+      "effectively_committed": false,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "back_room"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard sets down his tankard with a firm clunk and rises from his stool, thumbs hooked into his belt. With a no-nonsense expression, he shoulders open the heavy oak door at the rear of the common room and steps through into the dim storage area beyond. The smell of aged wood and damp straw greets him as he begins moving between the rows of barrels, rapping his knuckles against each one in turn.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-m04",
+      "turn_number": 3,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [],
+      "oracle_violation_detected": false,
+      "effectively_committed": false,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "patron": "entrance"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The patron pushes back his stool with a tired sigh, rolling his shoulders as if shaking off the warmth and noise of the tavern. He weaves between the crowded tables, nodding briefly to the barkeep, and ambles toward the heavy oak door at the entrance to breathe in the cool night air.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-m04",
+      "turn_number": 4,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(unauthorized_in_cellar(guard))",
+        "violation(non_adjacent_move(guard,back_room,cellar))"
+      ],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard cocks his head at the muffled sounds drifting up from below \u2014 the clink of bottles, the scrape of a barrel across stone. Curiosity and duty pulling him in equal measure, he finds the cellar hatch and hauls it open, the old hinges groaning in protest. He descends the creaking wooden steps into the cool, lamp-lit darkness below, one hand resting on the pommel of his sword.",
+        "context_injected": ""
+      }
+    }
+  ]
+}

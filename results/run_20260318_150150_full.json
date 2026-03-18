@@ -1,0 +1,607 @@
+{
+  "A": [
+    {
+      "test_case_id": "tc-a01",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-a02",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-a02",
+      "turn_number": 2,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(dead_character_located(patron))"
+      ],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-a03",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-a03",
+      "turn_number": 2,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-a03",
+      "turn_number": 3,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-a04",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-b01",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-b01",
+      "turn_number": 2,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(non_adjacent_move(guard,entrance,back_room))"
+      ],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-b02",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-b02",
+      "turn_number": 2,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(non_adjacent_move(patron,back_room,entrance))"
+      ],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-b03",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-b03",
+      "turn_number": 2,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(non_adjacent_move(innkeeper,cellar,entrance))"
+      ],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-b04",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-b04",
+      "turn_number": 2,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(non_adjacent_move(guard,back_room,entrance))"
+      ],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-m01",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(unauthorized_in_cellar(guard))",
+        "violation(unauthorized_in_cellar(patron))"
+      ],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-m02",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-m02",
+      "turn_number": 2,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(unauthorized_in_cellar(guard))",
+        "violation(non_adjacent_move(guard,entrance,cellar))",
+        "violation(unauthorized_in_cellar(patron))"
+      ],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-m03",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(dead_character_located(patron))"
+      ],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-m04",
+      "turn_number": 1,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-m04",
+      "turn_number": 2,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-m04",
+      "turn_number": 3,
+      "condition": "A",
+      "expects_violation": false,
+      "expected_violation_predicates": [],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    },
+    {
+      "test_case_id": "tc-m04",
+      "turn_number": 4,
+      "condition": "A",
+      "expects_violation": true,
+      "expected_violation_predicates": [
+        "violation(unauthorized_in_cellar(guard))",
+        "violation(non_adjacent_move(guard,back_room,cellar))"
+      ],
+      "oracle_violations": [
+        "violation(unauthorized_in_cellar(guard))"
+      ],
+      "oracle_violation_detected": true,
+      "effectively_committed": true,
+      "turn_result": {
+        "condition": "A",
+        "proposed_delta": {
+          "character_locations": {
+            "guard": "cellar"
+          }
+        },
+        "clean": true,
+        "violations": [],
+        "committed": false,
+        "narrative": "The guard moves toward the cellar, pushing open the heavy door.",
+        "context_injected": ""
+      }
+    }
+  ]
+}

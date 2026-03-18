@@ -1,0 +1,22 @@
+{
+  "model": "claude-sonnet-4-6",
+  "total_test_cases": 12,
+  "conditions_run": [
+    "A"
+  ],
+  "results": {
+    "A": {
+      "cvr": 1.0,
+      "vdr": 1.0,
+      "elicitation_rate": 1.0,
+      "turns_total": 23,
+      "turns_violation_designed": 12,
+      "turns_oracle_detected": 12,
+      "turns_slipped": 12,
+      "nqs_scores": []
+    }
+  },
+  "falsification_check": null,
+  "timestamp": "20260318_150150",
+  "full_results_file": "run_20260318_150150_full.json"
+}
