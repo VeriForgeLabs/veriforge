@@ -50,7 +50,7 @@ Done means: loading the .lp file in the Clingo CLI produces expected SAT/UNSAT b
 
 ### PHASE-2 — ASP Validation Layer
 
-DEPENDS ON: Phase 1 [RESOLVED — I01]
+DEPENDS ON: Phase 1 [RESOLVED — I02]
 BLOCKS: Phase 3
 Status: [RESOLVED — I03]
 
@@ -65,7 +65,7 @@ Done means: the module is callable, returns correct results on known-good and kn
 
 DEPENDS ON: Phase 2 [RESOLVED — I03]
 BLOCKS: Phase 4
-Status: [UNBLOCKED]
+Status: [RESOLVED — I04]
 
 Resolution criterion:
 A working end-to-end turn: derive current ASP state from ABox → inject as context → call LLM API → extract proposed delta from response → validate via Phase 2 module → commit or surface conflict.
@@ -77,11 +77,11 @@ Done means: the loop runs without errors, the LLM receives injected context, and
 
 ### PHASE-4 — Evaluation Harness
 
-DEPENDS ON: Phase 3 [BLOCKED]
+DEPENDS ON: Phase 3 [RESOLVED — I04]
 DEPENDS ON: OQ-09-T1 disposition [OPEN] — Condition D inclusion must be decided before test cases are pre-registered.
   (OQ-thread dependencies borrow status notation from the OQ system; [OPEN] here means the thread has not yet been disposed, not that it is in the implementation phase status set.)
 BLOCKS: OQ-09 empirical test
-Status: [BLOCKED]
+Status: [UNBLOCKED]
 
 Resolution criterion:
 12 pre-registered test cases committed to the repo before any condition is run — 4 Type A, 4 Type B, 4 compound — each as a scripted prompt sequence.

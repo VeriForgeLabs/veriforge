@@ -455,4 +455,3 @@ The summary below reflects current status only — resolution criteria and log e
 **PHASE 3 — Session Loop** [RESOLVED — I04] → [implementation-log.md](implementation-log.md#phase-3)
 **PHASE 4 — Evaluation Harness** [BLOCKED — OQ-09-T1 OPEN] → [implementation-log.md](implementation-log.md#phase-4)
 
-```
