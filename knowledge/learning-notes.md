@@ -409,3 +409,82 @@ Under the open-world assumption, the absence of `alive(patron)` would mean only 
 does not know whether the patron is alive — not that the patron is dead.
 OWL reasoners cannot enforce "the patron is dead" from an absent fact alone.
 This is why OWL was disqualified as the WorldDSL formalism (OQ-01 [RESOLVED]).
+
+### The JSON→ASP Serialization Contract (Phase 2)
+
+The `_asp_mapping` comments in `abox.json` document intent but are not executable.
+The Python module implements them. This split is deliberate:
+the JSON is the human-readable contract; the Python code is the machine implementation.
+
+The mapping for the Phase 2 tavern world:
+
+| JSON field | JSON value | ASP fact produced |
+|---|---|---|
+| `character_locations["X"]` | `"loc"` | `located_at(X, loc).` |
+| `character_alive["X"]` | `true` | `alive(X).` |
+| `character_alive["X"]` | `false` | *(nothing — closed-world assumption)* |
+
+Keys beginning with `_` are metadata annotations and are skipped:
+`if char.startswith("_"): continue`.
+
+The serializer calls `_apply_delta(current_abox, proposed_delta)` first to compute
+the full proposed state, then serializes that. This keeps "what would the world look
+like after this delta?" as a distinct step from "how do we express it in ASP?"
+
+### The `was_at` Convention for Type B Constraints (Phase 2)
+
+Type B constraints check transition validity, not just resulting state.
+They require knowing both where a character *was* and where they *are going*.
+
+The convention: inject current locations as `was_at/2` and proposed locations
+as `located_at/2`. The rules file can then compare both:
+```asp
+violation(non_adjacent_move(X, OldLoc, NewLoc)) :-
+    character(X),
+    was_at(X, OldLoc),
+    located_at(X, NewLoc),
+    OldLoc != NewLoc,
+    not adjacent(OldLoc, NewLoc).
+```
+
+The `OldLoc != NewLoc` guard is critical: without it, stay-in-place (same location
+in both `was_at` and `located_at`) would fire the constraint, since no location
+is declared adjacent to itself.
+
+Type A constraints only use `located_at`. Type B constraints use both.
+Both kinds coexist in the same solver call — no separate pass required.
+
+### The ABox Schema Bridge Pattern (Phase 2)
+
+The committed `abox.json` uses a nested schema designed in Phase 1:
+```json
+{
+  "state": {
+    "located_at": { "innkeeper": "main_hall", ... },
+    "alive": ["innkeeper", "guard", "patron"]
+  }
+}
+```
+
+The `alive` field is a **list of living character names**, not a dict.
+Absence from the list means dead — consistent with the closed-world assumption.
+
+The validator's internal logic works with a **flat normalized dict**:
+```python
+{"character_locations": {"innkeeper": "main_hall"}, "character_alive": {"innkeeper": True}}
+```
+
+`_apply_delta()` bridges the two representations in one place:
+```python
+state = current_abox.get("state", {})
+locations = dict(state.get("located_at", {}))
+alive = {char: True for char in state.get("alive", [])}
+```
+
+Then delta overrides are applied to the normalized form.
+`_serialize_for_validation()` never sees the ABox schema — it always
+receives a clean flat dict. If the ABox schema changes, only `_apply_delta`
+requires updating.
+
+**Design principle:** schema translation is a separate concern from
+ASP serialization. One function does one thing.

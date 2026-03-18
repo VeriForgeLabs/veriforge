@@ -50,9 +50,9 @@ Done means: loading the .lp file in the Clingo CLI produces expected SAT/UNSAT b
 
 ### PHASE-2 — ASP Validation Layer
 
-DEPENDS ON: Phase 1 [RESOLVED — I02]
+DEPENDS ON: Phase 1 [RESOLVED — I01]
 BLOCKS: Phase 3
-Status: [BLOCKED]
+Status: [RESOLVED — I03]
 
 Resolution criterion:
 A Python module that accepts a proposed ABox delta as structured JSON, loads the current ABox and ASP rules, runs the solver, and returns a ValidationResult — clean=True with the committed delta, or clean=False with one or more named violation identifiers. Per IMP-I01-D05: the program is always SAT; violations are read as atoms from the yielded model, not from result.satisfiable.
@@ -63,9 +63,9 @@ Done means: the module is callable, returns correct results on known-good and kn
 
 ### PHASE-3 — Session Loop
 
-DEPENDS ON: Phase 2 [BLOCKED]
+DEPENDS ON: Phase 2 [RESOLVED — I03]
 BLOCKS: Phase 4
-Status: [BLOCKED]
+Status: [UNBLOCKED]
 
 Resolution criterion:
 A working end-to-end turn: derive current ASP state from ABox → inject as context → call LLM API → extract proposed delta from response → validate via Phase 2 module → commit or surface conflict.
@@ -182,3 +182,67 @@ Evidence:
 - t02: SATISFIABLE, violation(unauthorized_in_cellar(guard)).
 - t03: SATISFIABLE, violation(dead_character_located(patron)), alive(patron) absent from model (closed-world assumption confirmed).
 - t04: SATISFIABLE, violation(character_at_multiple_locations(innkeeper)), both located_at atoms simultaneously present (IMP-I01-F02 failure mode confirmed detectable).
+
+### I03 — Phase 2: ASP Validation Layer | March 2026 | [RESOLVED]
+
+[DECISION] IMP-I03-D01 — validate_delta accepts dict for proposed_delta 
+Chosen: proposed_delta: dict (parsed JSON structure).
+Alternative not taken: proposed_delta: str (pre-serialized ASP facts, as in the Phase 0 toy signature).
+Reason: Phase 2 resolution criterion explicitly states "accepts a proposed ABox delta as structured JSON."
+The dict interface keeps the format JSON-native throughout; ASP serialization is an internal implementation detail, not a caller responsibility.
+Phase 3 will pass structured JSON from LLM output directly — matching that interface here eliminates a translation step at the session loop boundary.
+
+[DECISION] IMP-I03-D02 — _apply_delta separates state projection from ASP serialization
+Chosen: a dedicated _apply_delta(current_abox, proposed_delta) -> dict helper that computes the full proposed state before serialization.
+Alternative not taken: computing the merged state inline inside _serialize_for_validation.
+Reason: the separation makes the projection logic independently testable and makes the intent explicit — "what would the world look like if this delta committed?" is a distinct logical step from "how do we express that in ASP?"
+The helper is directly reusable in Phase 3 when the session loop needs to project state optimistically before deciding whether to commit.
+
+[DECISION] IMP-I03-D03 — _apply_delta normalizes ABox schema to flat dict 
+Chosen: _apply_delta reads the nested ABox schema (state.located_at, state.alive as list) and returns a normalized flat dict (character_locations as dict, character_alive as bool dict) for internal use.
+Alternative not taken: updating _serialize_for_validation to navigate the ABox schema directly.
+Reason: centralizing the schema translation in one function means _serialize_for_validation never needs to know the ABox schema exists.
+If the ABox schema changes in a future phase, only _apply_delta requires updating.
+The normalization boundary is also the correct place to convert the alive list representation to a bool dict — that conversion is a schema concern, not a serialization concern.
+
+[FAIL] IMP-I03-F01 — Schema mismatch: validator assumed flat ABox structure
+Error: KeyError: 'character_locations' on the first three tests.
+Cause: validator.py was written assuming character_locations and character_alive as top-level keys in the ABox dict.
+The committed abox.json wraps mutable state under a "state" key with sub-keys located_at and alive — a structure designed in Phase 1 before the validator existed.
+Resolution: _apply_delta updated to read from current_abox["state"] ["located_at"] and current_abox ["state"]["alive"] before applying the delta.
+The internal flat dict format is preserved as the normalized output.
+Methodology patch recommended: no — the schema divergence was a natural consequence of Phase 1 and Phase 2 being designed in separate sessions.
+The normalization pattern in IMP-I03-D03 is the correct architectural response.
+
+[FAIL] IMP-I03-F02 — Schema mismatch: validator assumed alive was a bool dict
+Error: alive represented as a list of living character names in abox.json; validator assumed {"character": true/false} dict format.
+Cause: same root as IMP-I03-F01 — Phase 1 schema designed independently of Phase 2 parsing requirements. The list representation is actually better aligned with the closed-world assumption (absence from the list means dead) but required explicit normalization in the validator.
+Resolution: _apply_delta converts the alive list to a bool dict via {char: True for char in state.get("alive", [])} before applying delta overrides.
+This normalizes both representations into a single internal format.
+Methodology patch recommended: no — the list representation is a valid and well-motivated design choice; the normalization step is the correct handling.
+
+[FAIL] IMP-I03-F03 — Ghost location: abox.json referenced tavern_main after it was removed from tavern_rules.lp
+Error: all three characters placed at "tavern_main" in the committed abox.json; tavern_main removed from the rules file earlier in I03 when the topology was corrected.
+Any move away from tavern_main would fire non_adjacent_move because no adjacent(tavern_main, X) fact exists.
+Cause: the topology cleanup in tavern_rules.lp was not propagated to abox.json in the same edit pass.
+Resolution: abox.json updated to place all three characters at main_hall, which is the correct central location in the four-location topology.
+Methodology patch recommended: no — this is the expected consequence of editing a rules file without auditing dependent data files.
+At Phase 3+ scale, a consistency check between entity registry locations and ABox locations would catch this class of error automatically.
+
+[FAIL] IMP-I03-F04 — test_validator.py created in wrong tests/ directory
+Error: test_validator.py created at prototype/tavern/tests/test_validator.py instead of tests/test_validator.py; pytest did not collect it.
+Cause: the project contains two directories named tests/ with distinct purposes — prototype/tavern/tests/ holds Phase 1 CLI .lp files; tests/ at the project root holds the pytest suite.
+The names are close enough to cause navigation error.
+Resolution: file moved via mv prototype/tavern/tests/test_validator.py tests/test_validator.py.
+Methodology patch recommended: no — the directory distinction is documented in learning-notes.md.
+A rename of the CLI test directory (e.g., prototype/tavern/cli_tests/) would eliminate the ambiguity but is out of scope for Phase 2.
+
+[RESOLVED] IMP-I03 — Phase 2 exit criterion met: Python module accepts a proposed ABox delta as structured JSON, runs the ASP solver, and returns a ValidationResult with correct clean/violations/committed_delta fields.
+Evidence:
+- test_clean_delta_returns_clean_true: PASSED — clean=True, empty violations, committed_delta echoed back.
+- test_type_a_unauthorized_in_cellar: PASSED — clean=False, violation(unauthorized_in_cellar(guard)) present.
+- test_type_a_dead_character_located: PASSED — clean=False, violation(dead_character_located(patron)) present.
+- test_type_b_adjacent_move_is_clean: PASSED — entrance → main_hall accepted as clean.
+- test_type_b_non_adjacent_move_violation: PASSED — entrance → cellar rejected with violation(non_adjacent_move(guard, entrance, cellar)).
+All five tests: 5 passed in 0.03s.
+Per IMP-I01-D05: program is always SAT; violations read as atoms from yielded model; result.satisfiable not interrogated in any test.
