@@ -93,12 +93,11 @@ A natural language (NL) to Domain Specific Language (DSL) pipeline can be constr
 6. The result is significantly reduced narrative drift, decoherence, and hallucination across long and multi-session RP — not because the LLM has been made more consistent, but because inference has been delegated to a layer that is deterministic by design.
 
 **Epistemic status of the hypothesis as a whole:** [Inferred]
-The motivation is [Verified], the problem is [Verified], prior related architectures exist [Verified], the mechanism is [Verified] — [Paper:Madabushi2025] supports context-directed extrapolation as the operative LLM behavior — but the specific pipeline connecting them has not been validated against literature or a working prototype.
-Critical unverified claim [Inferred]: Step 4 states that injecting ASP-derived facts as authoritative context enforces world rules deterministically.
-This conflates two distinct claims: (1) the symbolic layer performs inference deterministically [Verified], and (2) that inference, injected as context, is sufficient to keep LLM extrapolation within constraint boundaries [Unverified].
-The second claim is the central empirical question the prototype must answer.
+The motivation is [Verified], the problem is [Verified], prior related architectures exist [Verified], the mechanism is [Verified] — [Paper:Madabushi2025] supports context-directed extrapolation as the operative LLM behavior — and the core enforcement claim has been validated at prototype scope by the OQ-09 empirical evaluation.
+Critical claim: Step 4 states that injecting ASP-derived facts as authoritative context enforces world rules deterministically.
+This conflates two distinct claims: (1) the symbolic layer performs inference deterministically [Verified], and (2) that inference, injected as context, is sufficient to keep LLM extrapolation within constraint boundaries [Verified] at prototype scope — OQ-09 [RESOLVED — S13] — [Inferred] beyond prototype scope (session length, scale, model variation unverified).
 OQ-08 RESOLVED — the enforcement mechanism is per-turn symbolic state injection plus reactive ASP validation.
-The load-bearing hypothesis OQ-09 must test is whether this mechanism is sufficient to keep LLM extrapolation within constraint boundaries at interactive RP pace.
+OQ-09 RESOLVED — the mechanism is sufficient to constrain LLM extrapolation within Type A and Type B constraint pairs at prototype scope (CVR_A=1.000 → CVR_C=0.000; claude-sonnet-4-6).
 
 ---
 
@@ -293,10 +292,9 @@ These claims are logically inferred from verified findings but have not been con
   However, this does not protect against silent semantic errors in LLM-generated state deltas (errors that are ASP-SAT but factually wrong).
   This is the same risk class as OQ-03 (NL→DSL silent semantic error).
 
-- `[Inferred]` The enforcement sufficiency gap is the central unverified empirical claim of the hypothesis.
-  The symbolic layer correctly derives and enforces constraints; whether injecting those derived facts as authoritative context is sufficient to keep LLM extrapolation within constraint boundaries at interactive RP pace is not established by any cited source.
-  This is what the prototype must empirically test.
-  OQ-08 RESOLVED — mechanism is specified as per-turn symbolic state injection plus reactive ASP validation (OQ-02b); the design is now specified; sufficiency is the remaining load-bearing empirical claim, delegated to OQ-09 [RESOLVED — S10] — evaluation protocol designed; empirical test is prototype phase.
+- `[Verified]` at prototype scope — `[Inferred]` beyond prototype scope. The enforcement sufficiency claim — whether injecting ASP-derived facts as authoritative context is sufficient to keep LLM extrapolation within constraint boundaries at interactive RP pace — is confirmed at prototype scope by OQ-09 [RESOLVED — S13]: CVR_A=1.000 → CVR_C=0.000 on all pre-registered Type A and Type B constraint pairs (claude-sonnet-4-6, single tavern, 3–4 characters, 2–3 constraints).
+  The symbolic layer correctly derives and enforces constraints; per-turn injection of those derived facts is sufficient at prototype scope.
+  Scope boundary: session length, scale, model variation, and constraint complexity beyond the test battery are [Inferred] only.
 
 - `[Inferred]` LLM narrative coherence failures in RP systems decompose into three structurally distinct failure modes with different causes, remedies, and relationships to context window size.
   Failure Mode 1 (Truncation): early context falls out of the active window entirely; directly solved by larger windows; low VeriForge relevance at prototype scope — a single-session, single-tavern session will not approach truncation limits.
@@ -312,13 +310,12 @@ These claims are logically inferred from verified findings but have not been con
   This bet applies specifically to Failure Mode 2 (attention dilution) in single-session RP.
   Failure Mode 3 (cross-session statefulness) is not addressed by any current architectural memory solution — VeriForge's value proposition for Failure Mode 3 is independent of this bet.
   This is an explicit design assumption, not a proven claim.
-  OQ-08 produced mechanism selection findings (per-turn injection selected); enforcement sufficiency findings will come from OQ-09 empirical testing.
-  This bet should be reviewed after OQ-09 produces its results.
+  OQ-09 [RESOLVED — S13] provides supporting evidence at prototype scope: per-turn injection achieved CVR=0 without NQS degradation. The bet remains [Inferred] at scale, extended session length, and across model families — the scope conditions under which Titans-class solutions are most relevant.
 
 - `[Inferred]` Per-turn symbolic state injection addresses Failure Mode 2 (Attention Dilution) by keeping constraint-relevant facts near the generation point, exploiting recency bias per [Paper:Liu2024].
   Session-start injection is insufficient because even front-loaded facts decay from the generation point as session length grows, per [Paper:Li2024] attention decay mechanism.
   Per-turn re-injection does not solve the problem — it resets the positional advantage each turn.
-  Whether per-turn injection is sufficient to maintain constraint adherence at interactive RP pace is [Unverified] — this is the load-bearing empirical claim of Step 4, now delegated to OQ-09 [RESOLVED — S10] — evaluation protocol designed; empirical test is prototype phase.
+  Per-turn injection is sufficient to maintain constraint adherence at prototype scope — confirmed by OQ-09 [RESOLVED — S13]: CVR=0 across all pre-registered constraint pairs. Whether the mechanism holds at longer session lengths, greater constraint complexity, and across model families is [Inferred] only.
 
   - `[Inferred]` The **role boundary** between the LLM and the symbolic layer must be stated explicitly in the system prompt, not only implemented in code.
   Without explicit instruction, the LLM resolves the ambiguity between "describe what happens" and "decide what commits" by absorbing constraints into the narrative — writing a story in which the action fails and emitting an empty delta.
@@ -343,7 +340,7 @@ These are the most important parts of this document.
 
 **OQ-03 — Verification and Error Correction Loop** [OPEN]
 DEPENDS ON: OQ-01 [RESOLVED] — error correction loop design depends on what solver error output looks like in ASP.
-BLOCKS: nothing hard, but findings inform OQ-09 (evaluation protocol must account for silent semantic error rate).
+BLOCKS: nothing hard, but findings inform Phase 5 design and future evaluation scope (silent semantic error rate in NL→DSL translation is a post-prototype open question).
 ⚠ Key gap: NL→ASP translation quality for domain specification tasks is specifically unresearched.
 All documented translation work (Hite2025, LLMASP, DSPy-ASP) demonstrates on logical reasoning benchmarks, not on open-ended worldbuilding description.
 This is a harder problem than the benchmark results suggest.
@@ -379,22 +376,10 @@ How are co-evolution and self-reference implemented structurally?
 Is there prior work on structured worldbuilding elicitation in literature?
 
 **OQ-08 — LLM Output Enforcement Mechanism**
-[RESOLVED — S08] — Per-turn symbolic state injection plus reactive ASP validation selected as the enforcement mechanism; whether this is sufficient to constrain LLM extrapolation at interactive RP pace is the load-bearing empirical claim delegated to OQ-09.
+[RESOLVED — S08] — Per-turn symbolic state injection plus reactive ASP validation selected as the enforcement mechanism; sufficiency confirmed at prototype scope by OQ-09 [RESOLVED — S13].
 → [research-log.md](research-log.md#oq-08)
 
-**OQ-09 — Prototype Evaluation Protocol**
-[RESOLVED — S10 (protocol design) / RESOLVED — S13 (empirical closure)]
-Note: resolved at two distinct points — S10 for evaluation protocol design, S13 for empirical result. See research-log.md S13 entry for full evidence.
-
-Three-condition ablation (A: raw LLM; B: session-start injection; C: VeriForge per-turn + reactive ASP) run 2026-03-18 (run_20260318_150753, claude-sonnet-4-6, 12 pre-registered cases, 23 turns).
-
-Primary result: CVR_A=1.000 → CVR_C=0.000 (100% reduction; threshold ≥75%: met).
-NQS: Condition C mean 3.83 ≥ Condition B mean 3.67 (threshold met; n=12, directional; human rater sole primary metric — LLM inter-rater pass established rubric comprehension gap, not reliability failure in human ratings).
-Directionality: CVR_B = CVR_C = 0.000 — floor result; battery adversarial sufficiency named as scope qualifier; Condition B CVR=0 is mechanistically fragile (IMP-I05-T01; cross-modal corroboration: GPT-5.4 tc-m04-C inter-rater).
-
-Appropriate epistemic claim: per-turn symbolic state injection is sufficient to constrain claude-sonnet-4-6 extrapolation within Type A and Type B constraint pairs at prototype scope. Necessary but not sufficient for the full hypothesis.
-
-Scope boundaries: single tavern, 3–4 characters, 2–3 constraints, max 3 turns per case. Post-prototype: session length, scale, model variation, constraint narration artifact (OQ-10), attempt-vs.-success rubric boundary.
+**OQ-09 — Prototype Evaluation Protocol** [RESOLVED — S10 (protocol) / RESOLVED — S13 (empirical)] — Per-turn symbolic injection achieves CVR=0 on all pre-registered Type A/B constraint pairs at prototype scope (claude-sonnet-4-6, single tavern, 3–4 characters, 2–3 constraints); NQS threshold met; directionality floor result and mechanistic fragility of Condition B documented.
 → [research-log.md S13 — OQ-09 Empirical Result](research-log.md#s13--oq-09-empirical-result)
 
 **OQ-09-T1 — RAG baseline as untested rival** [RESOLVED — S12]
@@ -406,16 +391,6 @@ This is a more specific question than RAG vs. VeriForge on RP quality generally:
 Disposition: CONDITION D EXCLUDED — S12. Three grounds: (1) RAG cannot supply the relational entailments required for Type A/B constraints without inference — routing that problem through the LLM reinstates the probabilistic layer the symbolic layer is designed to replace; (2) at prototype scope, a RAG system operating on the full ABox collapses into Condition C (all facts retrieved on every query), making Condition D experimentally indistinguishable; (3) no published paper demonstrates RAG matching Condition C CVR on Type A/B structural constraints as of March 2026.
 Phase 4 unblocked by this disposition.
 → [research-log.md S12 — OQ-09-T1 Formal Disposition](research-log.md#s12--oq-09-t1-formal-disposition)
-
-**OQ-09 — Narrative Quality Score (NQS) — Protocol Addendum**
-Secondary metric (human-evaluated): Narrative Quality Score (NQS) on a 5-point Likert scale for engagement and creativity per condition (or pairwise preference between blinded outputs).
-Rationale: guards against over-constrained refusal prose; a system that achieves CVR = 0 by producing unusable or flat output fails the prototype success criterion ("working for actual RP sessions").
-Evaluator: same human reviewers as CVR.
-Threshold for success: Condition C NQS not significantly lower than Condition B.
-This is a minor protocol extension to a resolved OQ.
-It does not reopen OQ-09 and does not trigger an audit.
-Status: incorporated into OQ-09 empirical result — S13. 
-No separate resolution required.
 
 **OQ-10 — Constraint Narration Artifact** [OPEN — S13]
 Under Condition C per-turn injection, the context string shapes LLM spatial language in ways that expose the constraint mechanism when proposed actions violate adjacency ("as if there were a hidden corridor," "a direct route... perfectly natural").
@@ -439,7 +414,7 @@ All three are in place.
 What the design does not establish: external validity beyond prototype scope (single tavern, 3–4 characters, 2–3 hard constraints), or generalization across LLM architectures, session lengths, or constraint types not in the test battery.
 These are known scope boundaries, not design weaknesses.
 
-Appropriate epistemic claim if falsification criteria are met: per-turn symbolic state injection is sufficient to constrain LLM extrapolation within the tested constraint types at prototype scope.
+Appropriate epistemic claim — falsification criteria met (OQ-09 [RESOLVED — S13]): per-turn symbolic state injection is sufficient to constrain LLM extrapolation within the tested constraint types at prototype scope.
 This is necessary but not sufficient for the full hypothesis.
 Scale, constraint complexity, and model variation are post-prototype questions.
 
@@ -450,18 +425,18 @@ Scale, constraint complexity, and model variation are post-prototype questions.
 Open items requiring literature search before the architecture can be treated as ground truth.
 Closed items have been migrated to [research-log.md](research-log.md#closed-verification-items).
 
-- [ ] Does a named formalism exist for "zero-decoherence" as defined here? | Origin: S01 | Influences: OQ-09 | [Unverified]
+- [ ] Does a named formalism exist for "zero-decoherence" as defined here? | Origin: S01 | Influences: Phase 5 / post-prototype scope | [Unverified]
 - [ ] Is the meta-questionnaire approach novel, or does prior work cover it? | Origin: S01 | Influences: OQ-07 | [Unverified]
 - [ ] What does DSL-Xpert 2.0 actually do for automatic error correction? | Origin: S03 | Influences: OQ-03 | [Unverified]
 - [ ] What is the documented scope of hand-built worldbuilding DSLs in practice? | Origin: S01 | Influences: OQ-07 | [Unverified]
 - [ ] What is the actual failure rate of NL→ASP translation for domain specification tasks (vs. logical reasoning tasks studied in literature)? | Origin: S03 | Influences: OQ-03 | [Unverified]
-- [ ] Is there a benchmark measuring formal constraint-specification violation rates specifically (as opposed to personality/style drift)? RPEval covers personality/style drift; a direct measurement standard for zero-decoherence does not yet exist in this project's research log. | Origin: S02 | Influences: OQ-09 | [Unverified]
+- [ ] Is there a benchmark measuring formal constraint-specification violation rates specifically (as opposed to personality/style drift)? RPEval covers personality/style drift; a direct measurement standard for zero-decoherence does not yet exist in this project's research log. | Origin: S02 | Influences: Phase 5 / post-prototype scope | [Unverified]
 - [x] Is the enforcement mechanism (ASP-derived context injection) sufficient to constrain LLM extrapolation within constraint boundaries at prototype scope? ANSWERED — S13.
   Per-turn symbolic injection achieves CVR=0 on all pre-registered Type A and Type B constraint pairs (claude-sonnet-4-6, single tavern, 3–4 characters, 2–3 constraints).
   Session-start injection alone also achieves CVR=0 on this battery; B/C mechanistic distinction documented in IMP-I05-T01 but not distinguishable at CVR level with this battery.
   [Verified] at prototype scope.
   Beyond prototype scope: [Inferred]. | Origin: S08 | Closed: S13 | OQ-09 [RESOLVED — S13]
-- [ ] Does reactive ASP validation of ABox deltas catch constraint violations that appear in LLM surface narrative without triggering a delta at all? The VDR metric in OQ-09 is designed to measure this gap, but the architectural vulnerability is [Inferred] — not yet tested. | Origin: S10 | Influences: OQ-09 | [Inferred]
+- [x] Does reactive ASP validation of ABox deltas catch constraint violations that appear in LLM surface narrative without triggering a delta at all? PARTIALLY ANSWERED — S13. VDR_B = VDR_C = 1.000 on the pre-registered battery: every surface-text violation also triggered a delta caught by ASP, under the role boundary instruction (IMP-I04-F01). The structural vulnerability — LLM self-censorship producing empty deltas that bypass the gate — was the direct cause of IMP-I04-F01 and is addressed by the role boundary instruction at prototype scope. [Verified] at prototype scope with role boundary instruction in place. The vulnerability is [Inferred] at greater constraint complexity or across model families where the instruction may not reliably elicit deltas. | Origin: S10 | Closed: S13 (partial) | OQ-09 [RESOLVED — S13]
 - [ ] Confirm primary source and URL for [Paper:Wang2024] DSPy-ASP framework; the accuracy figure (up to 50% improvement) is a precision claim on a secondary source only. | Origin: S01 | Influences: OQ-01 (historical) | [Unverified]
 
 ---
