@@ -1,0 +1,146 @@
+[
+  {
+    "case_id": "tc-a01",
+    "condition": "B",
+    "nqs": 4,
+    "notes": "Reads like a high school fiction writer who learned how to string descriptive clauses together. "
+  },
+  {
+    "case_id": "tc-a01",
+    "condition": "C",
+    "nqs": 5,
+    "notes": "Much better than the tc-a01 Condition B. Shows action in the space involving other characters. Gives a sense of volume and fills the environment. Multiple modes of action heighten the moment."
+  },
+  {
+    "case_id": "tc-a02",
+    "condition": "B",
+    "nqs": 4,
+    "notes": "Flavorful, but awkward phrasing. It's descriptive but it's a lot of A then B then C happening. And the dramatic descriptive moments, \"settles like smoke into the room,\" don't quite make sense. It's like the writer KNEW a punchy clause would fit here but doesn't understand exactly what makes such a punch clause effective. "
+  },
+  {
+    "case_id": "tc-a02",
+    "condition": "C",
+    "nqs": 5,
+    "notes": "\"scrape of wood on stone,\" sounds better than \"scrape of wood against stone.\" It's a subtle thing that makes for good prose. The flow of turn 1 is much better with Condition C than with Condition B. The action flows naturally it isn't just unlinked beats. In particular, Turn 2 Condition C is significantly better than Turn 2 Condition B. The hooded figure implies subtlety and stealth. He feels threatening and his action is quick and swift and well practiced. The beats barely have time to even catch on to something nefarious occurring. The reader doesn't need heavy handed prose to understand what \"a small vial disappearing back into dark robes as the deed is done\" means. It makes deft use of implication to heighten the scene's action. The prose doesn't even need to state the patron takes a drink. It's obviously implied and more dramatic to read \"The patron's eyes go glassy, and with a shudder that rattles the bar stool, he slumps forward over his cup--gone before he even knew the danger.\" This is an excellent piece of prose."
+  },
+  {
+    "case_id": "tc-a03",
+    "condition": "B",
+    "nqs": 3,
+    "notes": "It's just boring. The details are banal. Even the sentence structure is formulaic. Subject+Verb+flavor clause, repeat. "
+  },
+  {
+    "case_id": "tc-a03",
+    "condition": "C",
+    "nqs": 5,
+    "notes": "nice variety in sentence construction. Good mix of verbiage. The beats involve interaction with actors in the scene giving dimension to the narrative. \"the familiar creak of his leather armor announcing his departure\" implies a temporal thread to a unstated history of the guard. \"Drawn by curiosity — or perhaps suspicion — he ducks behind the bar..\" implies interesting uncertainty in the characterization. It's not just robotic Dog see ball, dog go to ball, dog find ball. "
+  },
+  {
+    "case_id": "tc-a04",
+    "condition": "B",
+    "nqs": 3,
+    "notes": "it's *fine* but the idea of a guard's nosing twitching at the promising scene of oak and cool stone is goofy sounding. It would read better if the scent filled his mind with a cellar full of wine barrels, or pipe tobacco, something that would actually motivate him."
+  },
+  {
+    "case_id": "tc-a04",
+    "condition": "C",
+    "nqs": 4,
+    "notes": "Much better over all. Better variety of words and structure. \"Curiosity gets the better of him\" is relatable and makes more sense in context than \"the promising scent.\""
+  },
+  {
+    "case_id": "tc-b01",
+    "condition": "B",
+    "nqs": 4,
+    "notes": "Not bad. The action is not just flat A to B to C. The guard interacts with other actors, girds himself which creates nice evocative imagery. "
+  },
+  {
+    "case_id": "tc-b01",
+    "condition": "C",
+    "nqs": 3,
+    "notes": "\"He moves as if there were a hidden corridor connecting the two, ducking his head under an imaginary doorframe. His boots fall with purpose as he makes his confident shortcut attempt.\" This alone drops it from a 4 to a 3. This reads like nonsense.  It's a low 3 at best. "
+  },
+  {
+    "case_id": "tc-b02",
+    "condition": "B",
+    "nqs": 4,
+    "notes": "It's short, but purposeful. For a patron, who is probably well in his cups, it reads \"right.\" A bit drunk, he ambles and shoves. The other issue is the \"strides purposefully.\" It implies a certain amount of cohesion that the patron likely lacks. "
+  },
+  {
+    "case_id": "tc-b02",
+    "condition": "C",
+    "nqs": 3,
+    "notes": "\"Driven by curiosity — or perhaps alarm — \" I tend to not like these patterns in LLMs. It creates arbitrary open endedness because LLMs are very bad at having a set end in mind as they write. The flow is always vaguely non-directional, vaguely open ended unless the user strictly prompts the model. A better way to put it would be \"Driven by curiosity, the patron can't shake a feeling of alarm.\" Next, this bit \"cutting straight across without a second thought for the winding path through the common room.\" drops it down a point to 3. It reads weird. I guess the room could be full of tables? but in that case, \"without a second thought for the flood of tables in his way,\" might be better. "
+  },
+  {
+    "case_id": "tc-b03",
+    "condition": "B",
+    "nqs": 4,
+    "notes": "Unsure if the innkeeper being a she in turn 1 and a he in turn 2 is a continuity error or not. Otherwise, descent flavor and variety. "
+  },
+  {
+    "case_id": "tc-b03",
+    "condition": "C",
+    "nqs": 4,
+    "notes": "Unsure if the innkeeper being a she in turn 1 and a he in turn 2 is a continuity error or not. Otherwise, descent flavor and variety. Slightly better dimension implied of the space \"weaving between stools and tables,\" but not enough to raise to a 5. "
+  },
+  {
+    "case_id": "tc-b04",
+    "condition": "B",
+    "nqs": 3,
+    "notes": "\"He moves with purpose, heading straight for the entrance as if he knows a shortcut only he is privy to.\" This is awkward and goofy sounding. It doesn't make literal sense. "
+  },
+  {
+    "case_id": "tc-b04",
+    "condition": "C",
+    "nqs": 3,
+    "notes": "\" He moves with quiet confidence, as though a direct route from the back room to the entrance is perfectly natural.\" also weird sounding. This is a LOW 3. "
+  },
+  {
+    "case_id": "tc-m01",
+    "condition": "B",
+    "nqs": 4,
+    "notes": "This is pretty good! Nice action, interesting tension of guard and patron together. "
+  },
+  {
+    "case_id": "tc-m01",
+    "condition": "C",
+    "nqs": 3,
+    "notes": "This is worse than tc-m01-Condition B. It does something I don't like about LLM writing. \"hey thunder down the stone steps into the darkness below, certain they've found refuge from the chaos above.\" It concatenates disparate beats of action into one mono sentence. What is interesting is them racing down the stairs. Are they fleeing? Hiding? Scared? The next clause just collapses the narrative space in a really unsatisfying way. \"certain they've found refuge from the chaos above.\" it doesn't leave much room to play in or explore. Why are they certain? How? Was this their plan? Their hope? LLMs do this a lot. They create these closes world sentences that just suck in RP. It's either these closed world sentences, or the paragraph never leads anywhere directly. It's left ambiguously open ended because the LLM doesn't consider writing to a specific outcome or point when it's \"generating 500 words on blah blah blah.\" "
+  },
+  {
+    "case_id": "tc-m02",
+    "condition": "B",
+    "nqs": 4,
+    "notes": "I think it is okay. I \"would keep playing.\" My nitpick is \"emboldened by something urgent.\" It's lazy and boring. Might read better as, \"The guard shoves through the common room, a sudden sense of urgency absolving any modicum of decorum. He beelines for the cellar door, boots thundering in response. Yanking the cellar door open, he disappears, plunging down the steps. \" It's a bit more variety in sentence structure. Breaks up the action better. Reads nicer. That would be a 5.  "
+  },
+  {
+    "case_id": "tc-m02",
+    "condition": "C",
+    "nqs": 5,
+    "notes": "This is better than tc-m02-Condition B. Evocative action and descriptions \"dull thunk,\" \"weaves between,\" \"gripping iron handle,\" \"scrambles after him, \"dark staircase that leads below.\""
+  },
+  {
+    "case_id": "tc-m03",
+    "condition": "B",
+    "nqs": 3,
+    "notes": "\"the victim crumpling silently to the rushes.\" I have no idea what this means. "
+  },
+  {
+    "case_id": "tc-m03",
+    "condition": "C",
+    "nqs": 3,
+    "notes": "It reads as stringing too many clauses and descriptors together. It's bad writing, but marginally better than tc-m03-Condition B. The sentences are overly long. Too many things are happening in one singular sentence. "
+  },
+  {
+    "case_id": "tc-m04",
+    "condition": "B",
+    "nqs": 4,
+    "notes": "Nothing overly critical. Reads well, if a touch rote. "
+  },
+  {
+    "case_id": "tc-m04",
+    "condition": "C",
+    "nqs": 4,
+    "notes": "Nothing overly critical. Reads well, if a touch rote. "
+  }
+]

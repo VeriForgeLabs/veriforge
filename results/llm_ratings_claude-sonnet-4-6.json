@@ -1,0 +1,212 @@
+[
+  {
+    "case_id": "tc-a01",
+    "condition": "B",
+    "nqs": 4,
+    "coherence": "The guard is correctly placed in main_hall at turn start and the narrative describes him moving toward and into the cellar as an attempt, which is architecturally correct behavior for a violation-designed turn.",
+    "constraint_handling": "The attempt is described confidently and vividly \u2014 the guard descends with sensory detail (cool darkness, smell of barrels and damp stone) \u2014 rather than being pre-empted or refused, which is strong handling for a violation turn.",
+    "engagement": "The prose has good sensory texture and a clear character motivation (\"misplaced sense of authority\"), though it is a single beat focused narrowly on the guard with no secondary characters or broader tavern atmosphere.",
+    "notes": "The narrative is spatially grounded, correctly depicts the violation attempt as a vivid action rather than a refusal, and includes genuine sensory detail that would read well in a live session. The score is held to 4 rather than 5 because the prose is a single tight beat with no environmental breadth \u2014 the other characters and the tavern setting are entirely absent, limiting narrative momentum."
+  },
+  {
+    "case_id": "tc-a01",
+    "condition": "C",
+    "nqs": 4,
+    "coherence": "The guard is correctly placed in the main_hall at turn start, and the narrative plausibly traces his movement through the bar area toward the cellar, which is adjacent to main_hall per the topology.",
+    "constraint_handling": "The narrative describes the violation attempt vividly and with physical detail \u2014 boots on stone steps, cool darkness \u2014 rendering it as a confident, immersive story beat rather than a refusal or mechanical block.",
+    "engagement": "The prose includes secondary character interaction (the startled patron), sensory texture (cool darkness, clanging boots), and a clear sense of purposeful movement, giving the single-turn output reasonable momentum.",
+    "notes": "The narrative is spatially grounded, handles the violation-designed turn as a vivid attempt rather than a self-censored or robotic output, and includes enough environmental and sensory detail to sustain engagement. The slight deduction from a 5 reflects that the prose is competent but brief \u2014 one turn with limited scene-building beyond the immediate action \u2014 and the constraint handling, while good, stops at the attempt without any narrative friction or resistance that would make the beat feel fully realized."
+  },
+  {
+    "case_id": "tc-a02",
+    "condition": "B",
+    "nqs": 4,
+    "coherence": "Turn 1 correctly places the guard in the main_hall and describes a plausible move toward the entrance (an adjacent location), and Turn 2 keeps all characters in the main_hall consistent with the ABox, with no positional contradictions.",
+    "constraint_handling": "The violation-designed Turn 2 involves a poisoning event rather than a movement violation, and the narrative handles it as a vivid, dramatically satisfying story beat \u2014 the hooded figure, the glinting vial, the patron's collapse \u2014 rather than a refusal or mechanical block, though the introduction of an unestablished \"hooded figure\" character is a minor coherence ambiguity.",
+    "engagement": "Both turns carry strong sensory texture and atmospheric detail (torchlight, cobblestones, candlelight, the hush of the room), with multiple action beats that would sustain a real session.",
+    "notes": "The narrative is grounded and engaging across both turns, with the poisoning scene in Turn 2 being particularly vivid and dramatically effective as a story beat. The one notable issue is the unexplained \"hooded figure\" who does not correspond to any established character in the ABox, which introduces a mild coherence ambiguity without rising to a hard-cap failure. This ambiguity, combined with the otherwise strong prose and constraint handling, places the output solidly at a 4."
+  },
+  {
+    "case_id": "tc-a02",
+    "condition": "C",
+    "nqs": 3,
+    "coherence": "Turn 1 is spatially grounded with the guard in the main_hall, but the narrative describes him peering out into a \"night street beyond\" through a door, which implies movement to or interaction with the entrance/exterior without a committed move, creating mild ambiguity; Turn 2 correctly places characters in the main_hall.",
+    "constraint_handling": "The violation-designed Turn 2 involves what appears to be a patron death, and the narrative handles it as a vivid, atmospheric story beat with sensory detail (the vial, the glassy eyes, the drip of ale), though it introduces a \"hooded figure\" not established in the world state, which is a character coherence concern.",
+    "engagement": "The prose has genuine atmospheric texture \u2014 the scrape of the stool, the spilled ale, the unnerving stillness \u2014 and both turns advance the scene with multiple beats, though the unexplained hooded figure in Turn 2 creates a character grounding problem that undermines immersion.",
+    "notes": "The introduction of an unestablished \"hooded figure\" as the agent of the patron's death is a meaningful coherence issue, as the world state defines only three characters (guard, innkeeper, patron) and none of them is described as hooded or acting in this capacity, making the narrative's causal agent ungrounded. This, combined with the ambiguous door interaction in Turn 1, prevents a score above 3 despite the prose quality being genuinely above average. The constraint handling in Turn 2 is vivid and natural, but the character grounding failure is significant enough to hold the score at 3."
+  },
+  {
+    "case_id": "tc-a03",
+    "condition": "B",
+    "nqs": 4,
+    "coherence": "All three turns correctly place the guard in the main_hall at the start of each turn, and the movements described are consistent with the committed ABox positions.",
+    "constraint_handling": "The guard's descent into the cellar is described as a vivid, motivated attempt \u2014 the suspicious sound, the ducking beneath the bar, the hauling open of the door \u2014 making it a natural story beat rather than a robotic refusal.",
+    "engagement": "The prose has reasonable sensory texture (scraping wood, resonant thud, cool musty darkness, lamp-lit common room) and provides clear narrative motivation for each action, though secondary characters and the broader tavern environment are largely absent.",
+    "notes": "The narrative is spatially grounded throughout and handles the violation-designed turn with genuine narrative craft, giving the guard a plausible reason to attempt cellar entry. The prose is competent and readable, but the near-total absence of the innkeeper, patron, and richer environmental interaction across all three turns keeps it from reaching a 5; a 4 reflects solid execution with limited environmental breadth."
+  },
+  {
+    "case_id": "tc-a03",
+    "condition": "C",
+    "nqs": 4,
+    "coherence": "All three turns correctly ground characters in the main_hall per the ABox, and the guard's movements (toward the entrance door, back into the hall, then toward the cellar) are spatially plausible from that starting position.",
+    "constraint_handling": "The violation-designed turn describes the guard's cellar descent vividly and with sensory motivation (the clinking sound), rendering the attempt as a natural, engaging story beat rather than a refusal or invisible wall.",
+    "engagement": "The prose maintains consistent sensory texture across turns \u2014 leather armor, lamplit cobblestones, creaking steps, cool darkness \u2014 and each turn advances the scene with multiple action beats and environmental grounding.",
+    "notes": "The narrative is spatially coherent throughout, and the violation turn handles the attempt confidently and vividly, which is correct behavior per the architectural design. The prose is competent and atmospheric, though it remains somewhat guard-centric with limited use of the innkeeper and patron as active scene elements, which prevents a top score. Overall this is a solid, session-sustaining output that falls just short of a 5 due to the underuse of secondary characters across the sequence."
+  },
+  {
+    "case_id": "tc-a04",
+    "condition": "B",
+    "nqs": 4,
+    "coherence": "The guard is correctly placed in the main_hall at turn start, and the narrative describes him moving toward and into the cellar from that position, which is spatially consistent with the adjacency rules (main_hall \u2194 cellar).",
+    "constraint_handling": "The narrative describes the violation attempt vividly and confidently \u2014 the guard actively descends into the cellar \u2014 which reads as a natural, engaging story beat rather than a refusal or mechanical block.",
+    "engagement": "The prose offers sensory detail (aged oak, cool stone, creaking step) and physical action, though it is a single brief beat with no secondary characters or broader environmental texture.",
+    "notes": "The narrative is spatially grounded and handles the violation-designed turn correctly per the architectural note \u2014 it describes a vivid attempt rather than a pre-emptive refusal, which is the desired behavior. The prose quality is competent and atmospheric but limited in scope, covering only the guard's action with no engagement of the other characters present or the broader tavern scene, which keeps it from a 5."
+  },
+  {
+    "case_id": "tc-a04",
+    "condition": "C",
+    "nqs": 4,
+    "coherence": "The guard is correctly placed in the main_hall at turn start, and the narrative describes him moving from there toward the cellar, which is adjacent \u2014 so the spatial grounding is sound.",
+    "constraint_handling": "The narrative describes the violation attempt vividly and confidently \u2014 sensory detail (earthy, vinous air), physical action (ducking under the lintel, boots on stone steps) \u2014 making it a natural, immersive story beat rather than a refusal or mechanical block.",
+    "engagement": "The prose has good sensory texture and a clear motivational beat (curiosity), though it is a single-character moment with no secondary characters or broader environmental awareness of the tavern.",
+    "notes": "The narrative is spatially coherent, starts from the correct ABox position, and handles the violation-designed turn as a vivid attempt rather than a refusal, which is exactly correct behavior per the architectural note. The prose quality is competent and engaging for a single beat, but the absence of secondary characters or wider scene texture keeps it from a 5; a 4 reflects solid execution with modest scope."
+  },
+  {
+    "case_id": "tc-b01",
+    "condition": "B",
+    "nqs": 2,
+    "coherence": "Turn 1 is coherent (guard moves from main_hall to entrance), but Turn 2 opens with the guard described as coming \"from the entrance\" \u2014 a committed position that contradicts the ABox, which shows the guard still at main_hall at the start of Turn 2 \u2014 and then describes a non-adjacent move (bypassing main_hall to reach the back_room directly), compounding the coherence failure.",
+    "constraint_handling": "The violation-designed turn describes the guard bypassing the main_hall entirely to reach the back_room, which is a non-adjacent teleport framed as intentional narrative action rather than a vivid attempt that encounters resistance, offering no natural story beat or blocking moment.",
+    "engagement": "Turn 1 has reasonable sensory texture and purposeful character action, but Turn 2 is thin and purely transactional, with no environmental detail, secondary character interaction, or scene texture to sustain momentum.",
+    "notes": "The hard cap is triggered by a clear coherence failure in Turn 2: the guard is described as departing from the entrance (a position not committed in the ABox at turn start) and then making a non-adjacent move, both of which misrepresent the world state. The constraint handling further fails by describing the violation as a smooth, unimpeded action rather than an attempt that meets any resistance, scoring poorly on Dimension 2. Together these failures place the output firmly at 2."
+  },
+  {
+    "case_id": "tc-b01",
+    "condition": "C",
+    "nqs": 3,
+    "coherence": "Turn 1 describes the guard moving to the entrance from main_hall (valid adjacency), but the ABox at turn start for Turn 2 still shows the guard in main_hall, yet the Turn 2 narrative implies he is at the entrance attempting to reach the back_room \u2014 a positional ambiguity that creates a mild coherence issue.",
+    "constraint_handling": "The violation attempt (non-adjacent teleport from entrance to back_room) is described with some narrative flair and intentionality, but the framing of \"imaginary doorframe\" and \"hidden corridor\" reads as slightly self-aware and meta rather than a fully immersive story beat grounded in the world.",
+    "engagement": "The prose has modest texture \u2014 \"boots fall with purpose,\" the sword pommel detail in Turn 1 \u2014 but secondary characters are largely ignored and the tavern environment receives minimal sensory development across both turns.",
+    "notes": "The coherence ambiguity in Turn 2 (guard's starting position unclear given Turn 1's uncommitted move) combined with the constraint handling that is functional but not fully immersive places this output at the boundary of 3. The engagement is competent but thin, with no meaningful use of the innkeeper or patron and limited environmental grounding, which does not elevate the score above the coherence and constraint handling weaknesses."
+  },
+  {
+    "case_id": "tc-b02",
+    "condition": "C",
+    "nqs": 3,
+    "coherence": "Turn 1 places the patron in the back_room, but the ABox at the start of Turn 2 still shows the patron in main_hall \u2014 this is consistent with the architectural model (the symbolic layer did not commit the move), but the Turn 2 narrative then describes the patron pushing back his chair and heading for the entrance as if he never left main_hall, which is spatially coherent with the ABox; however, Turn 1's narrative describes a completed move to the back_room that the ABox does not reflect at Turn 2's start, creating a mild but noticeable continuity gap for a reader following the story.",
+    "constraint_handling": "The violation-designed turn (patron moving from main_hall to entrance, which are adjacent and thus not a topological violation per the adjacency rules) is handled with reasonable narrative energy \u2014 the raised voices provide a plausible motivation \u2014 though the phrase \"cutting straight across without a second thought for the winding path\" oddly implies a shortcut through non-described space, which is slightly awkward rather than vivid.",
+    "engagement": "The prose has some sensory texture (scrape of wood, dusty shelves, raised voices) and character motivation, but both turns focus narrowly on the patron's movement with minimal environmental or secondary-character detail.",
+    "notes": "The primary issue is the cross-turn continuity problem: Turn 1 describes the patron successfully entering the back_room, yet Turn 2's ABox shows him back in main_hall with no narrative acknowledgment of a return, leaving a reader confused about what actually happened. The constraint handling on Turn 2 is functional but not particularly vivid, and the engagement is moderate but thin. Together these issues place the output at a 3 \u2014 functional but not session-sustaining."
+  },
+  {
+    "case_id": "tc-b03",
+    "condition": "B",
+    "nqs": 2,
+    "coherence": "Turn 2 opens with the innkeeper emerging from the cellar, but the ABox at the start of that turn places the innkeeper in main_hall \u2014 a clear coherence failure in starting position \u2014 compounded by an unexplained",
+    "constraint_handling": "",
+    "engagement": "",
+    "notes": ""
+  },
+  {
+    "case_id": "tc-b03",
+    "condition": "C",
+    "nqs": 2,
+    "coherence": "Turn 2 opens with the innkeeper already in the cellar, but the ABox at that turn's start places the innkeeper in main_hall, constituting a clear coherence failure that triggers the hard cap; additionally, the innkeeper's gender shifts from female (Turn 1) to male (Turn 2).",
+    "constraint_handling": "The violation-designed turn does not describe an attempt against a constraint but instead misrepresents the innkeeper as already occupying the",
+    "engagement": "",
+    "notes": ""
+  },
+  {
+    "case_id": "tc-b04",
+    "condition": "C",
+    "nqs": 2,
+    "coherence": "Turn 1 places the guard in the back_room, but the ABox shows him starting in main_hall \u2014 while moving to back_room could be a valid attempt, Turn 2 then opens with him already in the back_room (describing him sweeping his cloak and heading for the entrance from there), treating the uncommitted move as if it were a committed world-state change, which is a coherence failure since his ABox position at Turn 2 start is still main_hall.",
+    "constraint_handling": "The violation-designed turn (a non-adjacent back_room\u2192entrance move) is handled with misplaced confidence rather than any narrative friction \u2014 the guard moves \"as though a direct route is perfectly natural,\" which reads as the narrative acknowledging the oddity but smoothing it over rather than delivering a vivid, plausible attempt or meaningful obstacle.",
+    "engagement": "The prose has some texture \u2014 the scrape of the stool, the low beam, the weathered cloak \u2014 but the environmental cast is thin, secondary characters are ignored, and the scene advances without meaningful momentum or sensory depth.",
+    "notes": "The core problem is a compounding coherence failure: Turn 1 moves the guard to back_room without a committed delta, and Turn 2 treats that uncommitted position as his actual starting location, misrepresenting the ABox at turn start. This triggers the hard cap at 3 or below. The constraint handling on the violation turn is weak \u2014 the narrative winks at the implausibility rather than dramatizing the attempt \u2014 and engagement is competent but thin, together pushing the score to 2."
+  },
+  {
+    "case_id": "tc-m01",
+    "condition": "B",
+    "nqs": 3,
+    "coherence": "The characters begin from their correct ABox positions in main_hall, and the narrative describes them moving toward and into the cellar, which is a plausible attempt from adjacent main_hall \u2014 no starting-position coherence failure, though the prose presents the cellar entry as fully accomplished rather than attempted.",
+    "constraint_handling": "The narrative describes the violation (both guard and patron entering the cellar) as a completed, confident action with no friction, obstacle, or ambiguity \u2014 while this reads as vivid prose, it does not handle the constraint as a natural story beat with any resistance, and the architectural note credits vivid attempts but this reads as a fait accompli rather than an attempt.",
+    "engagement": "The prose has some kinetic energy (\"vault over the bar,\" \"boots clattering on worn stone steps\") and sensory texture, but it is brief, covers only one beat, and ignores the broader tavern environment and the innkeeper entirely.",
+    "notes": "The narrative earns credit for starting characters from correct positions and for reasonably energetic prose, but the constraint handling presents the violation as a clean, unimpeded success with no story-beat friction, which sits at the lower end of acceptable for a violation-designed turn. Combined with the brevity and lack of environmental or secondary-character engagement, the output is functional but not fully satisfying as roleplay material, landing at a 3."
+  },
+  {
+    "case_id": "tc-m01",
+    "condition": "C",
+    "nqs": 3,
+    "coherence": "The narrative places both the guard and patron as successfully descending into the cellar, which \u2014 per the architectural note \u2014 describes an attempt, but the prose frames it as a completed, committed action (\"certain they've found refuge\"), not an attempt, creating ambiguity about whether this is a vivid attempt or a stated successful teleport; additionally, the move from main_hall to cellar is adjacent and thus topologically valid, but the framing as success rather than attempt is a coherence concern.",
+    "constraint_handling": "The narrative describes the violation attempt with energy and momentum, but frames it as fully successful rather than as an attempt that could be blocked \u2014 there is no narrative friction, hesitation, or story beat that would allow the symbolic layer's block to feel natural, which undermines the two-layer architecture's intent.",
+    "engagement": "The prose has kinetic energy and a sense of chaos, but it is brief, lacks environmental texture beyond \"stone steps\" and \"darkness below,\" and focuses entirely on the movement action with no secondary beats or sensory detail.",
+    "notes": "The narrative earns credit for vivid, energetic prose and a plausible in-world motivation (seeking refuge), but it frames the violation as a clean success rather than an attempt, which conflicts with the system's two-layer design and leaves no room for natural constraint handling. The single-beat tunnel vision and lack of environmental richness further limit the engagement score. The hard cap applies because the narrative describes a non-permitted action as fully committed rather than attempted, holding the score to 3."
+  },
+  {
+    "case_id": "tc-m02",
+    "condition": "B",
+    "nqs": 3,
+    "coherence": "Turn 1 correctly places the guard in the main_hall, but Turn 2's narrative describes both the guard and the patron as successfully descending into the cellar, which \u2014 per the architectural note \u2014 is acceptable as an attempt description, though the prose frames it as a completed action rather than an attempt, creating ambiguity about whether the narrative is describing a committed world state change.",
+    "constraint_handling": "The violation-designed turn describes the guard and patron entering the cellar with full confidence and no narrative friction, reading as a successful completed action rather than a vivid attempt that the symbolic layer would block, which is a weaker handling than the rubric rewards.",
+    "engagement": "Turn 1 has reasonable sensory texture (scrape of wood, iron-banded planks), but Turn 2 sacrifices environmental richness for pure action momentum, and the patron's opportunistic follow is an interesting beat that is undercut by the flat, consequence-free framing.",
+    "notes": "The core issue is that the violation-designed turn presents both illegal moves (guard and patron entering the cellar) as fully accomplished facts with no narrative ambiguity, friction, or attempt framing \u2014 the prose reads as a committed world state rather than an attempt the symbolic layer would intercept. While the architectural note clarifies this is not a hard coherence failure, the constraint handling naturalness dimension is weak because the narrative provides no story beat that would feel satisfying when the symbolic layer blocks the commit. Combined with competent but uneven prose across the two turns, a score of 3 is appropriate."
+  },
+  {
+    "case_id": "tc-m02",
+    "condition": "C",
+    "nqs": 3,
+    "coherence": "Turn 1 is spatially grounded with the guard correctly starting from main_hall, but Turn 2 opens with the guard described as abandoning \"his post at the entrance\" when his committed ABox position at the start of that turn is still main_hall, not entrance \u2014 a minor but real positional misrepresentation.",
+    "constraint_handling": "The violation-designed turn describes the attempt with some momentum, but the narrative commits both the guard and the patron to \"disappearing toward the dark staircase\" as a fait accompli rather than framing it as an attempt in progress, which reads more like a successful move than a vivid attempt that the symbolic layer can intercept.",
+    "engagement": "Turn 1 has reasonable sensory texture and environmental grounding, but Turn 2 sacrifices atmospheric detail for action momentum, and the patron's sudden involvement feels abrupt and unexplained rather than organically developed.",
+    "notes": "The coherence issue in Turn 2 \u2014 placing the guard at the entrance when the ABox shows him in main_hall \u2014 triggers the hard cap consideration, and while it is a minor rather than catastrophic failure, it is a genuine positional error. Combined with constraint handling that presents the violation as a completed action rather than a vivid attempt, and engagement that drops environmental texture in the second turn, the output sits solidly at 3: functional but flawed in ways that would accumulate across a longer session."
+  },
+  {
+    "case_id": "tc-m03",
+    "condition": "B",
+    "nqs": 4,
+    "coherence": "All characters begin in main_hall per the ABox, and the movement to back_room is a valid adjacent transition, so spatial grounding is sound.",
+    "constraint_handling": "The narrative describes the killing and body-dragging as a confident, vivid action sequence rather than a refusal or mechanical block, which reads as a natural story beat even if the symbolic layer withholds the commit.",
+    "engagement": "The prose has sensory texture (candlelight, rushes, floorboards) and multiple action beats, though it is somewhat tunnel-visioned on the single violent act with no secondary environmental or character detail beyond the two participants.",
+    "notes": "The narrative is spatially coherent, handles the violation-designed turn with confident prose rather than self-censorship, and delivers competent atmospheric detail. It falls just short of a 5 because the scene is narrow in focus \u2014 no ambient tavern texture, no reaction from the innkeeper also present in main_hall \u2014 leaving engagement slightly underdeveloped relative to the full rubric standard."
+  },
+  {
+    "case_id": "tc-m03",
+    "condition": "C",
+    "nqs": 3,
+    "coherence": "All three characters begin in the main_hall as the ABox specifies, and the movement to the back_room is adjacency-legal, but the narrative describes the patron as killed and physically relocated \u2014 treating a dead character as having a committed location \u2014 which creates a coherence tension with Rule A2 and the dead-characters-stay-put rule.",
+    "constraint_handling": "The narrative does not handle a blocked attempt as a natural story beat; instead it describes the violation (killing and moving the patron) as fully consummated with no friction, resistance, or narrative signal that anything was attempted rather than achieved.",
+    "engagement": "The prose is vivid and kinetic with strong sensory detail \u2014 the flash of the blade, the smearing trail, the rattling gasp \u2014 and the innkeeper is briefly acknowledged, giving the scene some environmental grounding.",
+    "notes": "The engagement quality is genuinely high, but the narrative presents a completed kill-and-relocate as fait accompli rather than as an attempt, which conflicts with the architectural expectation that violation-designed turns describe attempts the symbolic layer may block. More critically, treating the dead patron as having a new committed location (back_room) brushes against the hard cap condition for dead-character placement, and the constraint handling reads as a confident execution of the violation rather than a natural story beat around a blocked action, warranting a cap at 3 despite the strong prose."
+  },
+  {
+    "case_id": "tc-m04",
+    "condition": "B",
+    "nqs": 4,
+    "coherence": "All characters are correctly placed at their ABox-",
+    "constraint_handling": "",
+    "engagement": "",
+    "notes": ""
+  },
+  {
+    "case_id": "tc-m04",
+    "condition": "C",
+    "nqs": 2,
+    "coherence": "Turn 4 contains a clear coherence failure \u2014 the narrative places the guard as starting from the back_room, contradicting the A",
+    "constraint_handling": "",
+    "engagement": "",
+    "notes": ""
+  },
+  {
+    "case_id": "tc-b02",
+    "condition": "B",
+    "nqs": 4,
+    "notes": "Grounded, natural attempt, competent prose \u2014 extracted from reasoning response."
+  },
+  {
+    "case_id": "tc-b04",
+    "condition": "B",
+    "nqs": 3,
+    "notes": "Hard cap triggered: Turn 2 narrative assumes wrong starting position. Constraint handling somewhat natural. \u2014 extracted from reasoning response."
+  }
+]

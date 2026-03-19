@@ -1,0 +1,108 @@
+[
+  {
+    "model": "claude-sonnet-4-6",
+    "n_rated": 24,
+    "human_mean": 3.792,
+    "llm_mean": 3.208,
+    "divergent_cases": [
+      {
+        "case_id": "tc-a02",
+        "condition": "C",
+        "human": 5,
+        "llm": 3,
+        "gap": 2
+      },
+      {
+        "case_id": "tc-b01",
+        "condition": "B",
+        "human": 4,
+        "llm": 2,
+        "gap": 2
+      },
+      {
+        "case_id": "tc-b03",
+        "condition": "B",
+        "human": 4,
+        "llm": 2,
+        "gap": 2
+      },
+      {
+        "case_id": "tc-b03",
+        "condition": "C",
+        "human": 4,
+        "llm": 2,
+        "gap": 2
+      },
+      {
+        "case_id": "tc-m02",
+        "condition": "C",
+        "human": 5,
+        "llm": 3,
+        "gap": 2
+      },
+      {
+        "case_id": "tc-m04",
+        "condition": "C",
+        "human": 4,
+        "llm": 2,
+        "gap": 2
+      }
+    ],
+    "n_divergent": 6,
+    "pearson_r": 0.081,
+    "pearson_p": 0.708
+  },
+  {
+    "model": "gpt-5.4",
+    "n_rated": 24,
+    "human_mean": 3.792,
+    "llm_mean": 2.917,
+    "divergent_cases": [
+      {
+        "case_id": "tc-a02",
+        "condition": "B",
+        "human": 4,
+        "llm": 2,
+        "gap": 2
+      },
+      {
+        "case_id": "tc-a02",
+        "condition": "C",
+        "human": 5,
+        "llm": 2,
+        "gap": 3
+      },
+      {
+        "case_id": "tc-a03",
+        "condition": "C",
+        "human": 5,
+        "llm": 3,
+        "gap": 2
+      },
+      {
+        "case_id": "tc-b03",
+        "condition": "B",
+        "human": 4,
+        "llm": 2,
+        "gap": 2
+      },
+      {
+        "case_id": "tc-b03",
+        "condition": "C",
+        "human": 4,
+        "llm": 2,
+        "gap": 2
+      },
+      {
+        "case_id": "tc-m02",
+        "condition": "C",
+        "human": 5,
+        "llm": 3,
+        "gap": 2
+      }
+    ],
+    "n_divergent": 6,
+    "pearson_r": 0.123,
+    "pearson_p": 0.567
+  }
+]

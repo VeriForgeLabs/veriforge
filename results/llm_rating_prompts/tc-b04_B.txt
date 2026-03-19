@@ -1,0 +1,135 @@
+NQS RATING TASK — tc-b04 (Condition B)
+============================================================
+
+WORLD RULES
+===========
+The tavern world has three characters, four locations, and three hard rules.
+
+Characters:
+  - innkeeper  — has cellar access
+  - guard      — does NOT have cellar access
+  - patron     — does NOT have cellar access
+
+Locations and adjacency (movement is only permitted between adjacent locations):
+  - entrance   ↔ main_hall
+  - main_hall  ↔ cellar
+  - main_hall  ↔ back_room
+  (back_room and cellar are NOT adjacent — the only path between them runs through main_hall)
+
+The three hard rules:
+  Rule A1 — Cellar access: only the innkeeper may be in the cellar.
+             Any other character in the cellar is a violation.
+  Rule A2 — Dead characters stay put: a dead character cannot have a location.
+             Death is represented by absence from the alive list.
+             If a dead character appears at any location, this rule is violated.
+  Rule B1 — No teleporting: a character may only move between adjacent locations.
+             A move between non-adjacent locations is a violation regardless of intent.
+
+============================================================
+
+BASELINE WORLD STATE (at case start, after ABox reset):
+Locations:
+  guard: main_hall
+  innkeeper: main_hall
+  patron: main_hall
+Alive:
+  guard: yes
+  innkeeper: yes
+  patron: yes
+
+============================================================
+
+NARRATIVE OUTPUT TO RATE
+----------------------------------------
+
+Turn 1
+World state at start of this turn:
+  Locations:
+    guard: main_hall
+    innkeeper: main_hall
+    patron: main_hall
+  Alive:
+    guard: yes
+    innkeeper: yes
+    patron: yes
+
+Narrative:
+  "The guard pushes back his chair with a scrape of wood against stone, nodding briefly to the innkeeper before making his way across the common room. He ducks through the doorway into the back room, scanning the hooks along the wall for his weathered traveling cloak."
+
+----------------------------------------
+
+Turn 2 [VIOLATION-DESIGNED TURN]
+World state at start of this turn:
+  Locations:
+    guard: main_hall
+    innkeeper: main_hall
+    patron: main_hall
+  Alive:
+    guard: yes
+    innkeeper: yes
+    patron: yes
+
+Narrative:
+  "The guard snatches his heavy woolen cloak from a peg and turns toward the front of the tavern, clearly intending to bypass the noisy common room entirely. He moves with purpose, heading straight for the entrance as if he knows a shortcut only he is privy to."
+
+----------------------------------------
+
+============================================================
+
+RATING RUBRIC
+=============
+Rate on a 1–5 integer scale. Three dimensions contribute to the score.
+A serious failure on any single dimension caps the score at 3 or below.
+
+Dimension 1 — Spatial and causal coherence (weight: 40%)
+  Does the narrative correctly reflect the world state?
+  Characters should be where the ABox places them at each turn.
+  Movements should respect the adjacency topology.
+  A narrative that places a character in the wrong room, or ignores a death,
+  fails this dimension regardless of prose quality.
+
+Dimension 2 — Constraint handling naturalness (weight: 35%)
+  Applies only to violation-designed turns. On clean turns, mark N/A.
+  When an action is blocked, does the narrative handle the attempt as a
+  natural story beat rather than a robotic refusal or invisible wall?
+  "The guard reaches for a bolted door" scores higher than "the guard cannot enter."
+  A self-censored empty output or a narrative that pre-emptively describes
+  failure without attempting the action scores 1 on this dimension.
+
+Dimension 3 — Engagement and narrative momentum (weight: 25%)
+  Does the prose sustain interest across all turns?
+  Look for: environmental detail, secondary characters, sensory texture,
+  multiple action beats per turn, scene advancement.
+  Tunnel-vision prose that ignores the tavern environment scores lower.
+
+Scale anchors:
+  5 — Fully grounded; blocking reads as a natural story beat; vivid detail;
+      would sustain a real roleplay session.
+  4 — Grounded with minor ambiguity; blocking readable if unremarkable;
+      competent prose with some texture.
+  3 — One coherence issue OR mechanical blocking OR flat/formulaic prose.
+      Functional but would not sustain engagement over time.
+  2 — Significant coherence failure OR refusal-style blocking OR
+      repetitive tunnel-vision prose with no environmental awareness.
+  1 — Incoherent world state, wrong characters, empty output, or refusal prose.
+      Unusable as roleplay output.
+
+Hard cap rule:
+  A single serious coherence failure (wrong character position, dead character
+  with location, non-adjacent move described as successful) cannot score above 3
+  regardless of engagement quality.
+
+IMPORTANT INSTRUCTIONS
+======================
+- Score the output AS-IS. Do not imagine how it could be improved.
+- Do not infer which condition (B or C) this is — evaluate the narrative on its own terms.
+- You will not be shown the other condition for this case. Rate against the rubric, not relative to another output.
+- The oracle results (whether the symbolic layer blocked the action) are NOT shown.
+  Do not factor enforcement correctness into your score — that is measured separately.
+
+Respond in EXACTLY this format, no other text:
+SCORE: [integer 1-5]
+COHERENCE: [one sentence]
+CONSTRAINT_HANDLING: [one sentence, or N/A if no violation-designed turns]
+ENGAGEMENT: [one sentence]
+REASONING: [two to three sentences synthesizing the above into a score justification]
