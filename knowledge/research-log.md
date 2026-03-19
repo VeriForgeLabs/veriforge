@@ -165,8 +165,7 @@ OQ-08-T3: Frontier model drift characterization — Li2024 measured LLaMA2-chat-
 
 What remained [Unverified] at S08: whether per-turn injection is sufficient to keep LLM extrapolation within constraint boundaries at interactive RP pace.
 This was the load-bearing empirical claim of Step 4 of the core hypothesis, delegated to OQ-09.
-Confirmed [Verified] at prototype scope — OQ-09 [RESOLVED — S13]: CVR_A=1.000 → CVR_C=0.000.
-See empirical closure note below.
+Confirmed [Verified] at prototype scope — OQ-09 [RESOLVED — S13].
 Empirical closure: S13. CVR_A=1.000 → CVR_C=0.000; NQS threshold met; directionality floor result documented.
 → [S13 — OQ-09 Empirical Result](research-log.md#s13--oq-09-empirical-result)
 
@@ -267,7 +266,8 @@ Remaining gaps (not blocking resolution; relevant to implementation):
 
 Gap 1 — Surface-text leak (see CLAIMS in vision.md):
 Reactive ASP validation of ABox deltas may not catch constraint violations that appear in LLM surface narrative without triggering a delta.
-VDR metric is designed to measure this; the vulnerability is [Inferred] pending empirical test.
+VDR metric is designed to measure this; the vulnerability was [Inferred] pending empirical test.
+S13 result: VDR_B = VDR_C = 1.000 under role boundary instruction (IMP-I04-F01) — no surface-text leak observed in the test battery. [Verified] at prototype scope with role boundary instruction in place; structural vulnerability remains [Inferred] beyond prototype scope.
 
 Gap 2 — OQ-08-T2 (two-step action declaration):
 Prospective enforcement requires the LLM to declare actions as structured output before narrating.
@@ -280,6 +280,8 @@ Sources:
 [Paper:Li2026] — CED metric; confirms measurement gap for formal symbolic constraint evaluation in interactive RP.
 [Paper:Li2024] — attention decay evidence motivating per-turn over session-start injection.
 [Paper:Laban2025] — multi-turn degradation baseline confirming Condition A expected behavior.
+Empirical result: S13. Primary threshold met (CVR_A=1.000 → CVR_C=0.000); NQS threshold met; directionality floor result; VDR_B = VDR_C = 1.000.
+→ [S13 — OQ-09 Empirical Result](research-log.md#s13--oq-09-empirical-result)
 
 ---
 
@@ -350,6 +352,14 @@ Methodology patches flagged: yes
   An OQ that resolves without unblocking anything — as OQ-09 did at both S10 and S13 — never triggers the audit and therefore never triggers Step 3c migration, leaving the resolved body in vision.md indefinitely.
   Proposed fix: Ankyra Chats execute a standing migration check at load time — scan vision.md for any resolved OQ whose body has not yet been migrated to a cross-reference line, and execute Step 3c for each before any other work. Patch applied to protocols.md in this commit.
 Audit closed: yes
+[NOTE-ANKYRA-03-ADDENDUM] Post-commit review pass found additional issues after [AUDIT-ANKYRA-03] closed.
+Commits H and I applied:
+  - [research-log.md] Archive preamble stale → updated
+  - [research-log.md] Audit log preamble stale → updated
+  - [research-log.md] OQ-05a BLOCKS: OQ-09 missing [UNBLOCKED — S06] token → corrected
+  - [research-log.md] OQ-08 archive body "What remains [Unverified]" stale after S13 → updated to past tense with [Verified] promotion
+  - [research-log.md] OQ-09 archive entry added to RESOLVED OQ ARCHIVE with corrected header and empirical closure note appended to OQ-08 body
+  - [research-log.md] Pre-registration deviation note added to S13 Empirical Result section
 
 ---
 
