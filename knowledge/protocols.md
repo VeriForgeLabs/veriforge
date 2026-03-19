@@ -156,6 +156,12 @@ The audit must be completed before the next research session begins.
 Ad hoc audits may be requested at any time but are not required between trigger events.
 The AI research partner is the executor of the audit at session start.
 The audit is completed before any research question is addressed.
+Standing migration check (Ankyra Chats only):
+At each Ankyra Chat, before any other work, scan vision.md for any resolved OQ whose body has not yet been migrated to a cross-reference line.
+For each such OQ, execute Step 3c migration before proceeding.
+This closes the structural gap in the Audit Trigger Protocol: the trigger fires only when an OQ resolution unblocks a downstream OQ.
+An OQ that resolves without unblocking anything — e.g., the terminal OQ in a research phase — never triggers the audit and therefore never triggers migration.
+The standing migration check is the corrective for that class of case.
 
 Audit scope — four steps, executed in order.
 No step may be skipped.
