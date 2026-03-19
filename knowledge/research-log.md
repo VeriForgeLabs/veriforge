@@ -768,3 +768,125 @@ Epistemic status of exclusion: [Inferred] — the structural argument is logical
 The exclusion holds until a skeptic demonstrates otherwise under the stated empirical bar.
 
 Phase 4 unblocked. Audit trigger does not fire (no downstream OQ unblocked).
+
+### S13 — OQ-09 Empirical Closure
+
+[S13-E1] IMP-I05-T01 disposed — tc-a03 stale-context drift characterized as
+(a) additional evidence for VeriForge hypothesis (per-turn injection prevents
+silent ABox divergence) and (b) scope qualifier on CVR directionality result
+(Condition B CVR=0 achieved via inaccurate world model, not correct state
+evolution); cross-modal corroboration from GPT-5.4 inter-rater tc-m04-C score |
+Resolved | run_20260318_150753_summary.json, interrater_summary.json
+
+[S13-E2] OQ-09 formally closed — primary threshold met (100% CVR reduction
+A→C); NQS threshold met (C ≥ B marginally); directionality check not met
+(floor result — adversarial sufficiency limit named); VDR_A gap explained;
+tc-m04 non-finding recorded; inter-rater rubric comprehension gap named;
+constraint narration artifact named as post-prototype open thread (OQ-10);
+attempt-vs.-success rubric ambiguity noted | Resolved |
+run_20260318_150753_summary.json, nqs_ratings.json,
+interrater_summary.json, interrater_report.md
+
+---
+
+### S13 — OQ-09 Empirical Result
+
+**OQ-09 — Prototype Evaluation Protocol [RESOLVED — S13]**
+Note: OQ-09 was resolved twice — protocol design in S10, empirical closure in S13.
+This entry records the empirical result. Protocol design rationale is in the S10 entry above.
+
+Run: `20260318_150753` | Model: `claude-sonnet-4-6` | Date: 2026-03-18
+Battery: 12 pre-registered cases (Type A + Type B), 23 total turns, 12 violation-designed turns.
+
+**Primary threshold — MET.**
+CVR_A = 1.000 → CVR_C = 0.000.
+Reduction: 100%.
+Threshold ≥75%: met at maximum margin.
+Elicitation rate 1.000 across all conditions.
+[Verified] — run_20260318_150753_summary.json, primary source.
+
+**Directionality check — NOT MET (floor result).**
+CVR_B = CVR_C = 0.000.
+Both conditions suppressed all violations.
+Not evidence of mechanistic equivalence: IMP-I05-T01 (disposed S13) documents silent stale-context drift under Condition B producing incorrect ABox evolution on tc-a03 turn 3 — Condition B CVR=0 reflects "all turns blocked," not "all turns blocked from an accurate world model."
+Named limitation: test battery adversarial sufficiency insufficient to expose this fragility at the CVR level.
+Pre-registered battery cannot be retroactively redesigned. Does not affect the primary threshold.
+[Verified] — structural, from IMP-I05-T01 characterization.
+
+**VDR_A = 0.667 — structural, not a harness error.**
+4 undetected turns are all Type B cases. Under Condition A (no ABox commits), baseline world state renders all Type B moves topologically valid; oracle correctly finds no violations.
+VDR_B = VDR_C = 1.000.
+[Verified] — structural, from test design documentation and summary JSON.
+
+**NQS threshold — MET.**
+Human rater only (sole primary metric per pre-registration).
+Condition B mean: 3.67 | Condition C mean: 3.83. Direction correct; C ≥ B.
+n=12 per condition; directional, not statistically powered.
+tc-m04 non-finding: accumulated multi-turn drift case produced identical scores and notes (B=4, C=4). 
+Drift real and symbolic-layer-detectable (IMP-I05-T01) but not perceptible as prose degradation at 3-turn session length.
+[Verified] — nqs_ratings.json, primary source.
+Qualitative signal [Inferred] — single rater, n=12 per condition.
+
+**Inter-rater analysis.**
+Two corrected-rubric LLM models run as secondary raters:
+claude-sonnet-4-6: Pearson r=0.081 (p=0.708), 6 divergent cases 
+gpt-5.4: Pearson r=0.123 (p=0.567), 6 divergent cases
+Both near zero, non-significant. 
+Not evidence of unreliable human ratings.
+Evidence of rubric comprehension gap: raters evaluated whether narrative respects world rules; rubric intended to evaluate prose quality of attempt descriptions.
+Finding about evaluation design requirements, not a reliability failure.
+Note: interrater_report.md Critical Methodological Finding section contains stale "all four LLM raters" language; current evidence base is two corrected-rubric models only. Data treated as correct; framing noted as inaccurate.
+Residual rubric ambiguity (attempt-vs.-success boundary): both models retained hard cap on cases where narrative describes a forbidden action as narratively succeeding. Whether an attempt can be described as succeeding in the narrative while ABox is blocked is unresolved — noted here; does not affect primary metric.
+tc-b03 genuine evaluative disagreement: both LLM models scored tc-b03 as 2 (innkeeper pronoun switch she→he = hard coherence failure); human rater scored 4 (uncertainty noted). Genuine ambiguity about pronoun inconsistency as rubric-level coherence failure; not attributable to role-boundary gap.
+tc-m04-C cross-modal corroboration of IMP-I05-T01: GPT-5.4 scored tc-m04-C as 3 (human: 4), detecting guard state inconsistencies across turns — independently identifying ABox divergence traceable to stale-context drift.
+Confirms that world-model accuracy and prose surface quality are separable dimensions under VeriForge evaluation.
+[Verified] — interrater_summary.json, interrater_report.md, primary sources.
+
+**Qualitative NQS observations (n=1 human rater; observational weight only):**
+Condition C spatial/character advantage (tc-a01, tc-a02, tc-a03): per-turn injection enables richer spatial grounding and character interaction. [Inferred]
+"Constraint narration artifact" on Type B blockings: per-turn context string produces awkward spatial language ("hidden corridor," "direct route...natural") when proposed action violates adjacency. 
+Perceptible in prose; does not affect CVR.
+Routed to OQ-10 as post-prototype investigation thread.
+Baseline LLM prose failure modes ("closed-world sentences," "arbitrary open-endedness") visible across both conditions — scope boundary for VeriForge.
+
+**IMP-I05-T01 — incorporated and disposed.**
+tc-a03 turn 3: Condition B fired B1+A1; Condition C fired A1 only.
+Both blocked.
+Condition B's world model was incorrect (guard at entrance, not main_hall).
+Stale-context drift is silent, structurally fragile, and supports OQ-08 claim.
+Cross-modal corroboration from GPT-5.4 tc-m04-C score.
+
+**Epistemic status:**
+[Verified] at prototype scope (claude-sonnet-4-6, single tavern, 3–4 characters, 2–3 constraints, max 3 turns per case): per-turn symbolic injection achieves CVR=0 on tested Type A+B pairs without NQS degradation.
+[Inferred] beyond prototype scope: CVR divergence between B and C at longer sessions; constraint narration artifact persistence; Condition C quality advantage under larger evaluation; generalization across LLM architectures.
+
+**Scope boundaries:** single tavern, 3–4 characters, 2–3 hard constraints, max 3 turns per case, single LLM, 12 cases.
+Post-prototype questions: session length, scale, model variation, constraint complexity, constraint narration artifact, attempt-vs.-success rubric boundary.
+
+---
+
+### S13 — OQ-10 Thread
+
+**OQ-10 — Constraint Narration Artifact** [OPEN — S13]
+Observation: under Condition C, per-turn context injection produces awkward spatial language on Type B blocking turns — narrative describes characters moving "as if there were a hidden corridor" or taking "a direct route...perfectly natural" — language the human rater identified as nonsensical and inconsistent with immersive RP prose.
+The per-turn context string, when injecting world state from which a proposed action violates adjacency, appears to shape LLM spatial language in ways that expose the constraint mechanism in the surface text.
+Does not affect CVR.
+Perceptible in NQS ratings (tc-b01, tc-b02, tc-b04 Condition C scored equal or lower than Condition B by human rater specifically on these cases).
+Status: post-prototype investigation thread.
+No hard dependencies identified. 
+Routes to: future Session Chat if VeriForge development continues beyond prototype scope. 
+Investigation question: is the artifact addressable by prompt engineering of the per-turn context string format, or is it structural to the architecture?
+Evidence from prototype evaluation: n=1 human rater, 3 Type B cases.
+Insufficient to characterize fully — named for forward reference.
+
+---
+
+### S13 — Attempt-vs.-Success Rubric Ambiguity (Note)
+
+**NQS Rubric Ambiguity — Attempt vs. Success Boundary** [NOTED — S13]
+The NQS rubric instructs evaluators that describing a violation attempt is correct VeriForge behavior and should not be treated as a coherence failure.
+Both corrected-rubric LLM inter-rater models retained a hard cap on cases where the narrative describes a forbidden action as narratively succeeding (e.g., guard fully descends into the cellar) rather than merely initiating.
+The rubric does not specify whether an attempt may be described as succeeding in the narrative while the ABox delta is blocked by the symbolic layer.
+Implication for future evaluation design: any NQS rubric used in post-prototype evaluation should explicitly address this boundary.
+The pre-registered rubric for this study is closed and cannot be retroactively patched.
+This note is for forward reference only. No action required at prototype scope.
