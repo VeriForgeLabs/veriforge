@@ -1,7 +1,7 @@
 # vision.md
 
-_Document version: 0.11 — March 2026_
-_Next review trigger: OQ-09 (Evaluation Protocol) research complete_
+_Document version: 0.12 — March 2026_
+_Next review trigger: Post-prototype questions (session length, scale, model variation) or OQ-10 (constraint narration artifact) investigation — no immediate trigger_
 
 ## Semantics-Driven Worldbuilding DSL Project
 Project Knowledge File — Hypothesis Document
@@ -383,8 +383,19 @@ Is there prior work on structured worldbuilding elicitation in literature?
 → [research-log.md](research-log.md#oq-08)
 
 **OQ-09 — Prototype Evaluation Protocol**
-[RESOLVED — S10] — Three-condition ablation (raw LLM / system-prompt-only / VeriForge per-turn), primary metric Constraint Violation Rate, falsification criterion ≥75% CVR reduction vs. Condition A AND statistically lower than Condition B, 12+ pre-registered test cases across Type A and Type B constraint pairs.
-→ [research-log.md](research-log.md#oq-09)
+[RESOLVED — S10 (protocol design) / RESOLVED — S13 (empirical closure)]
+Note: resolved at two distinct points — S10 for evaluation protocol design, S13 for empirical result. See research-log.md S13 entry for full evidence.
+
+Three-condition ablation (A: raw LLM; B: session-start injection; C: VeriForge per-turn + reactive ASP) run 2026-03-18 (run_20260318_150753, claude-sonnet-4-6, 12 pre-registered cases, 23 turns).
+
+Primary result: CVR_A=1.000 → CVR_C=0.000 (100% reduction; threshold ≥75%: met).
+NQS: Condition C mean 3.83 ≥ Condition B mean 3.67 (threshold met; n=12, directional; human rater sole primary metric — LLM inter-rater pass established rubric comprehension gap, not reliability failure in human ratings).
+Directionality: CVR_B = CVR_C = 0.000 — floor result; battery adversarial sufficiency named as scope qualifier; Condition B CVR=0 is mechanistically fragile (IMP-I05-T01; cross-modal corroboration: GPT-5.4 tc-m04-C inter-rater).
+
+Appropriate epistemic claim: per-turn symbolic state injection is sufficient to constrain claude-sonnet-4-6 extrapolation within Type A and Type B constraint pairs at prototype scope. Necessary but not sufficient for the full hypothesis.
+
+Scope boundaries: single tavern, 3–4 characters, 2–3 constraints, max 3 turns per case. Post-prototype: session length, scale, model variation, constraint narration artifact (OQ-10), attempt-vs.-success rubric boundary.
+→ [research-log.md S13 — OQ-09 Empirical Result](research-log.md#s13--oq-09-empirical-result)
 
 **OQ-09-T1 — RAG baseline as untested rival** [OPEN — Ankyra-00]
 RAG-based narrative consistency (graph-guided retrieval, identity-structured retrieval) is an active rival for persona/fact-recall consistency in RP systems.
@@ -404,6 +415,14 @@ Evaluator: same human reviewers as CVR.
 Threshold for success: Condition C NQS not significantly lower than Condition B.
 This is a minor protocol extension to a resolved OQ.
 It does not reopen OQ-09 and does not trigger an audit.
+Status: incorporated into OQ-09 empirical result — S13. 
+No separate resolution required.
+
+**OQ-10 — Constraint Narration Artifact** [OPEN — S13]
+Under Condition C per-turn injection, the context string shapes LLM spatial language in ways that expose the constraint mechanism when proposed actions violate adjacency ("as if there were a hidden corridor," "a direct route... perfectly natural").
+Perceptible in NQS ratings on Type B blocking turns; does not affect CVR.
+Post-prototype investigation thread — no hard dependencies.
+→ [research-log.md S13 — OQ-10 Thread](research-log.md#s13--oq-10-thread)
 
 ---
 
@@ -438,7 +457,11 @@ Closed items have been migrated to [research-log.md](research-log.md#closed-veri
 - [ ] What is the documented scope of hand-built worldbuilding DSLs in practice? | Origin: S01 | Influences: OQ-07 | [Unverified]
 - [ ] What is the actual failure rate of NL→ASP translation for domain specification tasks (vs. logical reasoning tasks studied in literature)? | Origin: S03 | Influences: OQ-03 | [Unverified]
 - [ ] Is there a benchmark measuring formal constraint-specification violation rates specifically (as opposed to personality/style drift)? RPEval covers personality/style drift; a direct measurement standard for zero-decoherence does not yet exist in this project's research log. | Origin: S02 | Influences: OQ-09 | [Unverified]
-- [ ] Is the enforcement mechanism (ASP-derived context injection) sufficient to constrain LLM extrapolation within constraint boundaries at prototype scope? This is the central unverified empirical claim of Step 4 of the hypothesis. Delegated to OQ-09 [RESOLVED — S10] — evaluation protocol designed; empirical test is prototype phase. | Origin: S08 | Influences: OQ-09 | [Unverified]
+- [x] Is the enforcement mechanism (ASP-derived context injection) sufficient to constrain LLM extrapolation within constraint boundaries at prototype scope? ANSWERED — S13.
+  Per-turn symbolic injection achieves CVR=0 on all pre-registered Type A and Type B constraint pairs (claude-sonnet-4-6, single tavern, 3–4 characters, 2–3 constraints).
+  Session-start injection alone also achieves CVR=0 on this battery; B/C mechanistic distinction documented in IMP-I05-T01 but not distinguishable at CVR level with this battery.
+  [Verified] at prototype scope.
+  Beyond prototype scope: [Inferred]. | Origin: S08 | Closed: S13 | OQ-09 [RESOLVED — S13]
 - [ ] Does reactive ASP validation of ABox deltas catch constraint violations that appear in LLM surface narrative without triggering a delta at all? The VDR metric in OQ-09 is designed to measure this gap, but the architectural vulnerability is [Inferred] — not yet tested. | Origin: S10 | Influences: OQ-09 | [Inferred]
 - [ ] Confirm primary source and URL for [Paper:Wang2024] DSPy-ASP framework; the accuracy figure (up to 50% improvement) is a precision claim on a secondary source only. | Origin: S01 | Influences: OQ-01 (historical) | [Unverified]
 
