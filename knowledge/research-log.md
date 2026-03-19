@@ -692,7 +692,7 @@ Confirms the measurement gap: no published framework measures constraint-specifi
 
 ### Ankyra-00 — RAG Rival Hypothesis Research (pre-S11)
 
-### OQ-09-T1 — RAG Baseline as Untested Rival [OPEN — Ankyra-00]
+### OQ-09-T1 — RAG Baseline as Untested Rival [OPEN — Ankyra-00] [RESOLVED — S12]
 
 [AnkyraNote-00-T1] OQ-09-T1 — RAG baseline as untested rival identified and formalized | Ankyra-00 review | [Paper:RoleRAG2025] [Paper:IDRAG2025] [Paper:TRPGRAG2025] [Paper:GSW2025]
 
