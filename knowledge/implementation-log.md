@@ -148,6 +148,14 @@ Cause: correct ASP reasoning about the paired pattern combined with insufficient
 Resolution: dropped paired constraint entirely; violation predicates are derivation-only; program is always SAT; enforcement loop checks for presence of violation(...) atoms in the yielded model rather than interrogating result.satisfiable.
 Methodology patch recommended: no — this is expected implementation trial-and-error; the corrected design is now the documented pattern.
 
+[RESOLVED] IMP-I01 — Phase 0 exit criterion met: all four ASP patterns execute correctly and produce expected output via the Python API.
+Evidence:
+- Pattern 1: ground facts load and all entities queryable as atoms — confirmed via CLI run of 01_ground_facts.lp.
+- Pattern 2: integrity constraint fires correctly — prisoner in corridor produces UNSAT — confirmed via 02_integrity_constraints.py.
+- Pattern 3: named-violation auxiliary predicate produces human-readable violation identifier in output — confirmed via 03_named_violations.py; IMP-I01-F02 and IMP-I01-F03 resolved before this test passed.
+- Pattern 4: Python API loop (load, ground, solve, read atoms) runs without errors — confirmed via 04_python_api.py.
+- IMP-I01-D05 corrected design (derivation-only predicates, SAT model inspection) applied throughout Patterns 3 and 4.
+
 ---
 
 ### I02 — Phase 1: Tavern WorldDSL Artifact | March 2026 | [RESOLVED]
@@ -308,47 +316,29 @@ Evidence:
 [DECISION] IMP-I05-D01 — Harness model override via module-level patching
 Chosen: session_loop.MODEL patched at harness startup (session_loop.MODEL = args.model).
 Alternative not taken: adding a model parameter to run_turn().
-Reason: run_turn()'s signature is stable and tested against Phase 3 criteria;
-MODEL is an intentionally global swap-point constant (IMP-I04-D04); patching at
-harness startup respects the Phase 3 design decision while enabling the Phase 4
-model change without modifying tested code.
+Reason: run_turn()'s signature is stable and tested against Phase 3 criteria; MODEL is an intentionally global swap-point constant (IMP-I04-D04); patching at harness startup respects the Phase 3 design decision while enabling the Phase 4 model change without modifying tested code.
 
-[DECISION] IMP-I05-D02 — Test cases as declarative JSON, not executable scripts
-Chosen: 12 JSON files in prototype/harness/test_cases/, loaded and driven by run_harness.py.
+[DECISION] IMP-I05-D02 — Test cases as declarative JSON, not executable scripts Chosen: 12 JSON files in prototype/harness/test_cases/, loaded and driven by run_harness.py.
 Alternative not taken: Python scripts with hardcoded run_turn() calls per case.
-Reason: declarative data separates "what is being tested" from "how the harness runs it";
-the JSON files are the pre-registration artifact, re-runnable under any condition without
-modification, and human-inspectable without executing code.
+Reason: declarative data separates "what is being tested" from "how the harness runs it"; the JSON files are the pre-registration artifact, re-runnable under any condition without modification, and human-inspectable without executing code.
 
 [DECISION] IMP-I05-D03 — Silent oracle validation for Condition A CVR measurement
-Chosen: run_harness.py calls validate_delta() as a post-hoc observer on Condition A
-TurnResults to obtain oracle classifications for CVR computation.
+Chosen: run_harness.py calls validate_delta() as a post-hoc observer on Condition A TurnResults to obtain oracle classifications for CVR computation.
 Alternative not taken: inferring violations from proposed_delta field contents alone.
-Reason: the ASP oracle is the pre-registered truth source for the ablation;
-using the same oracle across all three conditions preserves metric consistency.
+Reason: the ASP oracle is the pre-registered truth source for the ablation; using the same oracle across all three conditions preserves metric consistency.
 Bypassing it for Condition A would make CVR non-comparable.
 
 [DECISION] IMP-I05-D04 — ABox reset from in-memory baseline before each test case
-Chosen: baseline ABox JSON dict loaded into memory once at harness startup;
-written back to disk before each test case via reset_abox().
+Chosen: baseline ABox JSON dict loaded into memory once at harness startup; written back to disk before each test case via reset_abox().
 Alternative not taken: maintaining separate per-condition ABox files.
-Reason: separate files require synchronizing three copies of the same starting
-state; in-memory baseline is the single source of truth.
+Reason: separate files require synchronizing three copies of the same starting state; in-memory baseline is the single source of truth.
 
-[THREAD] IMP-I05-T01 — Condition B stale-context drift produces different world state
-trajectory than Condition C, visible in tc-a03 turn 3 violation predicates
-Observation: under Condition B, guard remained at entrance after turn 2 because
-the stale session-start context (guard at main_hall) caused the LLM to propose
-an empty delta for a return-to-main-hall prompt. Under Condition C, per-turn
-injection correctly showed guard at entrance; the LLM proposed the correct delta
-and it committed. The ABox state divergence then caused the turn 3 validator to
-fire B1 under Condition B (was_at=entrance) and not under Condition C (was_at=main_hall).
-This is a real behavioral signal consistent with VeriForge's hypothesis — stale
-context in Condition B produces incorrect world state evolution even on clean-designed
-turns — but it appears in the violation predicate set rather than CVR. CVR was zero
-in both conditions; the signal lives elsewhere.
-Routing: Session Chat — this is a research finding with implications for how
-the B/C distinction is characterized in the OQ-09 resolution write-up.
+[THREAD] IMP-I05-T01 — Condition B stale-context drift produces different world state trajectory than Condition C, visible in tc-a03 turn 3 violation predicates Observation: under Condition B, guard remained at entrance after turn 2 because the stale session-start context (guard at main_hall) caused the LLM to propose an empty delta for a return-to-main-hall prompt.
+Under Condition C, per-turn injection correctly showed guard at entrance; the LLM proposed the correct delta and it committed.
+The ABox state divergence then caused the turn 3 validator to fire B1 under Condition B (was_at=entrance) and not under Condition C (was_at=main_hall).
+This is a real behavioral signal consistent with VeriForge's hypothesis — stale context in Condition B produces incorrect world state evolution even on clean-designed turns — but it appears in the violation predicate set rather than CVR.
+CVR was zero in both conditions; the signal lives elsewhere.
+Routing: Session Chat — this is a research finding with implications for how the B/C distinction is characterized in the OQ-09 resolution write-up.
 Trigger: before OQ-09 is formally resolved in any Ankyra commit.
 Resolution: Disposed S13.
 tc-a03 turn 3 Condition B/C violation predicate divergence characterized as structural evidence of stale-context drift: Condition B's world model was incorrect (guard at entrance rather than main_hall) due to session-start context not reflecting committed ABox state; Condition C's per-turn injection held the correct state.
@@ -373,4 +363,4 @@ Evidence:
   - OQ-09 primary threshold (>=75% CVR reduction A→C): ✓ MET at 100%.
   - Directionality check (CVR_B > CVR_C): not met — both at 0.000.
   - Results archived: results/run_20260318_150753_full.json and _summary.json.
-  - NQS scores not yet populated (requires manual human rating post-run).
+  - NQS scores not yet populated at harness run time (requires manual human rating post-run); subsequently populated and reported in S13 OQ-09 Empirical Result (nqs_ratings.json).
