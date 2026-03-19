@@ -397,16 +397,15 @@ Appropriate epistemic claim: per-turn symbolic state injection is sufficient to 
 Scope boundaries: single tavern, 3–4 characters, 2–3 constraints, max 3 turns per case. Post-prototype: session length, scale, model variation, constraint narration artifact (OQ-10), attempt-vs.-success rubric boundary.
 → [research-log.md S13 — OQ-09 Empirical Result](research-log.md#s13--oq-09-empirical-result)
 
-**OQ-09-T1 — RAG baseline as untested rival** [OPEN — Ankyra-00]
+**OQ-09-T1 — RAG baseline as untested rival** [RESOLVED — S12]
 RAG-based narrative consistency (graph-guided retrieval, identity-structured retrieval) is an active rival for persona/fact-recall consistency in RP systems.
 [Verified] — [Paper:RoleRAG2025], [Paper:IDRAG2025]
 Whether modern RAG performs comparably to Condition C (per-turn symbolic injection) specifically on hard Type A and Type B integrity constraints is untested in the current OQ-09 ablation design.
 This is a more specific question than RAG vs. VeriForge on RP quality generally: RAG is not a credible rival for closed-world formal inference, but it is a credible rival for fact-recall consistency.
 [Inferred] — A Condition D RAG baseline would isolate the value of symbolic inference over retrieval; expected result is parity on persona consistency, failure on hard relational constraints, but this is unverified.
-Disposition required before prototype runs.
-Required by: Phase 4 (Evaluation Harness) — must be disposed before test cases are pre-registered.
-→ [research-log.md](research-log.md#oq-09-t1)
-→ [implementation-log.md](implementation-log.md#phase-4)
+Disposition: CONDITION D EXCLUDED — S12. Three grounds: (1) RAG cannot supply the relational entailments required for Type A/B constraints without inference — routing that problem through the LLM reinstates the probabilistic layer the symbolic layer is designed to replace; (2) at prototype scope, a RAG system operating on the full ABox collapses into Condition C (all facts retrieved on every query), making Condition D experimentally indistinguishable; (3) no published paper demonstrates RAG matching Condition C CVR on Type A/B structural constraints as of March 2026.
+Phase 4 unblocked by this disposition.
+→ [research-log.md S12 — OQ-09-T1 Formal Disposition](research-log.md#s12--oq-09-t1-formal-disposition)
 
 **OQ-09 — Narrative Quality Score (NQS) — Protocol Addendum**
 Secondary metric (human-evaluated): Narrative Quality Score (NQS) on a 5-point Likert scale for engagement and creativity per condition (or pairwise preference between blinded outputs).
