@@ -4,6 +4,7 @@ _Document version: 0.12 — March 2026_
 _Next review trigger: Post-prototype questions (session length, scale, model variation) or OQ-10 (constraint narration artifact) investigation — no immediate trigger_
 
 ## Semantics-Driven Worldbuilding DSL Project
+
 Project Knowledge File — Hypothesis Document
 
 ## ⚠ FRAMING PREAMBLE — READ FIRST
@@ -206,7 +207,7 @@ Full references in the Research Log section.
   → [OQ-05a — RESOLVED — S06]
   → [OQ-02 — RESOLVED — S05]
 
-- `[Verified]` Epistemic and uncertain world facts are correctly   excluded from the DSL at prototype scope.
+- `[Verified]` Epistemic and uncertain world facts are correctly excluded from the DSL at prototype scope.
   GDL required a separate extension (GDL-II) to handle incomplete information, confirming that the base closed-world formalism assumes certainty.
   At prototype scope with a human operator, character knowledge is adjudicated narratively, not formally tracked in the DSL.
   [Doc:ThielschemGDLII]
@@ -382,14 +383,7 @@ Is there prior work on structured worldbuilding elicitation in literature?
 **OQ-09 — Prototype Evaluation Protocol** [RESOLVED — S10 (protocol) / RESOLVED — S13 (empirical)] — Per-turn symbolic injection achieves CVR=0 on all pre-registered Type A/B constraint pairs at prototype scope (claude-sonnet-4-6, single tavern, 3–4 characters, 2–3 constraints); NQS threshold met; directionality floor result and mechanistic fragility of Condition B documented.
 → [research-log.md S13 — OQ-09 Empirical Result](research-log.md#s13--oq-09-empirical-result)
 
-**OQ-09-T1 — RAG baseline as untested rival** [RESOLVED — S12]
-RAG-based narrative consistency (graph-guided retrieval, identity-structured retrieval) is an active rival for persona/fact-recall consistency in RP systems.
-[Verified] — [Paper:RoleRAG2025], [Paper:IDRAG2025]
-Whether modern RAG performs comparably to Condition C (per-turn symbolic injection) specifically on hard Type A and Type B integrity constraints is untested in the current OQ-09 ablation design.
-This is a more specific question than RAG vs. VeriForge on RP quality generally: RAG is not a credible rival for closed-world formal inference, but it is a credible rival for fact-recall consistency.
-[Inferred] — A Condition D RAG baseline would isolate the value of symbolic inference over retrieval; expected result is parity on persona consistency, failure on hard relational constraints, but this is unverified.
-Disposition: CONDITION D EXCLUDED — S12. Three grounds: (1) RAG cannot supply the relational entailments required for Type A/B constraints without inference — routing that problem through the LLM reinstates the probabilistic layer the symbolic layer is designed to replace; (2) at prototype scope, a RAG system operating on the full ABox collapses into Condition C (all facts retrieved on every query), making Condition D experimentally indistinguishable; (3) no published paper demonstrates RAG matching Condition C CVR on Type A/B structural constraints as of March 2026.
-Phase 4 unblocked by this disposition.
+**OQ-09-T1 — RAG baseline as untested rival** [RESOLVED — S12] — Condition D (RAG baseline) excluded: RAG cannot supply the closed-world relational inference required for Type A/B constraints, collapses into Condition C at prototype scope, and no published paper demonstrates comparable CVR on structural constraints.
 → [research-log.md S12 — OQ-09-T1 Formal Disposition](research-log.md#s12--oq-09-t1-formal-disposition)
 
 **OQ-10 — Constraint Narration Artifact** [OPEN — S13]

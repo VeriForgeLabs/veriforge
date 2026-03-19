@@ -1,6 +1,7 @@
 # protocols.md
 
 ## Semantics-Driven Worldbuilding DSL Project
+
 Research Protocols — Normative Reference
 
 ---
@@ -124,8 +125,7 @@ Conduct rules:
 Silent awareness:
 The ENN chat holds the current OQ and implementation thread state as background context.
 It does not actively steer conversation toward existing questions.
-It monitors for emergence — ideas that develop naturally into something that crosses one
-of the following thresholds:
+It monitors for emergence — ideas that develop naturally into something that crosses one of the following thresholds:
 
   (a) The idea directly bears on a named open question or open thread.
   (b) The idea would materially change how a resolved question is understood.
@@ -163,6 +163,7 @@ For each such OQ, execute Step 3c migration before proceeding.
 This closes the structural gap in the Audit Trigger Protocol: the trigger fires only when an OQ resolution unblocks a downstream OQ.
 An OQ that resolves without unblocking anything — e.g., the terminal OQ in a research phase — never triggers the audit and therefore never triggers migration.
 The standing migration check is the corrective for that class of case.
+Named threads (e.g., OQ-09-T1) follow the same migration rule as primary OQs — when resolved, replace the body in vision.md with a cross-reference line in Step 3c format.
 
 Audit scope — four steps, executed in order.
 No step may be skipped.
@@ -389,8 +390,7 @@ The section header format is:
 
 Where XX is the implementation chat number (e.g., I01, I02).
 
-Four entry types are defined. All are append-only except [THREAD], which may have a
-Resolution: field added in-place when the thread closes.
+Four entry types are defined. All are append-only except [THREAD], which may have a Resolution: field added in-place when the thread closes.
 ```
 [DECISION] IMP-IXX-DNN — [Title]
 Chosen: [what was selected]
@@ -616,5 +616,4 @@ If no: state the blocking condition explicitly.
 If no issues were found, the "Issues found" field reads: none.
 The Audit Log is append-only.
 Entries are never edited after the audit closes.
-If a methodology patch is recommended, the patch is applied to protocols.md in the same
-commit as the audit.
+If a methodology patch is recommended, the patch is applied to protocols.md in the same commit as the audit.

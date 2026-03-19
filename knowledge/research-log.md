@@ -1,6 +1,7 @@
 # research-log.md
 
 ## Semantics-Driven Worldbuilding DSL Project
+
 Research Log — Append-Only Historical Record
 
 ---
