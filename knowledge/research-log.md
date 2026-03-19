@@ -325,6 +325,28 @@ Audit closed: yes
 
 [NOTE-S10-OQ-09] OQ-09 resolved — no audit triggered; OQ-09 unblocks no downstream OQs; research phase complete as of S10.
 
+[AUDIT-ANKYRA-03] Prototype milestone audit | March 2026 | Steps completed: 1, 2, 3, 4, 5, 6
+Issues found:
+  - [research-log.md] OQ-09-T1 section header stale → appended [RESOLVED — S12] to header → Methodology patch recommended: no
+  - [vision.md] OQ-09-T1 status token [OPEN] → updated to [RESOLVED — S12] with disposition summary → Methodology patch recommended: no
+  - [implementation-log.md] I05 section header [IN PROGRESS] → corrected to [RESOLVED] → Methodology patch recommended: no
+  - [implementation-log.md] IMP-I05-T01 [THREAD] missing Resolution field → added in-place → Methodology patch recommended: no
+  - [implementation-log.md] I05 missing required [CLEAN] entry → added → Methodology patch recommended: no
+  - [vision.md] OQ-09 body not migrated — no audit trigger fired at S10 or S13 because OQ-09 blocked no downstream OQs; Step 3c migration skipped by design → migrated to cross-reference line per Step 3c → Methodology patch recommended: yes — see below
+  - [vision.md] NQS Protocol Addendum orphaned after OQ-09 migration → deleted → Methodology patch recommended: no
+  - [vision.md] CORE HYPOTHESIS epistemic block: three stale elements — "not validated against a working prototype"; [Unverified] on Step 4 claim; forward pointer to OQ-09 as open → epistemic markers promoted per Step 4f; stale language removed → Methodology patch recommended: no
+  - [vision.md] WHAT IS SYNTHESIZED: three [Inferred] claims with stale OQ-09 forward pointers; two requiring Step 4f epistemic promotion → markers updated; stale phrases removed → Methodology patch recommended: no
+  - [vision.md] OQ-08 cross-reference trailing clause forward-pointed to OQ-09 as open → updated to reflect empirical confirmation → Methodology patch recommended: no
+  - [vision.md] OQ-03 BLOCKS pointer referenced OQ-09 → updated to reference Phase 5 scope → Methodology patch recommended: no
+  - [vision.md] EVALUATION METHODOLOGY NOTE: conditional "if falsification criteria are met" stale → updated to past tense with OQ-09 resolution citation → Methodology patch recommended: no
+  - [vision.md] CLAIMS VDR item marked [Inferred] / not yet tested → partially closed with S13 VDR=1.000 finding and role boundary scope qualification → Methodology patch recommended: no
+  - [vision.md] CLAIMS two items with stale Influences: OQ-09 → updated to Phase 5 / post-prototype scope → Methodology patch recommended: no
+Methodology patches flagged: yes
+  Migration gap: Step 3c migration is currently gated on the Audit Trigger Protocol, which fires only when an OQ resolution unblocks a downstream OQ.
+  An OQ that resolves without unblocking anything — as OQ-09 did at both S10 and S13 — never triggers the audit and therefore never triggers Step 3c migration, leaving the resolved body in vision.md indefinitely.
+  Proposed fix: Ankyra Chats execute a standing migration check at load time — scan vision.md for any resolved OQ whose body has not yet been migrated to a cross-reference line, and execute Step 3c for each before any other work. Patch applied to protocols.md in this commit.
+Audit closed: yes
+
 ---
 
 ## CLOSED VERIFICATION ITEMS
