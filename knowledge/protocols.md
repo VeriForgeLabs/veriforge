@@ -599,9 +599,12 @@ Where N = session number, EN = entry number within session.
 
 Each audit produces one entry appended to the Audit Log in research-log.md.
 Use this exact format:
+
 ```
+First line (use the appropriate identifier for audit type):
 [AUDIT-SNN-OQ-XX] OQ-XX resolved | [Date] | Steps completed: [1, 2, 3, 4]
 [AUDIT-ANKYRA-NN] Milestone audit | [Date] | Steps completed: [1, 2, 3, 4, 5, 6]
+
 Issues found:
   - [Issue description] → [Resolution applied] → Methodology patch recommended: [yes/no]
 Methodology patches flagged: [yes/no]

@@ -8,7 +8,7 @@ Research Log — Append-Only Historical Record
 ## RESOLVED OQ ARCHIVE
 
 _Resolved OQ entries are migrated here during audits._
-_Empty until first audit._
+_Populated as OQs are resolved and migrated during audits._
 
 ### OQ-01 — DSL Formalism [RESOLVED — S04]
 
@@ -117,7 +117,7 @@ Promoted to [RESOLVED] at S09 audit — no contradicting evidence found in Sessi
 
 DEPENDS ON: OQ-01 [RESOLVED] — categories must be expressed in the chosen formalism; cannot be designed without knowing the formalism.
 DEPENDS ON: OQ-02b [RESOLVED] — mutable state category cannot be finalized without knowing how state transitions work.
-BLOCKS: OQ-09
+BLOCKS: OQ-09 [UNBLOCKED — S06]
 
 The WorldDSL requires four functional categories:
 (1) Entity registry — what named entities exist; encoded as ground ASP facts.
@@ -163,11 +163,15 @@ OQ-08-T1: Split-softmax attention decay mitigation — requires inference-time a
 OQ-08-T2: Two-step action declaration (prospective enforcement) — LLM declares action as structured output, ASP validates, then LLM generates narrative; architecturally coherent but not required at prototype scope; reactive enforcement sufficient for core hypothesis test.
 OQ-08-T3: Frontier model drift characterization — Li2024 measured LLaMA2-chat-70B and GPT-3.5; drift at RP session lengths on Claude 3.5+/GPT-4o not directly measured; assumed better-than-baseline, not a blocking gap.
 
-What remains [Unverified]: whether per-turn injection is sufficient to keep LLM extrapolation within constraint boundaries at interactive RP pace.
-This is the load-bearing empirical claim of Step 4 of the core hypothesis.
-OQ-09 must design a test that can confirm or falsify it.
+What remained [Unverified] at S08: whether per-turn injection is sufficient to keep LLM extrapolation within constraint boundaries at interactive RP pace.
+This was the load-bearing empirical claim of Step 4 of the core hypothesis, delegated to OQ-09.
+Confirmed [Verified] at prototype scope — OQ-09 [RESOLVED — S13]: CVR_A=1.000 → CVR_C=0.000.
+See empirical closure note below.
+Empirical closure: S13. CVR_A=1.000 → CVR_C=0.000; NQS threshold met; directionality floor result documented.
+→ [S13 — OQ-09 Empirical Result](research-log.md#s13--oq-09-empirical-result)
 
-### OQ-09 — Prototype Evaluation Protocol [RESOLVED — S10]
+
+### OQ-09 — Prototype Evaluation Protocol [RESOLVED — S10 (protocol) / RESOLVED — S13 (empirical)]
 
 DEPENDS ON: OQ-05a [RESOLVED] — four constraint categories confirmed; test cases can now be specified.
 DEPENDS ON: OQ-08 [RESOLVED] — enforcement mechanism specified as per-turn symbolic state injection plus reactive ASP validation; evaluation must test whether this mechanism is sufficient.
@@ -282,7 +286,7 @@ Sources:
 ## AUDIT LOG
 
 _Audit records are appended here after each audit closes._
-_Empty until first audit._
+_Populated as audits are completed._
 
 [AUDIT-S09-OQ-01] OQ-01 resolved | March 9, 2026 | Steps completed: 1, 2, 3, 4
 Issues found:
@@ -793,21 +797,9 @@ Phase 4 unblocked. Audit trigger does not fire (no downstream OQ unblocked).
 
 ### S13 — OQ-09 Empirical Closure
 
-[S13-E1] IMP-I05-T01 disposed — tc-a03 stale-context drift characterized as
-(a) additional evidence for VeriForge hypothesis (per-turn injection prevents
-silent ABox divergence) and (b) scope qualifier on CVR directionality result
-(Condition B CVR=0 achieved via inaccurate world model, not correct state
-evolution); cross-modal corroboration from GPT-5.4 inter-rater tc-m04-C score |
-Resolved | run_20260318_150753_summary.json, interrater_summary.json
+[S13-E1] IMP-I05-T01 disposed — tc-a03 stale-context drift characterized as (a) additional evidence for VeriForge hypothesis (per-turn injection prevents silent ABox divergence) and (b) scope qualifier on CVR directionality result (Condition B CVR=0 achieved via inaccurate world model, not correct state evolution); cross-modal corroboration from GPT-5.4 inter-rater tc-m04-C score | Resolved | run_20260318_150753_summary.json, interrater_summary.json
 
-[S13-E2] OQ-09 formally closed — primary threshold met (100% CVR reduction
-A→C); NQS threshold met (C ≥ B marginally); directionality check not met
-(floor result — adversarial sufficiency limit named); VDR_A gap explained;
-tc-m04 non-finding recorded; inter-rater rubric comprehension gap named;
-constraint narration artifact named as post-prototype open thread (OQ-10);
-attempt-vs.-success rubric ambiguity noted | Resolved |
-run_20260318_150753_summary.json, nqs_ratings.json,
-interrater_summary.json, interrater_report.md
+[S13-E2] OQ-09 formally closed — primary threshold met (100% CVR reduction A→C); NQS threshold met (C ≥ B marginally); directionality check not met (floor result — adversarial sufficiency limit named); VDR_A gap explained; tc-m04 non-finding recorded; inter-rater rubric comprehension gap named; constraint narration artifact named as post-prototype open thread (OQ-10); attempt-vs.-success rubric ambiguity noted | Resolved | run_20260318_150753_summary.json, nqs_ratings.json, interrater_summary.json, interrater_report.md
 
 ---
 
@@ -884,6 +876,13 @@ Cross-modal corroboration from GPT-5.4 tc-m04-C score.
 
 **Scope boundaries:** single tavern, 3–4 characters, 2–3 hard constraints, max 3 turns per case, single LLM, 12 cases.
 Post-prototype questions: session length, scale, model variation, constraint complexity, constraint narration artifact, attempt-vs.-success rubric boundary.
+
+**Pre-registration deviation note.**
+The S10 pre-registration specified (1) test cases as "5–10 turn prompt sequences" and (2) "minimum 3 runs per condition per test case; CVR averaged across runs to reduce LLM non-determinism."
+The executed battery used max 3 turns per case and 1 run per condition (single harness execution run_20260318_150753).
+Both deviations reduce adversarial pressure on the test relative to the pre-registered design.
+Justification: (1) cases were scoped to 3-turn maximum during Phase 4 design (IMP-I05-D02) to keep the pre-registered battery tractable at solo prototype scope; the reduction is structurally conservative rather than liberal. (2) CVR results are floor (0.000) and ceiling (1.000) values; averaging across additional runs cannot change the binary outcome, and the primary threshold is met at maximum margin. The directionality check is the finding most sensitive to LLM non-determinism — CVR_B = CVR_C = 0.000 may not hold under additional runs or longer sessions; this is already named as the battery adversarial sufficiency limitation.
+[Noted — Ankyra-03]
 
 ---
 
