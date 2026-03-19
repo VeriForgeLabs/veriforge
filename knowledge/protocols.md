@@ -156,6 +156,7 @@ The audit must be completed before the next research session begins.
 Ad hoc audits may be requested at any time but are not required between trigger events.
 The AI research partner is the executor of the audit at session start.
 The audit is completed before any research question is addressed.
+
 Standing migration check (Ankyra Chats only):
 At each Ankyra Chat, before any other work, scan vision.md for any resolved OQ whose body has not yet been migrated to a cross-reference line.
 For each such OQ, execute Step 3c migration before proceeding.
@@ -600,6 +601,7 @@ Each audit produces one entry appended to the Audit Log in research-log.md.
 Use this exact format:
 ```
 [AUDIT-SNN-OQ-XX] OQ-XX resolved | [Date] | Steps completed: [1, 2, 3, 4]
+[AUDIT-ANKYRA-NN] Milestone audit | [Date] | Steps completed: [1, 2, 3, 4, 5, 6]
 Issues found:
   - [Issue description] → [Resolution applied] → Methodology patch recommended: [yes/no]
 Methodology patches flagged: [yes/no]
