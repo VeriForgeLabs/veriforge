@@ -303,7 +303,7 @@ Evidence:
   - ABox before and after turn: identical — guard remains at main_hall.
   - commit_to_abox() was not called.
 
-### I05 — Phase 4: Evaluation Harness | March 2026 | [IN PROGRESS]
+### I05 — Phase 4: Evaluation Harness | March 2026 | [RESOLVED]
 
 [DECISION] IMP-I05-D01 — Harness model override via module-level patching
 Chosen: session_loop.MODEL patched at harness startup (session_loop.MODEL = args.model).
@@ -350,6 +350,17 @@ in both conditions; the signal lives elsewhere.
 Routing: Session Chat — this is a research finding with implications for how
 the B/C distinction is characterized in the OQ-09 resolution write-up.
 Trigger: before OQ-09 is formally resolved in any Ankyra commit.
+Resolution: Disposed S13.
+tc-a03 turn 3 Condition B/C violation predicate divergence characterized as structural evidence of stale-context drift: Condition B's world model was incorrect (guard at entrance rather than main_hall) due to session-start context not reflecting committed ABox state; Condition C's per-turn injection held the correct state.
+Both conditions blocked on turn 3; the mechanistic signal appears in violation predicate set rather than CVR.
+Finding incorporated into OQ-09 dual resolution write-up (research-log.md S13 OQ-09 Empirical Result). 
+Cross-modal corroboration: GPT-5.4 tc-m04-C inter-rater score independently identified guard-state inconsistencies traceable to same drift mechanism.
+Confirms world-model accuracy and prose surface quality are separable evaluation dimensions under VeriForge.
+
+[CLEAN] IMP-I05 — No failures encountered in this phase.
+Phase 4 harness construction proceeded without recordable implementation errors.
+Prior phase decisions — IMP-I03 schema normalization pattern, IMP-I04 structured output format, IMP-I04-D05 Condition B injection point — absorbed the primary integration surface areas.
+The one [THREAD] entry (IMP-I05-T01) records a behavioral signal from evaluation run results, not an implementation failure; it was routed to Session Chat per its routing field and disposed in S13.
 
 [RESOLVED] IMP-I05 — Phase 4 exit criterion met.
 Evidence:
