@@ -922,3 +922,20 @@ The rubric does not specify whether an attempt may be described as succeeding in
 Implication for future evaluation design: any NQS rubric used in post-prototype evaluation should explicitly address this boundary.
 The pre-registered rubric for this study is closed and cannot be retroactively patched.
 This note is for forward reference only. No action required at prototype scope.
+
+### E01 — OQ-11 Handoff
+
+[E01-H01] Draft Room architecture identified as new open question | HANDOFF-READY | Threshold c — new OQ warranted | [Inferred]
+
+**Origin:** E01 — Exploration Chat, March 2026.
+**Emerged from:** Discussion of why the prototype output felt unclean despite meeting all pre-registered thresholds. The constraint narration artifact on Type B blocking turns was identified as a structural fingerprint of the Checkpoint architecture's post-hoc posture.
+
+**Core finding:**
+Two architecturally distinct enforcement postures exist:
+Checkpoint — post-hoc reactive ASP validation of LLM-generated ABox deltas (OQ-09 prototype, proven).
+Draft Room — pre-output generator-symbolic-critic loop; ASP evaluates candidate narrative before it reaches the user; LLM receives structured violation feedback; loop iterates until solver is satisfied (unproven, unbuilt).
+
+The Draft Room is more consistent with the original VeriForge intent: constraints as invisible upstream shapers rather than visible downstream blockers. The narration artifact is reframed as a structural consequence of the Checkpoint posture, not a prompt engineering problem.
+
+**Disposition:** OQ-11 opened. Routes to S14.
+
