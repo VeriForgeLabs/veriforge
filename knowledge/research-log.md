@@ -939,3 +939,61 @@ The Draft Room is more consistent with the original VeriForge intent: constraint
 
 **Disposition:** OQ-11 opened. Routes to S14.
 
+### S14 — OQ-11 Lead Question 1
+
+[S14-E01] OQ-11 Lead Question 1 — Does the Draft Room exist in published literature? | Resolved | Calvo2025, Wang2020, Kelly2023
+
+The Draft Room pattern class (external symbolic feedback driving LLM iterative revision in a generate-check-revise loop) exists in published literature under two implementations: INTERPOL [Paper:Wang2020] (generate-and-rank with RoBERTa coherence critic evaluating the full story-in-construction) and automated debugging [Paper:Kelly2023] (planner error feedback driving LLM PDDL revision).
+The specific combination — LLM prose generation checked by a deterministic formal solver against a dynamic world-state ABox — does not exist as a published system.
+Absence finding confirmed by METATRON [Paper:Calvo2025], a comprehensive 40-year survey of automatic story generation: no system in that survey uses a deterministic formal solver as inner-loop critic for natural language prose.
+Non-convergence is the common case against formal symbolic checks (Kelly2023: 34% first-pass plan rate with GPT-4 on PDDL).
+Constraint narration artifact independently corroborated in Kelly2023 as structural — formal-model bleed into surface prose observed in a PDDL-conditioned pipeline — weakening but not falsifying the prompt-engineering rival. Lead Questions 2 and 3 not yet addressed.
+
+[S14-E02] Methodology gap identified — abstract-only processing of broadly relevant papers | Open | S14 session
+Abstract-only processing of METATRON (Calvo2025) missed contributions only visible on full read: terminology clarification resolving S13 inter-rater gap, computational cost model for generate-and-rank loops at interactive latency, independent corroboration of constraint narration artifact, and comprehensive survey confirmation of absence finding.
+Protocol patch recommended: any paper flagged as broadly relevant (survey, review, or multi-mechanism description) requires full-text retrieval before citation above [Unverified — abstract only] status.
+Patch target: protocols.md under RESEARCH PROTOCOLS. Patch under discussion — Ankyra-04.
+
+---
+
+### S14 — METATRON Terminology Note
+
+**Coherence / Cohesion / Consistency — Established terminology [Paper:Calvo2025]**
+
+[Paper:Calvo2025] draws a precise four-way distinction for evaluating story generation output:
+- Coherence: logical connectivity between events
+- Cohesion: local fluency, grammar, referential consistency  
+- Consistency: adherence to established world facts and rules
+- Novelty/Interestingness: originality and engagement
+
+This resolves the S13 inter-rater gap.
+The NQS rubric intended to evaluate cohesion and local coherence — prose quality of attempt descriptions.
+The corrected-rubric LLM inter-raters evaluated consistency — whether narrative respected world rules. 
+These are separate dimensions in established terminology.
+The rubric failure to separate them is now nameable rather than merely observable.
+
+Implication for future evaluation design: any NQS rubric used in post-prototype evaluation should score consistency separately from cohesion and local coherence, using this four-way vocabulary.
+[Verified] — [Paper:Calvo2025] —
+
+---
+
+### S14 — Citations
+
+[Paper:Calvo2025] Calvo, H.; Herrera-González, B.; Laureano, M.H., "Integrating Cognitive, Symbolic, and Neural Approaches to Story Generation: A Review on the METATRON Framework," Mathematics 2025, 13, 3885.
+URL: https://doi.org/10.3390/math13233885
+Status: [Verified] — full text read —
+Notes: 40-year survey of automatic story generation.
+Key contributions to VeriForge: (1) coherence/cohesion/consistency/novelty terminology clarifying S13 NQS rubric gap; (2) generate-and-rank pattern (INTERPOL/Wang2020) as nearest published analog to Draft Room; (3) computational cost model for generate-and-rank loops at interactive latency; (4) error propagation / "least bad option" failure mode in iterative generation pipelines; (5) confirms absence finding: no published narrative system uses a deterministic formal solver as inner-loop critic for natural language prose.
+
+[Paper:Wang2020] Wang, S.; Durrett, G.; Erk, K., "Narrative Interpolation for Generating and Understanding Stories," arXiv:2008.07466, August 2020.
+URL: https://arxiv.org/abs/2008.07466
+Status: [Verified] — full text read —
+Notes: Primary source for generate-and-rank interpolation pattern (INTERPOL).
+Key verified facts: bisectional insertion order empirically equivalent to sequential; ranker evaluates full story-in-construction (not local triple, correcting METATRON's secondary description); NORANKING ablation shows ranker provides large gains (coherence preference 61.1% vs. 3.3%); termination is length-controlled, not convergence-based — no non-convergence failure path required.
+Draft Room analogy: GPT-2→LLM, RoBERTa ranker→ASP solver, length termination→SAT termination.
+Confirms absence: no formal logic verifier used as inner-loop critic for narrative prose.
+
+[Paper:Kelly2023] Kelly, J.; Calderwood, A.; Wardrip-Fruin, N.; Mateas, M., "There and Back Again: Extracting Formal Domains for Controllable Neurosymbolic Story Authoring," AIIDE 2023 (Best Paper).
+URL: https://ojs.aaai.org/index.php/AIIDE/article/view/27502
+Status: [Verified] — full text read —
+Notes: PDDL/Glaive bidirectional NL↔formal-domain pipeline. Key verified facts: (1) automated debugging loop (LLM revises on planner error feedback) raises plan rate from 21% to 34% with GPT-4; GPT-3.5 produces zero compilable output; (2) 34% plan rate establishes LLM first-pass failure against formal symbolic check as the common case — non-convergence fallback path is a primary design requirement for any generate-check-revise loop; (3) thematic analysis independently documents constraint narration artifact (formal-model bleed into surface prose) in a PDDL-conditioned pipeline, corroborating OQ-10 structural origin hypothesis; (4) with-plan vs. without-plan trade-off maps directly onto Checkpoint vs. Draft Room architectural choice.
