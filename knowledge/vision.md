@@ -392,6 +392,25 @@ Perceptible in NQS ratings on Type B blocking turns; does not affect CVR.
 Post-prototype investigation thread — no hard dependencies.
 → [research-log.md S13 — OQ-10 Thread](research-log.md#s13--oq-10-thread)
 
+**OQ-11 — Draft Room Architecture** [OPEN — E01]
+DEPENDS ON: OQ-09 [RESOLVED — S13] — the Checkpoint architecture (post-hoc reactive ASP validation) is the proven baseline against which the Draft Room must be evaluated.
+DEPENDS ON: OQ-10 [OPEN — S13] — the constraint narration artifact is the primary motivating evidence; the Draft Room is the architectural hypothesis for why OQ-10 exists and how it might be resolved.
+BLOCKS: nothing hard at current stage.
+
+The Checkpoint architecture (OQ-09 prototype) validates proposed ABox deltas after LLM generation. The narration artifact — awkward prose on constraint-blocking turns — is a structural fingerprint of this post-hoc posture: the LLM narrates in full awareness of a constraint it is simultaneously instructed to ignore, and the tension surfaces in the surface text.
+
+The Draft Room is a distinct architecture: a pre-output generator-symbolic-critic loop in which the ASP solver evaluates candidate narrative before it reaches the user, the LLM receives structured violation feedback, and the loop iterates until the solver is satisfied. Constraints operate as upstream shapers of the possibility space rather than downstream blockers of committed output.
+
+The Draft Room is more consistent with the original VeriForge intent — constraints as the invisible hand of a skilled DM, invisible to the player — but has not been designed, built, or tested within this project.
+[Inferred] — grounded in prototype findings and architectural reasoning; no literature search conducted —
+
+Lead questions for S14:
+(1) Does the Draft Room exist in literature under any name? What is the closest published precedent?
+(2) What does a tractable prototype-scope implementation look like? What are the cost and failure mode differences vs. the Checkpoint?
+(3) What would falsify the claim that the Draft Room produces cleaner prose than the Checkpoint on Type B blocking turns?
+→ [research-log.md E01 handoff](research-log.md#e01--oq-11-handoff)
+
+
 ---
 
 ### EVALUATION METHODOLOGY NOTE
