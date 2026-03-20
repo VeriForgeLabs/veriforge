@@ -147,7 +147,25 @@ ENN chats are not tracked in any project file unless a handoff occurs and Ankyra
 
 ## RESEARCH PROTOCOLS
 
----
+### Scope Confirmation Protocol
+
+Applies to: SNN, INN, ANN chats. Does not apply to ENN chats.
+Priority: Prime directive level. This rule cannot be suspended or abbreviated.
+
+Before executing any substantive task — including but not limited to: research passes, screening passes, structured outputs, commit generation, audit steps, implementation work, or any multi-step procedure — the AI must state the operative scope in one sentence and receive explicit confirmation from the human operator before proceeding.
+
+The confirmation must be specific to the task at hand. A general instruction to "proceed" earlier in the session does not constitute confirmation for a subsequent task. Confirmation does not carry forward across task boundaries.
+
+Failure mode this rule addresses: proceeding on an unverified scope assumption when confirmation was available and required. Two confirmed instances in Ankyra-04 establish this as a structural risk: (1) S14 scoped OQ-11 literature review to the Draft Room when the correct scope was the project hypothesis as a whole; (2) the Ankyra-04 pre-audit screening pass was executed against OQ-11 when the correct scope was the full citation corpus against the project hypothesis. Both failures occurred after extensive context that made the correct scope derivable — derivability is not confirmation.
+
+The scope statement must name:
+- What task is about to be executed.
+- What the operative scope of that task is.
+- What the output will be used for.
+
+Example: "I am about to execute the pre-audit screening pass. The operative scope is all citation entries in research-log.md assessed for relevance to the project's core hypothesis. The output is the start set for the corpus audit. Confirm before I proceed."
+
+An unanswered scope confirmation is a hard stop. The task does not begin until confirmation is received.
 
 ### Audit Trigger Protocol
 
