@@ -395,6 +395,214 @@ Session log entry required for every update.
 
 ---
 
+
+### Full-Text Retrieval and Snowballing Protocol
+
+This protocol governs how research sources are ingested and how citation chains are followed.
+It is grounded in Kitchenham and Charters 2007 (EBSE-2007-01) [Apodictic] and Wohlin 2014 (EASE 2014) [Apodictic].
+
+---
+
+#### Ground Truth Principle
+
+The source paper is always the ground truth. A claim characterized via a secondary source's description of a primary source is [Unverified] until the primary source is read directly. There are no exceptions.
+
+---
+
+#### Publication Bias Obligation
+
+The project's hypothesis creates a structural risk of confirmation bias: research supporting LLM-symbolic hybrid approaches is more likely to be surfaced and retained than research contradicting it.
+This is a known failure mode of systematic literature reviews.
+
+Every research session and corpus audit carries a standing obligation to actively seek and surface literature that contradicts the project's hypothesis and architectural decisions, not only literature that supports them.
+Being proven wrong is as epistemically valuable as being proven right.
+A finding that contradicts a committed claim must be surfaced immediately as a COMMIT-READY candidate, not deferred or minimized.
+
+This obligation complements but does not replace the Rival Hypothesis Discipline protocol.
+Rival Hypothesis Discipline requires naming competing mechanisms when proposing solutions.
+The Publication Bias Obligation requires actively searching for contradicting evidence in the literature regardless of whether a new mechanism is being proposed.
+
+---
+
+#### Source Quality Hierarchy
+
+Not all sources carry equal evidentiary weight. The following hierarchy governs the maximum epistemic status a claim may carry based on its source type.
+A claim may always carry a weaker status than its source permits, but never a stronger one.
+
+Tier 1 — Peer-reviewed published papers (journal articles, conference proceedings): support [Verified] and [Apodictic] claims.
+Gold standard.
+
+Tier 2 — Institutional technical reports from named research groups (e.g., EBSE Technical Reports, arXiv papers submitted to or accepted at peer-reviewed venues): support [Verified] claims with explicit
+notation of non-peer-reviewed status.
+Precision claims derived solely from Tier 2 sources require the same primary source confirmation rule that applies to all precision claims.
+
+Tier 3 — arXiv preprints with no stated venue submission: support [Verified] claims with explicit notation of preprint status.
+Treated as Tier 2 if the paper is later published at a peer-reviewed venue.
+
+Tier 4 — Blog posts, course notes, practitioner documentation, repositories: support [Inferred] claims only, with one exception. 
+A Tier 4 source may support a single narrow [Verified] factual claim about existence — that a piece of software exists and runs, that a resource is publicly accessible — without supporting any broader inference about quality, applicability, or correctness.
+
+Tier 5 — Wikipedia and similar aggregator sources: not citable as primary sources for any claim. Acceptable only as pointers to primary sources.
+The primary source the aggregator references is the citation of record, not the aggregator itself.
+
+---
+
+#### Full-Text Retrieval Rule
+
+A paper cannot be assessed as relevant or irrelevant on abstract or snippet alone.
+Full-text retrieval is the default posture for every paper encountered during research.
+The only permissible basis for excluding a paper without full-text retrieval is that its title is demonstrably orthogonal to the current research question.
+When in doubt, retrieve and read.
+
+Papers assessed at abstract or snippet level only carry [Verified] status at most.
+[Apodictic] status requires complete ingestion as defined below.
+The burden of proof is on classifying a paper as title-excludable, not on justifying retrieval.
+
+---
+
+#### [Apodictic] Tag
+
+[Apodictic] is a source-level tag. It is categorically distinct from [Verified] and [Inferred], which are claim-level tags.
+
+[Verified] and [Inferred] describe the relationship between a claim and its evidence.
+[Apodictic] describes the relationship between the researcher and a source.
+These operate on different axes and must never be conflated.
+
+[Apodictic] never appears inline with a claim in vision.md or any project document other than research-log.md.
+It appears exclusively in the citation entry for the source it qualifies.
+A claim derived from an [Apodictic] source retains its [Verified] tag in vision.md; its grounding is traceable through the citation to the [Apodictic] entry in research-log.md.
+
+[Apodictic] is earned when and only when a source has been completely ingested: the full text has been retrieved and read, the source's vocabulary has been assessed for adoption into the project's working
+terminology, and the reference list has been examined for citation chain candidates.
+Complete ingestion is the only path to [Apodictic] status.
+There are no exceptions.
+
+Promotion: When a citation entry already carrying [Verified] status is fully ingested, it is promoted to [Apodictic].
+[Verified] is not invalidated by the existence of [Apodictic] — it is the correct status for any source not yet fully ingested and is a legitimate epistemic state, not a failure condition.
+
+Invalidation: If complete ingestion of a source reveals that a claim currently listed as [Verified] in any project document is factually incorrect or unsupported, that claim is stricken from the record in full.
+The claim is removed from vision.md, all forward pointers to it are removed, and the invalidation is recorded as an append entry in research-log.md citing the [Apodictic] source as the basis for the correction.
+Invalidated claims are not retained, qualified, or hedged. 
+Invalidation produces COMMIT-READY candidates requiring Ankyra authorization before any content is removed from project files.
+
+Snowballing authorization: [Apodictic] status authorizes a source as a start point for backward and forward snowballing.
+A source that has not reached [Apodictic] status may not serve as the basis for citation chain following, because its reference list has not been examined.
+
+---
+
+#### Snowballing Procedure
+
+Snowballing is the procedure for following citation chains from fully ingested papers.
+Both backward and forward snowballing are executed.
+Grounded in Wohlin 2014 [Apodictic].
+
+**Start set assembly (pre-condition):**
+Assemble the start set from all citation entries in research-log.md that bear on the research question.
+Apply liberal inclusion — exclude only entries whose title is demonstrably orthogonal to the research question.
+Record a one-sentence justification for each inclusion and each exclusion.
+The start set is recorded as a named artifact in research-log.md before snowballing begins.
+
+**Backward snowballing:**
+For each paper in the start set that has not yet reached [Apodictic] status, retrieve the full text and complete the Data Extraction Form.
+For each citation chain candidate identified:
+
+  Step 1 — Examine the title and publication venue in the reference list.
+  If demonstrably orthogonal to the research question, exclude with one-sentence justification.
+
+  Step 2 — If not excluded on title, examine the place and context of the reference within the parent paper: the specific sentence or argument the citation supports.
+  This information is extracted from the paper already in hand before retrieving the candidate paper.
+  If the context confirms orthogonality, exclude with justification.
+
+  Step 3 — If still a candidate, retrieve the full text and complete the Data Extraction Form.
+  A definitive include or exclude decision must be reached before the paper is used as the basis for further snowballing.
+
+**Forward snowballing:**
+For each [Apodictic] paper in the included set, identify papers that cite it using Google Scholar or equivalent.
+For each citing paper, apply the same tiered screening as backward snowballing: title first,
+then place and context if available, then full text if still a candidate.
+Forward snowballing is particularly effective for extending an existing corpus — any paper directly citing an included paper is likely to be in the same domain and may represent more recent work.
+
+**Convergence and frequency diagnostic:**
+Continue iterations until a full iteration produces no new papers that pass the inclusion screen. 
+Track the number of new relevant papers identified per iteration.
+A clearly declining frequency confirms genuine convergence.
+If frequency is not declining, this signals an uncovered cluster — attempt a supplementary search using synonym terms derived from the research question before concluding convergence.
+
+Direct venue searching — manually scanning tables of contents of specific journals and conference proceedings known to publish in the domain — is scoped out as a default requirement for this project on
+the basis that backward and forward snowballing from a well-assembled start set achieves equivalent coverage for a contained domain.
+[Verified] — Wohlin 2014 [Apodictic], Section 5.
+However, direct venue searching becomes mandatory if the frequency diagnostic fires and non-declining frequency confirms an uncovered cluster cannot be resolved by synonym-based supplementary search alone.
+The trigger is empirical, not discretionary.
+
+Convergence is a finding supported by the frequency diagnostic.
+It
+is not an assumption.
+
+**Author contact (last resort only):**
+Author contact is warranted when both of the following conditions are met simultaneously:
+  (1) The paper contains a finding directly load-bearing on the core hypothesis or a named open question, AND the full text leaves a specific question unanswered that only the authors could resolve — unpublished data, ambiguous methodology, a claimed result without sufficient evaluable detail, or a stated future work item directly relevant to this project.
+  (2) The unanswered question cannot be resolved by retrieving a related paper, by forward snowballing to a subsequent paper by the same authors, or by any other means available within the standard protocol.
+Both conditions must hold. Author contact is a last resort, not a default step.
+
+**Duplicate publication handling:**
+When the same data or findings appear in multiple publications by the same authors, use only the most complete publication.
+Earlier versions are noted in the citation entry but are not treated as independent sources and do not receive separate [Apodictic] promotion.
+Their findings are not double-counted in any synthesis.
+
+---
+
+#### ✓ INACCESSIBLE-PAPER Flag Format
+
+When a paper cannot be retrieved — paywall, URL not found, PDF unreadable, or any other retrieval failure — raise the following flag immediately and surface it to the human operator.
+The citation chain through this paper is interrupted until the paper is uploaded manually.
+Upon upload, process the paper using the Data Extraction Form and continue the chain from the interrupted point.
+
+```
+✓ INACCESSIBLE-PAPER
+Citation: [Full citation in project format, or best available details]
+Surfaced by: [Parent paper ShortID and title]
+Context: [Verbatim or close paraphrase of the sentence(s) in the parent paper citing this paper, establishing why it was flagged as relevant]
+Retrieval error: [Paywall | PDF unreadable | URL not found |
+Other — specify]
+Chain status: INTERRUPTED — this paper cannot be used as a snowballing source and its contribution cannot be assessed until full text is available.
+Action required: Please locate and upload this paper to resume the chain.
+```
+
+---
+
+#### Data Extraction Form
+
+Complete this form for every paper that reaches full-text ingestion.
+It is the structured output of complete ingestion and the basis for [Apodictic] promotion and COMMIT-READY blocks.
+
+```
+✓ EXTRACTION-COMPLETE
+Paper: [ShortID — full citation in project format]
+Apodictic status: CONFIRMED — full text retrieved and read 
+Target research question: [State the research question driving this session or audit]
+VOCABULARY
+[Named terms, distinctions, or taxonomies introduced or used by this paper that are relevant to the research question and are candidates for adoption into the project's working terminology.
+One entry per term, with the paper's own definition or usage stated precisely.]
+CITATION CHAIN CANDIDATES
+[Each reference in this paper that warrants further pursuit:]
+
+ShortID (if known) or Author+Year: [Title]
+Place and context: [The specific sentence or argument in this paper that the reference supports]
+Relevance signal: [One sentence on why this candidate bears on the research question]
+Retrieval status: [Retrieved and read | Queued | Inaccessible — see ✓ INACCESSIBLE-PAPER block]
+
+FINDINGS BEARING ON RESEARCH QUESTION
+[Claims from this paper that directly address the research question, each carrying an epistemic marker and the specific section or page as the basis for the claim.]
+CONTRADICTING EVIDENCE
+[Any finding in this paper that contradicts, qualifies, or challenges the project's hypothesis or a committed claim.
+This field is mandatory — if none found, state explicitly:
+"No contradicting evidence identified." Omitting this field is a quality flag, not a neutral finding.]
+APODICTIC PROMOTION
+[ShortID] promoted from [Verified] to [Apodictic].
+Existing citation entry in research-log.md requires update.
+Bundle with next COMMIT-READY block.
+```
+
 ## IMPLEMENTATION PROTOCOLS
 
 ---
@@ -580,6 +788,8 @@ Tags (exactly these, no others): `Paper` | `Repo` | `Doc` | `Blog` | `Forum` | `
 ShortID format: `AuthorYYYY` (e.g., `[Paper:Zhang2024]`)
 Full citations are logged in the Research Log with URL.
 Epistemic markers are always clean tokens: [Verified], [Inferred], [Unverified].
+A fourth marker [Apodictic] exists but is a source-level tag only — it appears exclusively in citation entries in research-log.md and never inline with claims.
+See Full-Text Retrieval and Snowballing Protocol under RESEARCH PROTOCOLS for its definition and usage rules.
 Supporting citations or explanatory notes follow outside the bracket, set off with em-dashes:
 [Verified] — Paper:X — Never embed explanatory text inside the bracket itself.
 
@@ -587,13 +797,26 @@ Precision claims — accuracy figures, percentages, named mechanisms — require
 Abstract-level verification is not sufficient for precision claims.
 When a precision claim is cited via a secondary source, the status note must identify the actual primary source and flag it for direct confirmation.
 
+Ingestion depth is a mandatory notation on every citation entry.
+A citation entry for a fully ingested source carries [Apodictic] as its status field.
+A citation entry for a source assessed at abstract or snippet level only carries [Verified] as its status field.
+Entries lacking ingestion depth notation are treated as [Verified] — abstract/snippet level by default.
+[Apodictic] is the only status that authorizes a source as a snowballing start point.
+See Full-Text Retrieval and Snowballing Protocol above.
+
+Source quality tier must be noted in every citation entry where the source is not a peer-reviewed published paper.
+Tier 2 (institutional technical report or accepted preprint), Tier 3 (unreviewed preprint), Tier 4 (blog, course notes, repository, practitioner documentation), and Tier 5 (aggregator — not citable as primary source) must be identified explicitly.
+Tier 1 (peer-reviewed) requires no additional notation. See Source Quality Hierarchy above.
+
 ---
 
 ### Research Log Entry Format
 ```
 [Tag:ShortID] Author(s), "Title," Source/Venue, Year.
 URL: [url]
-Status: [Verified] | [Unverified]
+Status: [Verified] | [Unverified] | [Apodictic] — full text read —
+Source quality: [Tier 1 — peer-reviewed | Tier 2 — institutional report or accepted preprint | Tier 3 — unreviewed preprint | Tier 4 — blog, course notes, repo, practitioner doc | Tier 5 — aggregator, not citable as primary source]
+Tier 1 sources require no Source quality line.
 Adjoining em-dash note specifies qualifying conditions where relevant:
 e.g. [Verified] — via secondary source only —
 e.g. [Unverified] — needs re-check; may be outdated —
